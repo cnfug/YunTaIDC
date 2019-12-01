@@ -52,7 +52,7 @@ if($new_money >= 0){
   	exit;
 }
 $date = date('Y-m-d');
-$DB->query("INSERT INTO `ytidc_service`(`userid`, `username`, `password`, `enddate`, `product`, `configoption`, `status`) VALUES ('{$user['id']}','$params['username']','{$params['password']}','{$date}','{$product['id']}','','等待审核')");
+$DB->query("INSERT INTO `ytidc_service` (`userid`, `username`, `password`, `enddate`, `product`, `configoption`, `status`) VALUES ('{$user['id']}', '{$params['username']}', '{$params['password']}', '{$date}', '{$product['id']}', '' ,'等待审核')");
 $serviceid = $DB->query("SELECT * FROM `ytidc_service` WHERE `username`='{$params['username']}' AND `password`='{$params['passowrd']}'")->fetch_assoc();
 $serviceid = $serviceid['id'];
 $plugin = "../plugins/".$server['plugin']."/main.php";
