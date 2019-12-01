@@ -56,7 +56,7 @@ $server = $DB->query("SELECT * FROM `ytidc_server` WHERE `status`='1'");
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">产品介绍</label>
-                                            <textarea class="form-control" name="description" row="6"><?=$row['name']?></textarea>
+                                            <textarea class="form-control" name="description" row="6"><?=$row['description']?></textarea>
                                         </div>
                                       	<div class="form-group">
                                           	<label for="exampleInputEmail1">产品分类</label>

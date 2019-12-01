@@ -51,10 +51,10 @@ if($verify_result) {//验证成功
         }else{
           	$user = $DB->query("SELECT * FROM `ytidc_user` WHERE `id`='{$row['user']}'")->fetch_assoc();
           	$new_money = $user['money'] + $row['money'];
-          	$DB->query("UPDATE `ytidc_user` SET `money`='{$new_money}' WHERE `user`='{$user['id']}'");
+          	$DB->query("UPDATE `ytidc_user` SET `money`='{$new_money}' WHERE `id`='{$row['user']}'");
           	$DB->query("UPDATE `ytidc_order` SET `status`='已完成' WHERE `orderid`='{$out_trade_no}'");
           	@header("Location: ../user/msg.php?msg=充值成功");
-          	exit;
+          	exit($new_money);
         }
     }else {
       

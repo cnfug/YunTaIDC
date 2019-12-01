@@ -50,7 +50,7 @@ function XiaoYu_XingWaiVPS_GETDATA($params){
 }
 
 function XiaoYu_XingWaiVPS_CreateService($params){
-	$cookie = XiaoYu_XingWaiVPS_GETSESSION(array('url' => $params['server']['ip']."/user/userlogin.asp", 'data' => array('username' => $params['server']['username'], 'password'=>$params['server']['password'])));
+	$cookie = XiaoYu_XingWaiVPS_GETSESSION(array('url' => $params['serverhostname']."/user/userlogin.asp", 'data' => array('username' => $params['serverusername'], 'password'=>$params['serverpassword'])));
 	if(empty($cookie)){
 		return array(
 			'ret' => 'fail',
@@ -58,12 +58,12 @@ function XiaoYu_XingWaiVPS_CreateService($params){
 		);
 	}
 	$XiaoYu_XingWaiVPS_POSTDATA = array(
-		'url' => $params['server']['ip'] . "/user/selfvps2.asp",
+		'url' => $params['serverhostname'] . "/user/selfvps2.asp",
 		'cookie' => $cookie,
 		'data' => array(
 			'vpsname' => $params['service']['username'],
 			'vpspassword' => $params['service']['password'],
-			'year' => $params['service']['time'] / 10,
+			'year' => $params['time'],
 			'id' => $params['configoption']['productid'],
 			'ServerlistID' => $params['configoption']['serverlistid'],
 		),
@@ -75,7 +75,7 @@ function XiaoYu_XingWaiVPS_CreateService($params){
 			'ret' => 'success',
 			'username' => $params['service']['username'],
 			'password' => $params['service']['password'],
-			'enddate' => date('Y-m-d',strtotime("+{$params['service']['time']} months", time())),
+			'enddate' => date('Y-m-d',strtotime("+{$params['time']} months", time())),
 			'configoption' => $itemid[1],
 		);
 	}else{
@@ -88,7 +88,7 @@ function XiaoYu_XingWaiVPS_CreateService($params){
 }
 
 function XiaoYu_XingWaiVPS_RenewService($params){
-	$cookie = XiaoYu_XingWaiVPS_GETSESSION(array('url' => $params['server']['ip']."/user/userlogin.asp", 'data' => array('username' => $params['server']['username'], 'password'=>$params['server']['password'])));
+	$cookie = XiaoYu_XingWaiVPS_GETSESSION(array('url' => $params['serverhostname']."/user/userlogin.asp", 'data' => array('username' => $params['serverusername'], 'password' => $params['serverpassword'])));
 	if(empty($cookie)){
 		return array(
 			'ret' => 'fail',
@@ -96,7 +96,7 @@ function XiaoYu_XingWaiVPS_RenewService($params){
 		);
 	}
   	$XiaoYu_XingWaiVPS_GETDATA = array(
-      	'url' => $params['server']['ip'] . "/user/vpsadm2.asp",
+      	'url' => $params['serverhostname'] . "/user/vpsadm2.asp",
       	'cookie' => $cookie,
       	'data' => array(
           	'id' => $params['service']['configoption'],
@@ -104,7 +104,9 @@ function XiaoYu_XingWaiVPS_RenewService($params){
         ),
     );
   	XiaoYu_XingWaiVPS_GETDATA($XiaoYu_XingWaiVPS_GETDATA);
-	$year = $params['data']['time'] / 10;
+	$cp = get_query_vals('服务', '*', array('id' => $params['serviceid']));
+	$year = json_decode($cp['周期'], true);
+	$year = $year['介绍'];
 	$XiaoYu_XingWaiVPS_POSTDATA = array(
 		'url' => $params['serverhostname'] . "/user/vpsadmrepay2.asp",
 		'cookie' => $cookie,

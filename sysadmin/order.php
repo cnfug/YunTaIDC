@@ -6,7 +6,7 @@ if(empty($_SESSION['adminlogin']) || $_SESSION['adminlogin'] != $session){
   	exit;
 }
 $title = "交易记录";
-$result = $DB->query("SELECT * FROM `ytidc_order`");
+$result = $DB->query("SELECT * FROM `ytidc_order` ORDER BY `orderid` DESC");
 include("./head.php");
 ?>
 
