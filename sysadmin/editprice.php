@@ -11,6 +11,7 @@ if(empty($id)){
   	@header("Location: ./type.php");
   	exit;
 }
+$row = $DB->query("SELECT * FROM `ytidc_grade` WHERE `id`='{$id}'")->fetch_assoc();
 $act = daddslashes($_GET['act']);
 if($act == "del"){
   	$DB->query("DELETE FROM `ytidc_type` WHERE `id`='{$id}'");
@@ -20,6 +21,10 @@ if($act == "del"){
 if($act == "edit"){
   	$price = json_encode($_POST['price']);
   	$name = daddslashes($_POST['name']);
+    $default = daddslashes($_POST['default']);
+    if($default == '1'){
+        $DB->query("UPDATE `ytidc_grade` SET `default`='0' WHERE `default`='1'");
+    }
   	$DB->query("UPDATE `ytidc_grade` SET `name`='{$name}', `price`='{$price}' WHERE `id`='{$id}'");
   	@header("Location: ./msg.php?msg=修改成功");
   	exit;
@@ -27,7 +32,6 @@ if($act == "edit"){
 $title = "编辑价格组";
 include("./head.php");
 $product = $DB->query("SELECT * FROM `ytidc_product`");
-$row = $DB->query("SELECT * FROM `ytidc_grade` WHERE `id`='{$id}'")->fetch_assoc();
 $price = json_decode($row['price'], true);
 ?>
 
@@ -49,7 +53,16 @@ $price = json_decode($row['price'], true);
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">产品组名称</label>
                                             <input name="name" type="text" class="form-control" id="title" placeholder="产品组名称" value="<?=$row['name']?>">
-                                        </div><?php
+                                        </div>
+                                      <div class="form-group">
+                                          	<label for="exampleInputEmail1">设为默认价格组：</label>
+                                    <div>
+                                        <select name="type">
+                                            <option value="0">否</option>
+                                            <option value="1">是</option>
+                                        </select>
+                                    </div>	
+                                      <?php
                                       	while($row2 = $product->fetch_assoc()){
                                       		echo '<div class="form-group">
                                             <label for="exampleInputEmail1">产品【'.$row2['name'].'】的价格</label>
