@@ -57,7 +57,7 @@ $price = json_decode($row['price'], true);
                                       <div class="form-group">
                                           	<label for="exampleInputEmail1">设为默认价格组：</label>
                                     <div>
-                                        <select name="type">
+                                        <select name="default">
                                             <option value="0">否</option>
                                             <option value="1">是</option>
                                         </select>
