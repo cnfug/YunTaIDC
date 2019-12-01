@@ -12,13 +12,19 @@ if(!empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['em
     $username = daddslashes($_POST['username']);
     $password = daddslashes($_POST['password']);
   	$email = daddslashes($_POST['email']);
+    if($DB->query("SELECT * FROM `ytidc_user` WHERE `username`='{$username}'")->num_rows != 0){
+        exit("该用户名已被占用！<a href="./register.php">点击重新注册</a>");
+    }
+    if($DB->query("SELECT * FROM `ytidc_User` WHERE `email`='{$email}'")->num_rows != 0){
+        exit("该邮箱已被占用！<a href="./register.php">点击重新注册</a>");
+    }
     $invite = $_SESSION['invite'];
   	$domain = $_SERVER['HTTP_HOST'];
   	$site = $DB->query("SELECT * FROM `ytidc_fenzhan` WHERE `domain`='{$domain}'")->fetch_assoc();
   	$site = $site['id'];
   	$DB->query("INSERT INTO `ytidc_user` (`username`, `password`, `email`, `money`, `grade`, `invite`, `site`, `status`) VALUE ('{$username}', '{$password}', '{$email}', '0.00', '{$conf['defaultgrade']}', '{$invite}', '{$site}', '1')");
-  	//@header("Location: ./login.php");
-  	exit($DB->error);
+  	@header("Location: ./login.php");
+  	exit();
 }
 
 ?>
