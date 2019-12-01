@@ -46,7 +46,7 @@ $grade = $DB->query("SELECT * FROM `ytidc_grade` WHERE `status`='1'");
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <form method="POST" action="edituser.php?act=edit&id<?=$id?>">
+                                    <form method="POST" action="edituser.php?act=edit&id=<?=$id?>">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">用户邮箱</label>
                                             <input name="email" type="email" class="form-control" id="email" placeholder="用户邮箱" value="<?=$row['email']?>">
