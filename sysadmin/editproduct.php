@@ -22,7 +22,7 @@ if($act == "edit"){
       	$value = daddslashes($v);
       	$DB->query("UPDATE `ytidc_product` SET `{$k}`='{$value}' WHERE `id`='{$id}'");
     }
-  	$configoption = ExplodeConfig(daddslashes($_POST['configoption']));
+  	$configoption = json_encode($_POST['configoption']);
   	$DB->query("UPDATE `ytidc_product` SET `configoption`='{$configoption}' WHERE `id`='{$id}'");
   	@header("Location: ./msg.php?msg=修改成功");
   	exit;
@@ -30,9 +30,16 @@ if($act == "edit"){
 $title = "编辑产品";
 include("./head.php");
 $row = $DB->query("SELECT * FROM `ytidc_product` WHERE `id`='{$id}'")->fetch_assoc();
-$configoption = PackConfig($row['configoption']);
+$row['configoption'] = json_decode($row['configoption'], 1);
 $type = $DB->query("SELECT * FROM `ytidc_type` WHERE `status`='1'");
 $server = $DB->query("SELECT * FROM `ytidc_server` WHERE `status`='1'");
+$serverinfo = $DB->query("SELECT * FROM `ytidc_server` WHERE `id`='{$row['server']}'")->fetch_assoc();
+$plugin = "../plugins/".$serverinfo['plugin']."/main.php";
+if(!file_exists($plugin) || !is_file($plugin)){
+	@header("Location: ./msg.php?msg=服务器插件不存在");
+	exit;
+}
+include($plugin);
 ?>
 
             <div class="container-fluid">
@@ -87,14 +94,18 @@ $server = $DB->query("SELECT * FROM `ytidc_server` WHERE `status`='1'");
                                         </select>
                                     </div>	
                                       	</div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">产品期限（天）</label>
-                                            <input name="time" type="number" class="form-control" id="time" placeholder="产品期限" value="<?=$row['time']?>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">产品配置</label>
-                                            <textarea class="form-control" name="configoption" row="6"><?=$configoption?></textarea>
-                                        </div>
+                                        <?php
+                                        if(function_exists($serverinfo['plugin']."_ConfigOption")){
+                                        	$function = $serverinfo['plugin']."_ConfigOption";
+                                        	$configoption = $function();
+                                        	foreach($configoption as $k => $v){
+                                        		echo '<div class="form-group">
+                                            <label for="exampleInputEmail1">【插件配置】：'.$k.'</label>
+                                            <input type="text" class="form-control" name="configoption['.$k.']" placeholder="'.$v.'" maxlength="256" value="'.$row['configoption'][$k].'">
+                                        </div>';
+                                        	}
+                                        }
+                                        ?>
                                         <button type="submit" class="btn btn-default">修改</button>
                                     </form>
                                 </div>

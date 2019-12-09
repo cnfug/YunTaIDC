@@ -5,68 +5,41 @@ if(empty($_SESSION['ytidc_user']) && empty($_SESSION['ytidc_pass'])){
      exit;
 }else{
   	$username = daddslashes($_SESSION['ytidc_user']);
-  	$password = daddslashes($_SESSION['ytidc_pass']);
-  	$user = $DB->query("SELECT * FROM `ytidc_user` WHERE `username`='{$username}' AND `password`='{$password}'");
+  	$userkey = daddslashes($_SESSION['ytidc_adminkey']);
+  	$user = $DB->query("SELECT * FROM `ytidc_user` WHERE `username`='{$username}'");
   	if($user->num_rows != 1){
       	@header("Location: ./login.php");
       	exit;
     }else{
-      	$user = $user->fetch_assoc();
+    	$user = $user->fetch_assoc();
+      	$userkey1 = md5($_SERVER['HTTP_HOST'].$user['password']);
+      	if($userkey != $userkey1){
+      		@header("Location: ./login.php");
+      		exit;
+      	}
     }
 }
-$title = "邀请记录";
-include("./head.php");
 $result = $DB->query("SELECT * FROM `ytidc_order` WHERE `user`='{$user['id']}'");
-?>
+$order_template = file_get_contents("../templates/".$conf['template']."/user_order_list.template");
+while($row = $result->fetch_assoc()){
+	$order_template_code = array(
+		'orderid' => $row['orderid'],
+		'description' => $row['description'],
+		'money' => $row['money'],
+		'action' => $row['action'],
+		'status' => $row['status'],
+	);
+	$order_template_new = $order_template_new . template_code_replace($order_template, $order_template_code);
+}
+$template = file_get_contents("../templates/".$conf['template']."/user_header.template").file_get_contents("../templates/".$conf['template']."/user_order.template").file_get_contents("../templates/".$conf['template']."/user_footer.template");
+$template_code = array(
+	'site' => $site,
+	'config' => $conf,
+	'template_file_path' => '../templates/'.$conf['template'],
+	'user' => $user,
+	'order' => $order_template_new,
+);
+$template = template_code_replace($template, $template_code);
+echo $template;
 
-            <div class="container-fluid">
-                <div class="side-body">
-                    <div class="page-title">
-                        <span class="title">交易列表</span>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="card">
-                                <div class="card-header">
-
-                                    <div class="card-title">
-                                    <div class="title">记录列表</div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>详细</th>
-                                                <th>操作</th>
-                                                <th>金额</th>
-                                                <th>状态</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                          <?php
-                                          while($row = $result->fetch_assoc()){
-                                            echo '<tr>
-                                                <th scope="row">'.$row['orderid'].'</th>
-                                                <td>'.$row['description'].'</td>
-                                                <td>'.$row['action'].'</td>
-                                                <td>'.$row['money'].'</td>
-                                                <td>'.$row['status'].'</td>
-                                            </tr>';
-                                          }
-                                          ?>
-                                                
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-<?php
-
-include("./foot.php");
 ?>

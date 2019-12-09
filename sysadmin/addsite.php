@@ -10,7 +10,7 @@ if(!empty($_POST['name']) && !empty($_POST['domain']) && !empty($_POST['descript
   	foreach($_POST as $k => $v){
       	$$k = daddslashes($v);
     }
-  	$DB->query("INSERT INTO `ytidc_fenzhan` (`domain`, `name`, `description`, `notice`, `admin`, `password`, `user`, `status`) VALUES ('{$domain}', '{$name}', '{$description}', '{$notice}', '{$admin}', '{$password}', '{$user}', '1')");
+  	$DB->query("INSERT INTO `ytidc_fenzhan` (`domain`, `title`, `description`, `notice`, `admin`, `password`, `user`, `status`) VALUES ('{$domain}', '{$title}', '{$description}', '{$notice}', '{$admin}', '{$password}', '{$user}', '1')");
   	@header("Location: ./msg.php?msg=添加服务器成功！");
   	exit;
 }
@@ -36,7 +36,7 @@ include("./head.php");
                                     <form method="POST" action="addsite.php">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">分站名称</label>
-                                            <input name="name" type="text" class="form-control" id="name" placeholder="分站名称">
+                                            <input name="title" type="text" class="form-control" id="name" placeholder="分站名称">
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">分站域名</label>

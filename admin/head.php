@@ -52,9 +52,14 @@
                             </button>
                         </div>
                         <ul class="nav navbar-nav">
-                            <li class="active">
+                            <li>
                                 <a href="index.php">
                                     <span class="icon fa fa-tachometer"></span><span class="title">管理后台</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="config.php">
+                                    <span class="icon fa fa-cube"></span><span class="title">编辑站点</span>
                                 </a>
                             </li>
                             <li>

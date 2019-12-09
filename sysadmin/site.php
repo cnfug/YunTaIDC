@@ -39,7 +39,7 @@ include("./head.php");
                                           while($row = $result->fetch_assoc()){
                                             echo '<tr>
                                                 <th scope="row">'.$row['id'].'</th>
-                                                <td>'.$row['name'].'</td>
+                                                <td>'.$row['title'].'</td>
                                                 <td>'.$row['domain'].'</td>
                                                 <td><a href="./editsite.php?id='.$row['id'].'" class="btn btn-primary">编辑</a><a href="./editsite.php?act=del&id='.$row['id'].'" class="btn btn-primary">删除</a></td>
                                             </tr>';

@@ -41,19 +41,19 @@ function ExplodeConfig($configoption){
 	return json_encode($configoption);
 }
 
-function PackConfig($configoption){
-	$configoption = json_decode($configoption, true);
-	foreach($configoption as $k => $v){
-		$configoption2 = $configoption2 . "{$k}:{$v},\r\n";
+function template_code_replace($template, $template_code){
+	foreach($template_code as $k1 => $v1){
+		if(is_array($v1)){
+			foreach($v1 as $k2 => $v2){
+				$k3 = "[".$k1."[".$k2."]]";
+				$template = str_replace($k3, $v2, $template);
+			}
+		}else{
+			$k2 = "[".$k1."]";
+			$template = str_replace($k2, $v1, $template);
+		}
 	}
-	return $configoption2;
-}
-
-function ChangeTemplateContent($params, $template){
-  	foreach($params as $k => $v){
-   		$template = str_replace($k, $v, $template);
-    }
-  	return $template;
+	return $template;
 }
 
 

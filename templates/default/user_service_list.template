@@ -1,0 +1,6 @@
+<tr>
+    <th scope="row">[id]</th>
+    <td>[username]</td>
+    <td>[enddate]</td>
+    <td><a href="./servicedetail.php?id=[id]">前往管理服务>>></a></td>
+</tr>

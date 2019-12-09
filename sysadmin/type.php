@@ -21,7 +21,7 @@ include("./head.php");
                                 <div class="card-header">
 
                                     <div class="card-title">
-                                    <div class="title">分类列表<a href="addtype.php" class="btn btn-danger">添加新分类</a></div>
+                                    <div class="title">分类列表<a href="addproduct.php" class="btn btn-danger">添加新分类</a></div>
                                     </div>
                                 </div>
                                 <div class="card-body">

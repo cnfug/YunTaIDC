@@ -49,7 +49,8 @@ if($verify_result) {//验证成功
           	echo '该订单已处理';
         }else{
           	$user = $DB->query("SELECT * FROM `ytidc_user` WHERE `id`='{$row['user']}'")->fetch_assoc();
-          	$new_money = $user['money'] + $row['money'];
+          	$add_money = $row['money'] * $conf['epay_fee'];
+          	$new_money = $user['money'] + $add_money;
           	$DB->query("UPDATE `ytidc_user` SET `money`='{$new_money}' WHERE `id`='{$user['id']}'");
           	$DB->query("UPDATE `ytidc_order` SET `status`='已完成' WHERE `orderid`='{$out_trade_no}'");
           	echo 'success';

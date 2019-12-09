@@ -20,7 +20,7 @@ while($row = $result->fetch_assoc()){
         );
       	$return = $function($postdata);
       	$error_log = file_get_contents("./service_error.log");
-      	$error_log = $error_log . "\r\n". $return['ret'] . ":" . $return['msg'];
+      	$error_log = $error_log . "\r\n". $return['status'] . ":" . $return['msg'];
       	file_put_contents("./service_error.log", $error_log);
       	$DB->query("DELETE * FROM `ytidc_service` WHERE `id`='{$row['id']}'");
     }

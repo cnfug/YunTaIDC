@@ -1,0 +1,19 @@
+
+                                        <div class="col-sm-3">
+                                            <div class="pricing-table green">
+                                                <div class="pt-header">
+                                                    <div class="plan-pricing">
+                                                        <div class="pricing">[name]</div>
+                                                        <div class="pricing-type">购买：￥[need_money]/预存：￥[need_save]/消费：￥[need_paid]</div>
+                                                    </div>
+                                                </div>
+                                                <div class="pt-body">
+                                                    <ul class="plan-detail">
+                                                        [description]
+                                                    </ul>
+                                                </div>
+                                                <div class="pt-footer">
+                                                    <a href="./price.php?update=[id]" class="btn btn-success">点击升级</a>
+                                                </div>
+                                            </div>
+                                        </div>

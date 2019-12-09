@@ -115,15 +115,23 @@
                                     </div>
                                 </div>
                             </li>
-                            <li>
-                                <a href="notice.php">
-                                    <span class="icon fa fa-server"></span><span class="title">公告管理</span>
+                            <li class="panel panel-default dropdown">
+                                <a data-toggle="collapse" href="#dropdown-site">
+                                    <span class="icon fa fa-circle"></span><span class="title">网站管理</span>
                                 </a>
-                            </li>
-                            <li>
-                                <a href="config.php">
-                                    <span class="icon fa fa-circle"></span><span class="title">编辑资料</span>
-                                </a>
+                                <!-- Dropdown level 1 -->
+                                <div id="dropdown-site" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <ul class="nav navbar-nav">
+                                            <li><a href="price.php">公告管理</a>
+                                            </li>
+                                            <li><a href="order.php">编辑资料</a>
+                                            </li>
+                                            <li><a href="template.php">模板管理</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </li>
                             <li>
                                 <a href="http://www.yunta.cc/">

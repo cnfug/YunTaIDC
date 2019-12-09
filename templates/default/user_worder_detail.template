@@ -1,0 +1,19 @@
+            <div class="container-fluid">
+                <div class="side-body">
+                    <div class="page-title">
+                        <span class="title">[worder[title]]</span>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="card">
+                                <div class="card-body">
+                                  工单状态：[worder[status]]<br>
+                                  提交问题：[worder[content]]<br>
+                                  客服回复：[worder[reply]]<br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

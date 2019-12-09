@@ -5,66 +5,37 @@ if(empty($_SESSION['ytidc_user']) && empty($_SESSION['ytidc_pass'])){
      exit;
 }else{
   	$username = daddslashes($_SESSION['ytidc_user']);
-  	$password = daddslashes($_SESSION['ytidc_pass']);
-  	$user = $DB->query("SELECT * FROM `ytidc_user` WHERE `username`='{$username}' AND `password`='{$password}'");
+  	$userkey = daddslashes($_SESSION['ytidc_adminkey']);
+  	$user = $DB->query("SELECT * FROM `ytidc_user` WHERE `username`='{$username}'");
   	if($user->num_rows != 1){
       	@header("Location: ./login.php");
       	exit;
     }else{
-      	$user = $user->fetch_assoc();
+    	$user = $user->fetch_assoc();
+      	$userkey1 = md5($_SERVER['HTTP_HOST'].$user['password']);
+      	if($userkey != $userkey1){
+      		@header("Location: ./login.php");
+      		exit;
+      	}
     }
 }
-$title = "工单管理";
-include("./head.php");
 $result = $DB->query("SELECT * FROM `ytidc_worder` WHERE `user`='{$user['id']}'");
-?>
-
-            <div class="container-fluid">
-                <div class="side-body">
-                    <div class="page-title">
-                        <span class="title">工单管理</span>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="card">
-                                <div class="card-header">
-
-                                    <div class="card-title">
-                                    <div class="title">工单列表</div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>标题</th>
-                                                <th>状态</th>
-                                              	<th>操作</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                          <?php
-                                          while($row = $result->fetch_assoc()){
-                                            echo '<tr>
-                                                <th scope="row">'.$row['id'].'</th>
-                                                <td>'.$row['title'].'</td>
-                                                <td>'.$row['status'].'</td>
-                                                <td><a href="./editworder.php?id='.$row['id'].'" class="btn btn-primary">查看</a></td>
-                                            </tr>';
-                                          }
-                                          ?>
-                                                
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-<?php
-
-include("./foot.php");
-?>
+$worder_template = file_get_contents("../templates/".$conf['template']."/user_worder_list.template");
+while($row = $result->fetch_assoc()){
+	$worder_template_code = array(
+		'id' => $row['id'],
+		'title' => $row['title'],
+		'status' => $row['status'],
+	);
+	$worder_template_new = $worder_template_new . template_code_replace($worder_template, $worder_template_code);
+}
+$template = file_get_contents("../templates/".$conf['template']."/user_header.template").file_get_contents("../templates/".$conf['template']."/user_worder.template").file_get_contents("../templates/".$conf['template']."/user_footer.template");
+$template_code = array(
+	'site' => $site,
+	'config' => $conf,
+	'template_file_path' => '../templates/'.$conf['template'],
+	'user' => $user,
+	'worder' => $worder_template_new,
+);
+$template = template_code_replace($template, $template_code);
+echo $template;

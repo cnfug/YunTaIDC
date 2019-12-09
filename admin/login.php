@@ -10,7 +10,7 @@ if(!empty($_POST['admin']) && !empty($_POST['password'])){
         exit('登陆错误，请前往正确的站点后台登陆！');
     }else{
         $_SESSION['fzadmin'] = $admin;
-        $_SESSION['fzpassword'] = $password;
+        $_SESSION['fzkey'] = md5($domain.$password."fz");
         @header("Location: ./index.php");
         exit;
     }

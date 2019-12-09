@@ -1,0 +1,19 @@
+
+                                        <div class="col-sm-3">
+                                            <div class="pricing-table green">
+                                                <div class="pt-header">
+                                                    <div class="plan-pricing">
+                                                        <div class="pricing">[name]</div>
+                                                        <div class="pricing-type">￥[price]</div>
+                                                    </div>
+                                                </div>
+                                                <div class="pt-body">
+                                                    <ul class="plan-detail">
+                                                        [description]
+                                                    </ul>
+                                                </div>
+                                                <div class="pt-footer">
+                                                    <a href="./cart.php?id=[id]" class="btn btn-success">点击购买</a>
+                                                </div>
+                                            </div>
+                                        </div>

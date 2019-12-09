@@ -5,66 +5,43 @@ if(empty($_SESSION['ytidc_user']) && empty($_SESSION['ytidc_pass'])){
      exit;
 }else{
   	$username = daddslashes($_SESSION['ytidc_user']);
-  	$password = daddslashes($_SESSION['ytidc_pass']);
-  	$user = $DB->query("SELECT * FROM `ytidc_user` WHERE `username`='{$username}' AND `password`='{$password}'");
+  	$userkey = daddslashes($_SESSION['ytidc_adminkey']);
+  	$user = $DB->query("SELECT * FROM `ytidc_user` WHERE `username`='{$username}'");
   	if($user->num_rows != 1){
       	@header("Location: ./login.php");
       	exit;
     }else{
-      	$user = $user->fetch_assoc();
+    	$user = $user->fetch_assoc();
+      	$userkey1 = md5($_SERVER['HTTP_HOST'].$user['password']);
+      	if($userkey != $userkey1){
+      		@header("Location: ./login.php");
+      		exit;
+      	}
     }
 }
 $title = "服务管理";
 include("./head.php");
 $result = $DB->query("SELECT * FROM `ytidc_service` WHERE `userid`='{$user['id']}'");
-?>
+$service_template = file_get_contents("../templates/".$conf['template']."/user_service_list.template");
+while($row = $result->fetch_assoc()){
+	$service_template_code = array(
+		'id' => $row['id'],
+		'username' => $row['username'],
+		'password' => $row['password'],
+		'enddate' => $row['enddate'],
+		'product' => $row['product'],
+	);
+	$service_template_new = $service_template_new . template_code_replace($service_template, $service_template_code);
+}
+$template = file_get_contents("../templates/".$conf['template']."/user_header.template").file_get_contents("../templates/".$conf['template']."/user_service.template").file_get_contents("../templates/".$conf['template']."/user_footer.template");
+$template_code = array(
+	'site' => $site,
+	'config' => $conf,
+	'template_file_path' => '../templates/'.$conf['template'],
+	'user' => $user,
+	'service' => $service_template_new,
+);
+$template = template_code_replace($template, $template_code);
+echo $template;
 
-            <div class="container-fluid">
-                <div class="side-body">
-                    <div class="page-title">
-                        <span class="title">在线服务管理</span>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="card">
-                                <div class="card-header">
-
-                                    <div class="card-title">
-                                    <div class="title">服务列表</div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>服务账号</th>
-                                                <th>状态</th>
-                                              	<th>操作</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                          <?php
-                                          while($row = $result->fetch_assoc()){
-                                            echo '<tr>
-                                                <th scope="row">'.$row['id'].'</th>
-                                                <td>'.$row['username'].'</td>
-                                                <td>'.$row['status'].'</td>
-                                                <td><a href="./servicedetail.php?id='.$row['id'].'" class="btn btn-primary">管理</a></td>
-                                            </tr>';
-                                          }
-                                          ?>
-                                                
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-<?php
-
-include("./foot.php");
 ?>

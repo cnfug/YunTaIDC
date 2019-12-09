@@ -27,92 +27,36 @@ if($grade == 0){
       	$price = json_decode($grade['price'], true);
     }
 }
+$type = $DB->query("SELECT * FROM `ytidc_type` WHERE `status`='1'");
+$product_template = file_get_contents("../templates/".$conf['template']."/user_buy_product.template");
+$type_template = file_get_contents("../templates/".$conf['template']."/user_buy_type.template");
+while($row = $type->fetch_assoc()){
+	$type_template_code = array(
+		'name' => $row['name'],
+		'id' => $row['id'],
+	);
+	$type_template_new = $type_template_new . template_code_replace($type_template, $type_template_code);
+}
+while($row = $product->fetch_assoc()){
+	$product_template_code = array(
+		'name' => $row['name'],
+		'id' => $row['id'],
+		'description' => $row['description'],
+		'price' => $price[$row['id']],
+		'time' => $row['time'],
+	);
+	$product_template_new = $product_template_new . template_code_replace($product_template, $product_template_code);
+}
+$template_code = array(
+	'site' => $site,
+	'config' => $conf,
+	'template_file_path' => '../templates/'.$conf['template'],
+	'user' => $user,
+	'product' => $product_template_new,
+	'type' => $type_template_new,
+);
+$template = file_get_contents("../templates/".$conf['template']."/user_header.template").file_get_contents("../templates/".$conf['template']."/user_buy.template").file_get_contents("../templates/".$conf['template']."/user_footer.template");
+$template = template_code_replace($template, $template_code);
+echo $template;
 
-
-$title = "选购产品";
-include("./head.php");
-?>
-            <div class="container-fluid">
-                <div class="side-body">
-                    <div class="page-title">
-                        <span class="title">选购产品</span>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <form action="./buy.php" method="GET">
-                                        <select name="type" style="font-size: 20px;">
-                                            <optgroup label="虚拟主机">
-                                              <?php
-                                              $type = $DB->query("SELECT * FROM `ytidc_type` WHERE `type`='host'");
-                                              while($row2 = $type->fetch_assoc()){
-                                                	echo '
-                                                <option value="'.$row2['id'].'">'.$row2['name'].'</option>';
-                                              }
-                                              ?>
-                                            </optgroup>
-                                            <optgroup label="云服务器/VPS">
-                                              <?php
-                                              $type = $DB->query("SELECT * FROM `ytidc_type` WHERE `type`='vps'");
-                                              while($row2 = $type->fetch_assoc()){
-                                                	echo '
-                                                <option value="'.$row2['id'].'">'.$row2['name'].'</option>';
-                                              }
-                                              ?>
-                                            </optgroup>
-                                            <optgroup label="独立服务器">
-                                              <?php
-                                              $type = $DB->query("SELECT * FROM `ytidc_type` WHERE `type`='server'");
-                                              while($row2 = $type->fetch_assoc()){
-                                                	echo '
-                                                <option value="'.$row2['id'].'">'.$row2['name'].'</option>';
-                                              }
-                                              ?>
-                                            </optgroup>
-                                        </select><button type="submit" class="btn btn-default">选择分类</button></form>
-                                    </div>
-                                    <div class="pull-right card-action">
-                                        <div class="btn-group" role="group" aria-label="...">
-                                            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#modalCardProfileExample"><i class="fa fa-code"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row no-margin no-gap">
-                                      	<?php
-                                      		while($row2 = $product->fetch_assoc()){
-                                              	echo '<div class="col-sm-3">
-                                            <div class="pricing-table green">
-                                                <div class="pt-header">
-                                                    <div class="plan-pricing">
-                                                        <div class="pricing">'.$price[$row2['id']].'元</div>
-                                                        <div class="pricing-type">'.$row2['time'].'天</div>
-                                                    </div>
-                                                </div>
-                                                <div class="pt-body">
-                                                    <h4>'.$row2['name'].'</h4>
-                                                    <ul class="plan-detail">
-                                                        '.$row2['description'].'
-                                                    </ul>
-                                                </div>
-                                                <div class="pt-footer">
-                                                    <a href="./cart.php?id='.$row2['id'].'" class="btn btn-success">购买</a>
-                                                </div>
-                                            </div>
-                                        </div>';
-                                            }
-                                      	?>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-<?php
-	include('./foot.php');
 ?>

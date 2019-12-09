@@ -37,27 +37,6 @@ include("./head.php");
                                             <label for="exampleInputEmail1">产品组名称</label>
                                             <input name="name" type="text" class="form-control" id="title" placeholder="分类名称">
                                         </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputPassword1">产品组分类</label><br>
-                                          <div class="radio3 radio-check radio-inline">
-                                            <input type="radio" id="radio1" name="type" value="host">
-                                            <label for="radio1">
-                                              虚拟主机
-                                            </label>
-                                          </div>
-                                          <div class="radio3 radio-check radio-inline">
-                                            <input type="radio" id="radio2" name="type" value="vps">
-                                            <label for="radio2">
-                                              云服务器
-                                            </label>
-                                          </div>
-                                          <div class="radio3 radio-check radio-inline">
-                                            <input type="radio" id="radio3" name="type" value="server">
-                                            <label for="radio3">
-                                              独立服务器
-                                            </label>
-                                          </div>
-                                        </div>
                                         <button type="submit" class="btn btn-default">添加</button>
                                     </form>
                                 </div>

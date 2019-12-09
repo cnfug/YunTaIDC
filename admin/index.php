@@ -4,11 +4,13 @@ include("../includes/common.php");
 $domain = $_SERVER['HTTP_HOST'];
 $row = $DB->query("SELECT * FROM `ytidc_fenzhan` WHERE `domain`='{$domain}'")->fetch_assoc();
 $user = $DB->query("SELECT * FROM `ytidc_user` WHERE `id`='{$row['user']}'")->fetch_assoc();
-if(empty($_SESSION['fzadmin']) || empty($_SESSION['fzpassword'])){
+if(empty($_SESSION['fzadmin']) || empty($_SESSION['fzkey'])){
   	@header("Location: ./login.php");
   	exit;
 }
-if($_SESSION['fzadmin'] != $row['admin'] && $_SESSION['fzpassword'] != $row['password']){
+$fzadmin = daddslashes($_SESSION['fzadmin']);
+$fzkey = daddslashes($_SESSION['fzkey']);
+if($fzadmin != $row['admin'] && $fzkey != md5($_SERVER['HTTP_HOST'].$row['password']."fz")){
   	@header("Location: ./login.php");
   	exit;
 }
@@ -52,7 +54,7 @@ include("./head.php");
                                     <div class="card-body">
                                         <i class="icon fa fa-tags fa-4x"></i>
                                         <div class="content">
-                                            <div class="title"><?=$row['name']?></div>
+                                            <div class="title"><?=$row['title']?></div>
                                             <div class="sub-title">站点名称</div>
                                         </div>
                                         <div class="clear-both"></div>

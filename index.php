@@ -1,126 +1,14 @@
 <?php
+
 include("./includes/common.php");
+$template = file_get_contents("./templates/".$conf['template']."/index.template");
+
+$template_code = array(
+	'site' => $site,
+	'config' => $conf,
+	'template_file_path' => './templates/'.$conf['template'],
+);
+$template = template_code_replace($template, $template_code);
+echo $template;
+
 ?>
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title><?=$site['name']?> - 光荣地使用云塔IDC系统</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  	<meta name="description" content="<?=$site['description']?>">
-    <!-- Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300,400' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
-    <!-- CSS Libs -->
-    <link rel="stylesheet" type="text/css" href="./user/lib/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="./user/lib/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="./user/lib/css/animate.min.css">
-    <link rel="stylesheet" type="text/css" href="./user/lib/css/bootstrap-switch.min.css">
-    <link rel="stylesheet" type="text/css" href="./user/lib/css/checkbox3.min.css">
-    <link rel="stylesheet" type="text/css" href="./user/lib/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" type="text/css" href="./user/lib/css/dataTables.bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="./user/lib/css/select2.min.css">
-    <!-- CSS App -->
-    <link rel="stylesheet" type="text/css" href="./user/css/style.css">
-    <link rel="stylesheet" type="text/css" href="./user/css/themes/flat-blue.css">
-</head>
-
-<body class="flat-blue landing-page">
-    <nav class="navbar navbar-inverse navbar-fixed-top  navbar-affix" role="navigation" data-spy="affix" data-offset-top="60">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">
-                    <div class="icon fa fa-paper-plane"></div>
-                    <div class="title"><?=$site['name']?></div>
-                </a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse " aria-expanded="true">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="active"><a href="#">首页</a></li>
-                    <li><a href="./user">用户后台</a></li>
-                    <li><a href="./admin">分站后台</a></li>
-                </ul>
-            </div>
-            <!--/.nav-collapse -->
-        </div>
-    </nav>
-    <div class="jumbotron app-header">
-        <div class="container">
-            <h2 class="text-center"><i class="app-logo fa fa-connectdevelop fa-5x color-white"></i><div class="color-white"><?=$site['name']?></div></h2>
-            <p class="text-center color-white app-description"><?=$site['description']?></p>
-            <p class="text-center"><a class="btn btn-primary btn-lg app-btn" href="./buy.php" role="button">购买产品 »</a></p>
-        </div>
-    </div>
-    <div class="container-fluid app-content-a">
-        <div class="container">        <div class="row text-center">
-            <div class="col-md-4 col-sm-6">
-                <span class="fa-stack fa-lg fa-5x">
-                  <i class="fa fa-circle-thin fa-stack-2x"></i>
-                  <i class="fa fa-twitter fa-stack-1x"></i>
-                </span>
-                <h2>迅速</h2>
-                <p>迅速购买迅速搭建迅速浏览，整个过程不超过五分钟，这就是我们额自信！</p>
-            </div>
-            <!-- /.col-lg-4 -->
-            <div class="col-md-4 col-sm-6">
-                <span class="fa-stack fa-lg fa-5x">
-                  <i class="fa fa-circle-thin fa-stack-2x"></i>
-                  <i class="fa fa-inbox fa-stack-1x"></i>
-                </span>
-                <h2>稳定</h2>
-                <p>达到百分之九十九的在线率，不关机不宕机，不被打死不被影响！</p>
-            </div>
-            <!-- /.col-lg-4 -->
-            <div class="col-md-4 col-sm-6">
-                <span class="fa-stack fa-lg fa-5x">
-                  <i class="fa fa-circle-thin fa-stack-2x"></i>
-                  <i class="fa fa-comments-o fa-stack-1x"></i>
-                </span>
-                <h2>沟通</h2>
-                <p>专业的沟通技巧，极速找到客户的问题并且提交到专业的技术人员团队解决！</p>
-            </div>
-            <!-- /.col-lg-4 -->
-        </div>
-        </div>
-    </div>
-    <div class="container-fluid app-content-b feature-1">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-7 col-sm-6">
-                </div>
-                <div class="col-md-5 col-sm-6 text-right color-white">
-                    <h2 class="featurette-heading">云塔IDC系统</h2>
-                    <p class="lead">云塔IDC系统是一个免费的IDC财务管理系统，拥有数以万计的使用者，优质对接服务器的插件！</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /END THE FEATURETTES -->
-    <!-- FOOTER -->
-    <footer class="app-footer">
-      <div class="container">
-        <p class="text-muted">&copy; 2019-2020, 云塔IDC系统.</p>
-      </div>
-    </footer>
-    <!-- Javascript Libs -->
-    <script type="text/javascript" src="./user/lib/js/jquery.min.js"></script>
-    <script type="text/javascript" src="./user/lib/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="./user/lib/js/Chart.min.js"></script>
-    <script type="text/javascript" src="./user/lib/js/bootstrap-switch.min.js"></script>
-    <script type="text/javascript" src="./user/lib/js/jquery.matchHeight-min.js"></script>
-    <script type="text/javascript" src="./user/lib/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="./user/lib/js/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript" src="./user/lib/js/select2.full.min.js"></script>
-    <script type="text/javascript" src="./user/lib/js/ace/ace.js"></script>
-    <script type="text/javascript" src="./user/lib/js/ace/mode-html.js"></script>
-    <script type="text/javascript" src="./user/lib/js/ace/theme-github.js"></script>
-    <!-- /.container -->
-</body>
-
-</html>

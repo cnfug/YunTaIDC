@@ -46,7 +46,11 @@ $row = $DB->query("SELECT * FROM `ytidc_fenzhan` WHERE `id`='{$id}'")->fetch_ass
                                     <form method="POST" action="editsite.php?act=edit&id=<?=$id?>">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">分站名称</label>
-                                            <input name="name" type="text" class="form-control" id="name" placeholder="分站名称" value="<?=$row['name']?>">
+                                            <input name="title" type="text" class="form-control" id="name" placeholder="分站名称" value="<?=$row['title']?>">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">分站副标题</label>
+                                            <input name="subtitle" type="text" class="form-control" id="name" placeholder="分站副标题" value="<?=$row['subtitle']?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">分站域名</label>

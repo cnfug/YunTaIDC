@@ -1,0 +1,6 @@
+<tr>
+    <th scope="row">[id]</th>
+    <td>[title]</td>
+    <td>[status]</td>
+    <td><a href="./worderdetail.php?id=[id]">[点击查看工单>>>]</a></td>
+</tr>

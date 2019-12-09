@@ -6,15 +6,13 @@ if(empty($_SESSION['adminlogin']) || $_SESSION['adminlogin'] != $session){
   	@header("Location: ./login.php");
   	exit;
 }
-if(!empty($_POST['name']) && !empty($_POST['description']) && !empty($_POST['type']) && !empty($_POST['server']) && !empty($_POST['time']) && !empty($_POST['configoption'])){
+if(!empty($_POST['name']) && !empty($_POST['description']) && !empty($_POST['type']) && !empty($_POST['server']) && !empty($_POST['time'])){
   	$name = daddslashes($_POST['name']);
   	$description = daddslashes($_POST['description']);
   	$type = daddslashes($_POST['type']);
   	$server = daddslashes($_POST['server']);
   	$time = daddslashes($_POST['time']);
-  	$configoption = daddslashes($_POST['configoption']);
-  	$configoption = ExplodeConfig($configoption);
-  	$DB->query("INSERT INTO `ytidc_product` (`name`, `description`, `type`, `server`, `time`, `configoption`, `status`) VALUES ('{$name}', '{$description}', '{$type}', '{$server}', '{$time}', '{$configoption}', '1')");
+  	$DB->query("INSERT INTO `ytidc_product` (`name`, `description`, `type`, `server`, `time`, `configoption`, `status`) VALUES ('{$name}', '{$description}', '{$type}', '{$server}', '{$time}', '', '1')");
   	@header("Location: ./msg.php?msg=添加产品成功！");
   	exit($DB->error);
 }
@@ -79,10 +77,6 @@ $server = $DB->query("SELECT * FROM `ytidc_server` WHERE `status`='1'");
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">产品期限（天）</label>
                                             <input name="time" type="number" class="form-control" id="time" placeholder="产品期限">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">产品配置</label>
-                                            <textarea class="form-control" name="configoption" row="6"></textarea>
                                         </div>
                                         <button type="submit" class="btn btn-default">添加</button>
                                     </form>

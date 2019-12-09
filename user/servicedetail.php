@@ -6,13 +6,18 @@ if(empty($_SESSION['ytidc_user']) && empty($_SESSION['ytidc_pass'])){
      exit;
 }else{
   	$username = daddslashes($_SESSION['ytidc_user']);
-  	$password = daddslashes($_SESSION['ytidc_pass']);
-  	$user = $DB->query("SELECT * FROM `ytidc_user` WHERE `username`='{$username}' AND `password`='{$password}'");
+  	$userkey = daddslashes($_SESSION['ytidc_adminkey']);
+  	$user = $DB->query("SELECT * FROM `ytidc_user` WHERE `username`='{$username}'");
   	if($user->num_rows != 1){
       	@header("Location: ./login.php");
       	exit;
     }else{
-      	$user = $user->fetch_assoc();
+    	$user = $user->fetch_assoc();
+      	$userkey1 = md5($_SERVER['HTTP_HOST'].$user['password']);
+      	if($userkey != $userkey1){
+      		@header("Location: ./login.php");
+      		exit;
+      	}
     }
 }
 $id = daddslashes($_GET['id']);
@@ -21,39 +26,31 @@ if(empty($id) || $DB->query("SELECT * FROM `ytidc_service` WHERE `id`='{$id}' AN
   	exit;
 }
 $row = $DB->query("SELECT * FROM `ytidc_service` WHERE `id`='{$id}' AND `userid`='{$user['id']}'")->fetch_assoc();
-$product = $DB->query("SELECT * FROM `ytidc_product` WHERE `id`='{$row['id']}'")->fetch_assoc();
+$product = $DB->query("SELECT * FROM `ytidc_product` WHERE `id`='{$row['product']}'")->fetch_assoc();
 $server = $DB->query("SELECT * FROM `ytidc_server` WHERE `id`='{$product['server']}'")->fetch_assoc();
-
-$title = "服务管理";
-include("./head.php");
+$plugin = "../plugins/".$server['plugin']."/main.php";
+if(is_file($plugin) && file_exists($plugin)){
+	include($plugin);
+	$function = $server['plugin']."_LoginService";
+	$postdata = array(
+		'service' => $row,
+		'product' => $product,
+		'server' => $server,
+	);
+	$serviceloginlink = $function($postdata);
+}else{
+	$serviceloginlink = "该服务没有任何控制面板或对接出bug，请联系管理员！";
+}
+$template = file_get_contents("../templates/".$conf['template']."/user_header.template").file_get_contents("../templates/".$conf['template']."/user_service_detail.template").file_get_contents("../templates/".$conf['template']."/user_footer.template");
+$template_code = array(
+	'site' => $site,
+	'config' => $conf,
+	'template_file_path' => '../templates/'.$conf['template'],
+	'service' => $row,
+	'product' => $product,
+	'service_loginlink' => $serviceloginlink, 
+	'user' => $user,
+);
+$template = template_code_replace($template, $template_code);
+echo $template;
 ?>
-            <div class="container-fluid">
-                <div class="side-body">
-                    <div class="page-title">
-                        <span class="title"><?=$product['name']?></span>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="card">
-                                <div class="card-body">
-                                  登陆面板：<a href="<?=$server['servercpanel']?>" class="btn btn-success">前往登陆</a><br>
-                                  服务账号：<?=$row['username']?><br>
-                                  服务密码：<?=$row['password']?><br>
-                                  到期时间：<?=$row['enddate']?><br>
-                                  产品名称：<?=$product['name']?><br>
-                                  <form action="renewservice.php" method="POST">
-                                    	<input type="hidden" name="id" value="<?=$row['id']?>">
-                                    	续费：<input type="number" name="time" placeholder="续费月数" value="1" minvalue="1">月     <button type="submit" class="btn btn-danger">续费</button>
-                                  </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-<?php
-  
-  include("./foot.php");
-                          
-                          ?>

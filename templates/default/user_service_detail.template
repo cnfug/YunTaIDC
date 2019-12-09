@@ -1,0 +1,25 @@
+            <div class="container-fluid">
+                <div class="side-body">
+                    <div class="page-title">
+                        <span class="title">管理产品：[service[username]]</span>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="card">
+                                <div class="card-body">
+                                  登陆面板：[service_loginlink]<br>
+                                  服务账号：[service[username]]<br>
+                                  服务密码：[service[password]]<br>
+                                  到期时间：[service[enddate]]<br>
+                                  产品名称：[product[name]]<br>
+                                  <form action="renewservice.php" method="POST">
+                                    	<input type="hidden" name="id" value="[service[id]]">
+                                    	续费：<input type="number" name="time" placeholder="续费月数" value="1" minvalue="1">月     <button type="submit" class="btn btn-danger">续费</button>
+                                  </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
