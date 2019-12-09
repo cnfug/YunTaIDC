@@ -45,6 +45,10 @@ $row = $DB->query("SELECT * FROM `ytidc_server` WHERE `id`='{$id}'")->fetch_asso
                                             <input name="password" type="text" class="form-control" id="serverip" placeholder="超级管理密码" value="<?=$conf['password']?>">
                                         </div>
                                         <div class="form-group">
+                                            <label for="exampleInputEmail1">模板目录名称</label>
+                                            <input name="template" type="text" class="form-control" id="serverdns2" placeholder="模板目录名称" value="<?=$conf['template']?>">
+                                        </div>
+                                        <div class="form-group">
                                             <label for="exampleInputEmail1">分站公告</label>
                                             <textarea name="sitenotice" class="form-control"><?=$conf['sitenotice']?></textarea>
                                         </div>

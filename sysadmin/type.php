@@ -21,7 +21,7 @@ include("./head.php");
                                 <div class="card-header">
 
                                     <div class="card-title">
-                                    <div class="title">分类列表<a href="addproduct.php" class="btn btn-danger">添加新分类</a></div>
+                                    <div class="title">分类列表<a href="addtype.php" class="btn btn-danger">添加新分类</a></div>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -39,7 +39,6 @@ include("./head.php");
                                             echo '<tr>
                                                 <th scope="row">'.$row['id'].'</th>
                                                 <td>'.$row['name'].'</td>
-                                                <td>'.$row['type'].'</td>
                                                 <td><a href="./edittype.php?id='.$row['id'].'" class="btn btn-primary">编辑</a><a href="./edittype.php?act=del&id='.$row['id'].'" class="btn btn-primary">删除</a></td>
                                             </tr>';
                                           }

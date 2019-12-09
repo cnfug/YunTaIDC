@@ -6,10 +6,10 @@ if(empty($_SESSION['adminlogin']) || $_SESSION['adminlogin'] != $session){
   	@header("Location: ./login.php");
   	exit;
 }
-if(!empty($_POST['name']) && !empty($_POST['type'])){
+if(!empty($_POST['name'])){
   	$name = daddslashes($_POST['name']);
-  	$type = daddslashes($_POST['type']);
-  	$DB->query("INSERT INTO `ytidc_type` (`name`, `type`, `status`) VALUES ('{$name}', '{$type}', '1')");
+  	$weight = daddslashes($_POST['weight']);
+  	$DB->query("INSERT INTO `ytidc_type` (`name`, `weight`, `status`) VALUES ('{$name}', '{$weight}', '1')");
   	@header("Location: ./msg.php?msg=添加产品组成功！");
   	exit;
 }
@@ -36,6 +36,10 @@ include("./head.php");
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">产品组名称</label>
                                             <input name="name" type="text" class="form-control" id="title" placeholder="分类名称">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">产品组权重（越高越前面）</label>
+                                            <input name="weight" type="number" class="form-control" id="title" placeholder="产品组权重">
                                         </div>
                                         <button type="submit" class="btn btn-default">添加</button>
                                     </form>

@@ -8,32 +8,30 @@ if(empty($_SESSION['adminlogin']) || $_SESSION['adminlogin'] != $session){
 }
 $id = daddslashes($_GET['id']);
 if(empty($id)){
-  	@header("Location: ./type.php");
+  	@header("Location: ./worder.php");
   	exit;
 }
 $act = daddslashes($_GET['act']);
 if($act == "del"){
-  	$DB->query("DELETE FROM `ytidc_type` WHERE `id`='{$id}'");
+  	$DB->query("DELETE FROM `ytidc_worder` WHERE `id`='{$id}'");
   	@header("Location: ./msg.php?msg=删除成功");
   	exit;
 }
 if($act == "edit"){
-  	foreach($_POST as $k => $v){
-      	$value = daddslashes($v);
-      	$DB->query("UPDATE `ytidc_type` SET `{$k}`='{$value}' WHERE `id`='{$id}'");
-    }
-  	@header("Location: ./msg.php?msg=修改成功");
+  	$reply = daddslashes($_POST['reply']);
+  	$DB->query("UPDATE `ytidc_worder` SET `reply`='{$reply}', `status`='已回复' WHERE `id`='{$id}'");
+  	@header("Location: ./msg.php?msg=回复成功");
   	exit;
 }
-$title = "编辑产品组";
+$title = "编辑公告";
 include("./head.php");
-$row = $DB->query("SELECT * FROM `ytidc_type` WHERE `id`='{$id}'")->fetch_assoc();
+$row = $DB->query("SELECT * FROM `ytidc_worder` WHERE `id`='{$id}'")->fetch_assoc();
 ?>
 
             <div class="container-fluid">
                 <div class="side-body">
                     <div class="page-title">
-                        <span class="title">编辑产品组</span>
+                        <span class="title">回复工单</span>
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
@@ -44,16 +42,20 @@ $row = $DB->query("SELECT * FROM `ytidc_type` WHERE `id`='{$id}'")->fetch_assoc(
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <form method="POST" action="edittype.php?act=edit&id=<?=$id?>">
+                                    <form method="POST" action="editworder.php?act=edit&id=<?=$id?>">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">产品组名称</label>
-                                            <input name="name" type="text" class="form-control" id="title" placeholder="分类名称" value="<?=$row['name']?>">
+                                            <label for="exampleInputEmail1">工单标题</label>
+                                            <input name="title" type="text" class="form-control" id="title" placeholder="公告标题" value="<?=$row['title']?>" disabled="">
                                         </div>
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">产品组权重（越高越前面）</label>
-                                            <input name="weight" type="number" class="form-control" id="title" placeholder="产品组权重" value="<?=$row['weight']?>">
+                                            <label for="exampleInputPassword1">工单内容</label><br>
+                                            <textarea name="content" row="6" class="form-control" id="content" disabled=""><?=$row['content']?></textarea>
                                         </div>
-                                        <button type="submit" class="btn btn-default">修改</button>
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1">你的回复</label><br>
+                                            <textarea name="reply" row="6" class="form-control" id="content"><?=$row['reply']?></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-default">回复</button>
                                     </form>
                                 </div>
                             </div>

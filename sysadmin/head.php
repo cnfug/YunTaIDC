@@ -45,7 +45,7 @@
                         <div class="navbar-header">
                             <a class="navbar-brand" href="#">
                                 <div class="icon fa fa-paper-plane"></div>
-                                <div class="title">云塔IDC系统 V.内测</div>
+                                <div class="title">云塔IDC系统 V.1.0</div>
                             </a>
                             <button type="button" class="navbar-expand-toggle pull-right visible-xs">
                                 <i class="fa fa-times icon"></i>
@@ -123,11 +123,9 @@
                                 <div id="dropdown-site" class="panel-collapse collapse">
                                     <div class="panel-body">
                                         <ul class="nav navbar-nav">
-                                            <li><a href="price.php">公告管理</a>
+                                            <li><a href="notice.php">公告管理</a>
                                             </li>
-                                            <li><a href="order.php">编辑资料</a>
-                                            </li>
-                                            <li><a href="template.php">模板管理</a>
+                                            <li><a href="config.php">编辑资料</a>
                                             </li>
                                         </ul>
                                     </div>

@@ -6,7 +6,7 @@ if(empty($_SESSION['adminlogin']) || $_SESSION['adminlogin'] != $session){
   	exit;
 }
 $title = "工单管理";
-$result = $DB->query("SELECT * FROM `ytidc_worder` WHERE `status`='开放'");
+$result = $DB->query("SELECT * FROM `ytidc_worder` WHERE `status`='待回复'");
 include("./head.php");
 ?>
 

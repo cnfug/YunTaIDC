@@ -66,7 +66,7 @@ $price = json_decode($row['price'], true);
                                       	while($row2 = $product->fetch_assoc()){
                                       		echo '<div class="form-group">
                                             <label for="exampleInputEmail1">产品【'.$row2['name'].'】的价格</label>
-                                            <input name="price['.$row2['id'].']" type="text" class="form-control" id="price" placeholder="产品【'.$row2['name'].'】的价格" value="'.$price[$row2['id']].'">
+                                            <input name="price['.$row2['id'].']" type="text" class="form-control" id="price" placeholder="产品【'.$row2['name'].'】的价格" value="'.$price[$row2['id']].'"  oninput="value=value.replace(/[^\d.]/g,\'\')">
                                         </div>';
                                       	}?>
                                         <button type="submit" class="btn btn-default">修改</button>
