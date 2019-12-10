@@ -68,7 +68,7 @@ function random($length, $numeric = 0) {
 <nav class="navbar navbar-fixed-top navbar-default">
     <div class="container">
       <div class="navbar-header">
-        <span class="navbar-brand">安装向导</span>
+        <span class="navbar-brand">安装向导[使用彩虹系统安装页面]</span>
       </div>
     </div>
   </nav>
