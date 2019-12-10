@@ -2,7 +2,7 @@
 
 include("../includes/common.php");
 header("Content-type: text/json");
-foreach($_POST as $k => $v){
+foreach($_GET as $k => $v){
   	$params[$k] = daddslashes($v);
 }
 
@@ -13,8 +13,8 @@ if(empty($params['ytidc_user']) && empty($params['ytidc_pass'])){
     );
   	 exit(json_encode($retdata));
 }else{
-  	$ytuser = daddslashes($params['ytidc_user']);
-  	$ytpass = daddslashes($params['ytidc_pass']);
+  	$ytuser = $params['ytidc_user'];
+  	$ytpass = $params['ytidc_pass'];
   	$user = $DB->query("SELECT * FROM `ytidc_user` WHERE `username`='{$ytuser}' AND `password`='{$ytpass}'");
   	if($user->num_rows != 1){
       	$retdata = array(
@@ -26,21 +26,21 @@ if(empty($params['ytidc_user']) && empty($params['ytidc_pass'])){
       	$user = $user->fetch_assoc();
     }
 }
-if(empty($params['id'])|| empty($params['time'])){
+if(empty($params['username'])|| empty($params['time'])){
   	$retdata = array(
       	'ret' => 'fail',
       	'msg' => '参数为空',
     );
   	 exit(json_encode($retdata));
 }
-$service = $DB->query("SELECT * FROM `ytidc_service` WHERE `id`='{$params['id']}' AND `userid`='{$user['id']}'")->fetch_assoc();
+$service = $DB->query("SELECT * FROM `ytidc_service` WHERE `username`='{$params['username']}' AND `userid`='{$user['id']}'")->fetch_assoc();
 $product = $DB->query("SELECT * FROM `ytidc_product` WHERE `id`='{$service['product']}'")->fetch_assoc();
 $server = $DB->query("SELECT * FROM `ytidc_server` WHERE `id`='{$product['server']}'")->fetch_assoc();
 
 if($user['grade'] == "0" || $DB->query("SELECT * FROM `ytidc_grade` WHERE `id`='{$user['grade']}'")->num_rows != 1){
   	$grade = $DB->query("SELECT * FROM `ytidc_grade` WHERE `default`='1'")->fetch_assoc();
 }else{
-  	$grade = $DB->query("SELECT * FROM `ytidc_grade` WHERE `grade`='{$user['grade']}'")->fetch_assoc();
+  	$grade = $DB->query("SELECT * FROM `ytidc_grade` WHERE `id`='{$user['grade']}'")->fetch_assoc();
 }
 $price = json_decode($grade['price'], true);
 $price = $price[$product['id']];
@@ -66,7 +66,7 @@ include($plugin);
 $postdata = array(
   	'data' => array(
       	'time' => $params['time'],
-      	'id' => $params['id'],
+      	'username' => $params['username'],
     ),
   	'service' => $service,
   	'product' => $product,
@@ -86,6 +86,7 @@ if($return['status'] == "fail"){
       	'enddate' => $return['enddate'],
       	'msg' => '续费成功！',
     );
+    $DB->query("UPDATE `ytidc_service` SET `enddate`='{$return['enddate']}' WHERE `id`='{$service['id']}'");
   	 exit(json_encode($retdata));
 }
 ?>
