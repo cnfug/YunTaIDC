@@ -13,6 +13,9 @@ $domain = $_SERVER['HTTP_HOST'];
 if(!file_exists(ROOT."install/install.lock")){
 	exit('目前检测系统还没安装，如果已经安装请手动建立install.lock到install目录！如未安装请访问 '.$_SERVER['HTTP_HOST'].'/install 进行安装！');
 }
+if(file_exists(ROOT."install/index.php") || file_exists(ROOT."install/index.php")){
+	exit('检测到您还没有删除安装的页面，可能会造成无法估计的损失，请前往install目录删除index.php以及install.sql');
+}
 session_start();
 $scriptpath = str_replace('\\', '/', $_SERVER['SCRIPT_NAME']);
 $sitepath = substr($scriptpath, 0, strrpos($scriptpath, '/'));
