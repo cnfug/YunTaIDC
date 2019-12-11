@@ -10,7 +10,7 @@ define("SYS_KEY", "daishua_key");
 define("CC_Defender", 1);
 $date = date("Y-m-d H:i:s");
 $domain = $_SERVER['HTTP_HOST'];
-if(!file_exists("../install/install.lock")){
+if(!file_exists(ROOT."install/install.lock")){
 	exit('目前检测系统还没安装，如果已经安装请手动建立install.lock到install目录！如未安装请访问 '.$_SERVER['HTTP_HOST'].'/install 进行安装！');
 }
 session_start();
