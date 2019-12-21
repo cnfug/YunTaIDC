@@ -94,8 +94,8 @@ include($plugin);
                                         <div class="title">编辑内容</div>
                                     </div>
                                 </div>
-                                <div class="card-body">
                                     <form method="POST" action="editproduct.php?act=edit&id=<?=$id?>">
+                                <div class="card-body">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">产品名称</label>
                                             <input name="name" type="text" class="form-control" id="name" placeholder="产品名称" value="<?=$row['name']?>">
@@ -145,11 +145,9 @@ include($plugin);
                                       	</div>
                                         
                                 </div>
-                            </div>
-                            <div class="card">
                                 <div class="card-header">
                                     <div class="card-title">
-                                        <div class="title">周期配置 <button class="btn btn-danger" onclick="AddTimeInput()" type="button"> 添加产品周期</button></div>
+                                        <div class="title">周期配置 <a class="btn btn-danger" href="javascript:AddTimeInput()" type="button"> 添加产品周期</a></div>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -176,8 +174,6 @@ include($plugin);
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
-                            <div class="card">
                                 <div class="card-header">
                                     <div class="card-title">
                                         <div class="title">插件配置</div>
@@ -199,9 +195,9 @@ include($plugin);
                                         ?>
                                         
                                         <button type="submit" class="btn btn-default">修改</button>
-                                    </form>
                                 </div>
                             </div>
+                                    </form>
                         </div>
                     </div>
                 </div>

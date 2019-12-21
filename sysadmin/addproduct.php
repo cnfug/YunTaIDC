@@ -71,8 +71,8 @@ $server = $DB->query("SELECT * FROM `ytidc_server` WHERE `status`='1'");
                                         <div class="title">添加内容</div>
                                     </div>
                                 </div>
+                                <form method="POST" action="addproduct.php">
                                 <div class="card-body">
-                                    <form method="POST" action="addproduct.php">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">产品名称</label>
                                             <input name="name" type="text" class="form-control" id="name" placeholder="产品名称">
@@ -111,9 +111,6 @@ $server = $DB->query("SELECT * FROM `ytidc_server` WHERE `status`='1'");
                                     </div>	
                                       	</div>
                                 </div>
-                            </div>
-                            
-                            <div class="card">
                                 <div class="card-header">
                                     <div class="card-title">
                                         <div class="title">周期配置 <button class="btn btn-danger" onclick="AddTimeInput()" type="button"> 添加产品周期</button></div>
@@ -132,10 +129,9 @@ $server = $DB->query("SELECT * FROM `ytidc_server` WHERE `status`='1'");
                                         <tbody id="timetable">
                                         </tbody>
                                     </table>
-                                    
-                                        <button type="submit" class="btn btn-default">添加</button>
-                                    </form>
+                                    <button type="submit" class="btn btn-default">添加</button>
                                 </div>
+                                </form>
                             </div>
                         </div>
                     </div>
