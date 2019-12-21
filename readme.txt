@@ -1,4 +1,7 @@
 云塔IDC系统【Powered by YunTa】
+作者QQ：2031464675
+Author Telegram:@kitrosmc
+作者邮箱：2031464675@qq.com
 
 v2.0
 - 配套新模板
