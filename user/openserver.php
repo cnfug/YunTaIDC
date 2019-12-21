@@ -1,6 +1,7 @@
 <?php
 
 include("../includes/common.php");
+set_time_limit(3600);
 if(empty($_SESSION['ytidc_user']) && empty($_SESSION['ytidc_pass'])){
   	@header("Location: ./login.php");
      exit;
@@ -41,7 +42,42 @@ if($user['grade'] == "0" || $DB->query("SELECT * FROM `ytidc_grade` WHERE `id`='
   	$grade = $DB->query("SELECT * FROM `ytidc_grade` WHERE `id`='{$user['grade']}'")->fetch_assoc();
 }
 $price = json_decode($grade['price'], true);
-$price = $price[$product['id']];
+$pdis = json_decode(url_decode($product['time']),true);
+foreach($pdis as $k => $v){
+	if($v['name'] == $params['time']){
+		$dis = array(
+			'name' => $v['name'],
+			'discount' => $v['discount'],
+			'day' => $v['day'],
+			'remark' => $v['remark'],
+		);
+	}
+}
+if(empty($dis)){
+	@header("Location: ./msg.php?msg=服务器周期设置错误");
+  	exit;
+}
+if(empty($params['promo_code'])){
+	$price = $price[$product['id']] * $dis['discount'];
+}else{
+	$price = $price[$product['id']] * $dis['discount'];
+	$promo = $DB->query("SELECT * FROM `ytidc_promo` WHERE `code`='{$params['promo_code']}'");
+	if($promo->num_rows != 1){
+	  	@header("Location: ./msg.php?msg=优惠码不存在！");
+	  	exit;
+	}else{
+		$promo = $promo->fetch_assoc();
+		if($promo['product'] != $product['id']){
+			@header("Location: ./msg.php?msg=优惠码不能开通本产品！");
+	  		exit;
+		}
+		$price = $price - $promo['price'];
+	}
+}
+if(!check_price($price, true)){
+  	@header("Location: ./msg.php?msg=价格设置错误，请联系上级进行管理！");
+  	exit;
+}
 if(!empty($user['invite']) && $DB->query("SELECT * FROM `ytidc_user` WHERE `id`='{$user['invite']}'")->num_rows == 1){
 	//邀请奖励
 	$invite = $DB->query("SELECT * FROM `ytidc_user` WHERE `id`='{$user['invite']}'")->fetch_assoc();
@@ -58,7 +94,7 @@ if($new_money >= 0){
   	@header("Location: ./msg.php?msg=用户余额不足");
   	exit;
 }
-$date = date('Y-m-d');
+$date = date('Y-m-d',strtotime("+{$dis[day]} days", time()));
 $DB->query("INSERT INTO `ytidc_service` (`userid`, `username`, `password`, `enddate`, `product`, `configoption`, `status`) VALUES ('{$user['id']}', '{$params['username']}', '{$params['password']}', '{$date}', '{$product['id']}', '' ,'等待审核')");
 $serviceid = $DB->query("SELECT * FROM `ytidc_service` WHERE `username`='{$params['username']}' AND `password`='{$params['password']}'")->fetch_assoc();
 $serviceid = $serviceid['id'];
@@ -72,7 +108,7 @@ $postdata = array(
   	'service' => array(
       	'username' => $params['username'],
        	'password' => $params['password'],
-      	'time' => $params['time'],
+      	'time' => $dis,
     ),
   	'product' => $product,
   	'server' => $server,
@@ -80,7 +116,7 @@ $postdata = array(
 $function = $server['plugin']."_CreateService";
 $return = $function($postdata);
 
-if($return['status'] == "fail"){
+if($return['status'] != "success"){
   	@header("Location: ./msg.php?msg={$return['msg']}");
   	exit;
 }else{

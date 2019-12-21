@@ -1,3 +1,4 @@
+[include[user_header.template]]
 
             <div class="container-fluid">
                 <div class="side-body">
@@ -24,8 +25,18 @@
                                             <input name="password" type="text" class="form-control" id="title" placeholder="服务密码">
                                         </div>
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">购买时长(1为[product[time]]天/[product[price]]元)</label>
-                                            <input name="time" type="number" class="form-control" id="title" placeholder="购买时长">
+                                          	<label for="exampleInputEmail1">购买周期</label>
+                                    <div>
+                                        <select name="time">
+                                            <optgroup label="请选择">
+                                              [time]
+                                            </optgroup>
+                                        </select>
+                                    </div>	
+                                      	</div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">优惠码（没有可为空）</label>
+                                            <input name="promo_code" type="text" class="form-control" id="title" placeholder="优惠码">
                                         </div>
                                         <button type="submit" class="btn btn-default">确认</button>
                                     </form>
@@ -36,3 +47,4 @@
                 </div>
             </div>
         </div>
+[include[user_footer.template]]

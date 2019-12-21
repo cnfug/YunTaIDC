@@ -45,7 +45,7 @@
                         <div class="navbar-header">
                             <a class="navbar-brand" href="#">
                                 <div class="icon fa fa-paper-plane"></div>
-                                <div class="title">云塔IDC系统 V.1.0</div>
+                                <div class="title">云塔IDC系统 V.2.0</div>
                             </a>
                             <button type="button" class="navbar-expand-toggle pull-right visible-xs">
                                 <i class="fa fa-times icon"></i>
@@ -104,6 +104,8 @@
                                     <div class="panel-body">
                                         <ul class="nav navbar-nav">
                                             <li><a href="price.php">价格管理</a>
+                                            </li>
+                                            <li><a href="code.php">优惠码管理</a>
                                             </li>
                                             <li><a href="order.php">交易记录</a>
                                             </li>

@@ -19,7 +19,7 @@ if(empty($_SESSION['ytidc_user']) && empty($_SESSION['ytidc_pass'])){
       	}
     }
 }
-$result = $DB->query("SELECT * FROM `ytidc_notice`");
+$result = $DB->query("SELECT * FROM `ytidc_notice` WHERE `site`='0'");
 $notice_template = file_get_contents("../templates/".$conf['template']."/user_notice_list.template");
 while($row = $result->fetch_assoc()){
 	$notice_template_code = array(
@@ -28,7 +28,23 @@ while($row = $result->fetch_assoc()){
 	);
 	$notice_template_new = $notice_template_new . template_code_replace($notice_template, $notice_template_code);
 }
-$template = file_get_contents("../templates/".$conf['template']."/user_header.template").file_get_contents("../templates/".$conf['template']."/user_notice.template").file_get_contents("../templates/".$conf['template']."/user_footer.template");
+$result = $DB->query("SELECT * FROM `ytidc_notice` WHERE `site`='{$site['id']}'");
+while($row = $result->fetch_assoc()){
+	$notice_template_code = array(
+		'id' => $row['id'],
+		'title' => $row['title'],
+	);
+	$notice_template_new = $notice_template_new . template_code_replace($notice_template, $notice_template_code);
+}
+$template = file_get_contents("../templates/".$conf['template']."/user_notice.template");
+$include_file = find_include_file($template);
+foreach($include_file[1] as $k => $v){
+		if(file_exists("../templates/".$conf['template']."/".$v)){
+			$replace = file_get_contents("../templates/".$conf['template']."/".$v);
+			$template = str_replace("[include[{$v}]]", $replace, $template);
+		}
+		
+}
 $template_code = array(
 	'site' => $site,
 	'config' => $conf,

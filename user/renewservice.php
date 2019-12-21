@@ -35,10 +35,29 @@ $server = $DB->query("SELECT * FROM `ytidc_server` WHERE `id`='{$product['server
 if($user['grade'] == "0" || $DB->query("SELECT * FROM `ytidc_grade` WHERE `id`='{$user['grade']}'")->num_rows != 1){
   	$grade = $DB->query("SELECT * FROM `ytidc_grade` WHERE `default`='1'")->fetch_assoc();
 }else{
-  	$grade = $DB->query("SELECT * FROM `ytidc_grade` WHERE `grade`='{$user['grade']}'")->fetch_assoc();
+  	$grade = $DB->query("SELECT * FROM `ytidc_grade` WHERE `id`='{$user['grade']}'")->fetch_assoc();
 }
 $price = json_decode($grade['price'], true);
-$price = $price[$product['id']];
+$pdis = json_decode(url_decode($product['time']),true);
+foreach($pdis as $k => $v){
+	if($v['name'] == $params['time']){
+		$dis = array(
+			'name' => $v['name'],
+			'discount' => $v['discount'],
+			'day' => $v['day'],
+			'remark' => $v['remark'],
+		);
+	}
+}
+if(empty($dis)){
+	@header("Location: ./msg.php?msg=周期设置错误！");
+  	exit;
+}
+$price = $price[$product['id']] * $dis['discount'];
+if(!check_price($price, true)){
+  	@header("Location: ./msg.php?msg=价格设置错误，请联系上级进行管理！");
+  	exit;
+}
 $new_money = $user['money'] - $price;
 if($new_money >= 0){
   	$DB->query("UPDATE `ytidc_user` SET `money`='{$new_money}' WHERE `id`='{$user['id']}'");
@@ -54,7 +73,7 @@ if(!is_file($plugin) || !file_exists($plugin)){
 include($plugin);
 $postdata = array(
   	'data' => array(
-      	'time' => $params['time'],
+      	'time' => $dis,
       	'id' => $params['id'],
     ),
   	'service' => $service,
@@ -63,7 +82,7 @@ $postdata = array(
 );
 $function = $server['plugin']."_RenewService";
 $return = $function($postdata);
-if($return['status'] == "fail"){
+if($return['status'] != "success"){
   	@header("Location: ./msg.php?msg={$return['msg']}");
   	exit;
 }else{

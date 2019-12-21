@@ -28,6 +28,7 @@ if($act == "edit"){
 $title = "编辑服务器";
 include("./head.php");
 $row = $DB->query("SELECT * FROM `ytidc_server` WHERE `id`='{$id}'")->fetch_assoc();
+$plugins = get_dir(ROOT."/plugins");
 ?>
 
 
@@ -88,7 +89,21 @@ $row = $DB->query("SELECT * FROM `ytidc_server` WHERE `id`='{$id}'")->fetch_asso
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">服务器插件</label>
-                                            <input name="plugin" type="text" class="form-control" id="plugin" placeholder="服务器插件" value="<?=$row['plugin']?>">
+                                            <div>
+                                        		<select name="plugin">
+                                            		<optgroup label="请选择">
+                                            			<?php foreach($plugins as $k => $v){
+                                            				if($row['plugin'] == $k){
+                                            					$selected = "selected";
+                                            				}else{
+                                            					$selected = "";
+                                            				}
+                                            				echo '<option value="'.$k.'" '.$selected.'>'.$v.'</option>';
+                                            			}
+                                             			?>
+                                            		</optgroup>
+                                    			</select>
+                                    		</div>
                                         </div>
                                         <button type="submit" class="btn btn-default">修改</button>
                                     </form>

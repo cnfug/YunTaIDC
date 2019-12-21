@@ -25,7 +25,15 @@ $servicecount = $DB->query("SELECT * FROM `ytidc_service` WHERE `userid`='{$user
 $wordercount = $DB->query("SELECT * FROM `ytidc_worder` WHERE `user`='{$user['id']}'")->num_rows;
 $invitecount = $DB->query("SELECT * FROM `ytidc_user` WHERE `invite`='{$user['id']}'")->num_rows;
 $noticecount = $DB->query("SELECT * FROM `ytidc_notice`")->num_rows;
-$template = file_get_contents("../templates/".$conf['template']."/user_header.template").file_get_contents("../templates/".$conf['template']."/user_index.template").file_get_contents("../templates/".$conf['template']."/user_footer.template");
+$template = file_get_contents("../templates/".$conf['template']."/user_index.template");
+$include_file = find_include_file($template);
+foreach($include_file[1] as $k => $v){
+		if(file_exists("../templates/".$conf['template']."/".$v)){
+			$replace = file_get_contents("../templates/".$conf['template']."/".$v);
+			$template = str_replace("[include[{$v}]]", $replace, $template);
+		}
+		
+}
 $template_code = array(
 	'site' => $site,
 	'config' => $conf,

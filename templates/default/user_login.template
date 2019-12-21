@@ -47,6 +47,7 @@
                                 </div>
                                 <div class="login-button text-center">
                                     <input type="submit" class="btn btn-primary" value="登陆">
+                                    <a href="./register.php" class="btn btn-default">注册</a>
                                 </div>
                             </form>
                         </div>

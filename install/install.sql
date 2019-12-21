@@ -1,4 +1,9 @@
 
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+08:00";
+
 CREATE TABLE `ytidc_config` (
   `k` varchar(256) NOT NULL,
   `v` varchar(256) NOT NULL
@@ -14,9 +19,14 @@ INSERT INTO `ytidc_config` (`k`, `v`) VALUES
 ('invitepercent', '1'),
 ('siteprice', '10.00'),
 ('sitedomain', 'yunta.cc'),
-('epay_fee', '0.99'),
 ('template', 'default'),
-('http', 'http');
+('http', 'http'),
+('epay_fee_wx', '2'),
+('epay_fee_qq', '2'),
+('epay_fee_zfb', '2'),
+('contactqq1', '123456'),
+('contactqq2', '123456'),
+('contactemail', '123456@qq.com');
 
 CREATE TABLE `ytidc_fenzhan` (
   `id` int(11) NOT NULL,
@@ -24,6 +34,7 @@ CREATE TABLE `ytidc_fenzhan` (
   `title` varchar(256) NOT NULL,
   `subtitle` varchar(256) NOT NULL,
   `description` text NOT NULL,
+  `keywords` text NOT NULL,
   `notice` text NOT NULL,
   `admin` varchar(256) NOT NULL,
   `password` varchar(256) NOT NULL,
@@ -44,13 +55,15 @@ CREATE TABLE `ytidc_grade` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `ytidc_grade` (`id`, `name`, `weight`, `need_paid`, `need_money`, `need_save`, `default`, `price`, `status`) VALUES
-(1, '默认价格组', 1, '0.00', '0.00', '0.00', 1, '{\"4\":\"1.00\",\"5\":\"2.00\",\"6\":\"3.50\",\"7\":\"5.00\",\"12\":\"1.00\",\"13\":\"2.00\",\"14\":\"3.50\",\"15\":\"5.00\",\"16\":\"26.00\",\"17\":\"45.00\",\"18\":\"90.00\",\"19\":\"150.00\",\"20\":\"25.00\"}', 1);
+(1, '默认价格组', 1, '0.00', '0.00', '0.00', 1, '', 1);
 
 CREATE TABLE `ytidc_notice` (
   `id` int(11) NOT NULL,
   `title` varchar(256) NOT NULL,
   `content` text NOT NULL,
-  `date` date NOT NULL
+  `date` date NOT NULL,
+  `site` int(11) NOT NULL,
+  `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ytidc_order` (
@@ -62,14 +75,23 @@ CREATE TABLE `ytidc_order` (
   `status` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 CREATE TABLE `ytidc_product` (
   `id` int(11) NOT NULL,
   `name` varchar(256) NOT NULL,
   `description` text NOT NULL,
   `type` int(11) NOT NULL,
   `server` int(11) NOT NULL,
-  `time` int(11) NOT NULL,
+  `time` text NOT NULL,
   `configoption` text NOT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `ytidc_promo` (
+  `id` int(11) NOT NULL,
+  `code` varchar(256) NOT NULL,
+  `price` decimal(9,2) NOT NULL,
+  `product` int(11) NOT NULL,
   `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -128,7 +150,6 @@ CREATE TABLE `ytidc_worder` (
   `status` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
 ALTER TABLE `ytidc_fenzhan`
   ADD PRIMARY KEY (`id`);
 
@@ -144,6 +165,9 @@ ALTER TABLE `ytidc_order`
 ALTER TABLE `ytidc_product`
   ADD PRIMARY KEY (`id`);
 
+ALTER TABLE `ytidc_promo`
+  ADD PRIMARY KEY (`id`);
+
 ALTER TABLE `ytidc_server`
   ADD PRIMARY KEY (`id`);
 
@@ -159,17 +183,19 @@ ALTER TABLE `ytidc_user`
 ALTER TABLE `ytidc_worder`
   ADD PRIMARY KEY (`id`);
 
-
 ALTER TABLE `ytidc_fenzhan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 ALTER TABLE `ytidc_grade`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 ALTER TABLE `ytidc_notice`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 ALTER TABLE `ytidc_product`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+ALTER TABLE `ytidc_promo`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 ALTER TABLE `ytidc_server`
@@ -185,5 +211,5 @@ ALTER TABLE `ytidc_user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1000;
 
 ALTER TABLE `ytidc_worder`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;

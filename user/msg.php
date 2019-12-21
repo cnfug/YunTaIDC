@@ -28,7 +28,15 @@ $template_code = array(
 	'msg' => $msg,
 	'template_file_path' => "../templates/".$conf['template'],
 );
-$template = file_get_contents("../templates/".$conf['template']."/user_header.template").file_get_contents("../templates/".$conf['template']."/user_msg.template").file_get_contents("../templates/".$conf['template']."/user_footer.template");
+$template = file_get_contents("../templates/".$conf['template']."/user_msg.template");
+$include_file = find_include_file($template);
+foreach($include_file[1] as $k => $v){
+		if(file_exists("../templates/".$conf['template']."/".$v)){
+			$replace = file_get_contents("../templates/".$conf['template']."/".$v);
+			$template = str_replace("[include[{$v}]]", $replace, $template);
+		}
+		
+}
 $template = template_code_replace($template, $template_code);
 echo $template;
 ?>

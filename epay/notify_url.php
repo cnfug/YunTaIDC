@@ -49,7 +49,16 @@ if($verify_result) {//验证成功
           	echo '该订单已处理';
         }else{
           	$user = $DB->query("SELECT * FROM `ytidc_user` WHERE `id`='{$row['user']}'")->fetch_assoc();
-          	$add_money = $row['money'] * $conf['epay_fee'];
+          	if($type == "wxpay"){
+          		$payfee = 100 - $conf['epay_fee_wx'];
+          	}
+          	if($type == "qqpay" || $type == "tenpay"){
+          		$payfee = 100 - $conf['epay_fee_qq'];
+          	}
+          	if($type == "alipay"){
+          		$payfee = 200 - $conf['epay_fee_zfb'];
+          	}
+          	$add_money = $row['money'] * $payfee / 100;
           	$new_money = $user['money'] + $add_money;
           	$DB->query("UPDATE `ytidc_user` SET `money`='{$new_money}' WHERE `id`='{$user['id']}'");
           	$DB->query("UPDATE `ytidc_order` SET `status`='已完成' WHERE `orderid`='{$out_trade_no}'");

@@ -18,6 +18,7 @@ if($act == "edit"){
 $title = "编辑服务器";
 include("./head.php");
 $row = $DB->query("SELECT * FROM `ytidc_server` WHERE `id`='{$id}'")->fetch_assoc();
+$templates = get_dir(ROOT."/templates/");
 ?>
 
 
@@ -45,8 +46,22 @@ $row = $DB->query("SELECT * FROM `ytidc_server` WHERE `id`='{$id}'")->fetch_asso
                                             <input name="password" type="text" class="form-control" id="serverip" placeholder="超级管理密码" value="<?=$conf['password']?>">
                                         </div>
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">模板目录名称</label>
-                                            <input name="template" type="text" class="form-control" id="serverdns2" placeholder="模板目录名称" value="<?=$conf['template']?>">
+                                            <label for="exampleInputEmail1">网站模板</label>
+                                            <div>
+                                        		<select name="template">
+                                            		<optgroup label="请选择">
+                                            			<?php foreach($templates as $k => $v){
+                                            				if($row['plugin'] == $conf['template']){
+                                            					$selected = "selected";
+                                            				}else{
+                                            					$selected = "";
+                                            				}
+                                            				echo '<option value="'.$k.'" '.$selected.'>'.$v.'</option>';
+                                            			}
+                                             			?>
+                                            		</optgroup>
+                                    			</select>
+                                    		</div>
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">分站公告</label>
@@ -63,6 +78,19 @@ $row = $DB->query("SELECT * FROM `ytidc_server` WHERE `id`='{$id}'")->fetch_asso
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">邀请用户花费奖励（百分比，1%填1）</label>
                                             <input name="invitepercent" type="text" class="form-control" id="serverusername" placeholder="邀请用户花费奖励" value="<?=$conf['invitepercent']?>" oninput="value=value.replace(/[^\d.]/g,'')">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">客服1QQ：</label>
+                                            <input name="contactqq1" type="text" class="form-control" id="serverdns2" placeholder="客服1QQ" value="<?=$conf['contactqq1']?>">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">客服2QQ：</label>
+                                            <input name="contactqq2" type="text" class="form-control" id="serverdns2" placeholder="客服2QQ" value="<?=$conf['contactqq2']?>">
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">联系邮箱：</label>
+                                            <input name="contactemail" type="email" class="form-control" id="serverdns2" placeholder="联系邮箱" value="<?=$conf['contactemail']?>">
                                         </div>
                                         <button type="submit" class="btn btn-default">修改</button>
                                     </form>

@@ -64,14 +64,23 @@ $result = $DB->query("SELECT * FROM `ytidc_grade` WHERE `status`='1'");
 while($row2 = $result->fetch_assoc()){
 	$price_template_code = array(
 		'name' => $row2['name'],
+		'id' => $row2['id'],
 		'description' => $row2['description'],
 		'need_save' => $row2['need_save'],
 		'need_money' => $row2['need_money'],
 		'need_paid' => $row2['need_paid'],
 	);
-	$price_template_new = template_code_replace($price_template,$price_template_code);
+	$price_template_new = $price_template_new . template_code_replace($price_template,$price_template_code);
 }
-$template = file_get_contents("../templates/".$conf['template']."/user_header.template").file_get_contents("../templates/".$conf['template']."/user_price.template").file_get_contents("../templates/".$conf['template']."/user_footer.template");
+$template = file_get_contents("../templates/".$conf['template']."/user_price.template");
+$include_file = find_include_file($template);
+foreach($include_file[1] as $k => $v){
+		if(file_exists("../templates/".$conf['template']."/".$v)){
+			$replace = file_get_contents("../templates/".$conf['template']."/".$v);
+			$template = str_replace("[include[{$v}]]", $replace, $template);
+		}
+		
+}
 $template_code = array(
 	'site' => $site,
 	'config' => $conf,
@@ -81,6 +90,4 @@ $template_code = array(
 );
 $template = template_code_replace($template, $template_code);
 echo $template;
-?>
-
 ?>

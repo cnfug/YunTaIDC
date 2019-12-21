@@ -39,7 +39,7 @@ if(empty($params['username']) || empty($params['password']) || empty($params['pr
     );
   	 exit(json_encode($retdata));
 }
-if($DB->query("SELECT * FROM `ytidc_service` WHERE `username`='{$parmas['username']}'")->num_rows != 0){
+if($DB->query("SELECT * FROM `ytidc_service` WHERE `username`='{$params['username']}'")->num_rows != 0){
   	$retdata = array(
       	'ret' => 'fail',
       	'msg' => '服务账号已被占用',
@@ -54,8 +54,34 @@ if($user['grade'] == "0" || $DB->query("SELECT * FROM `ytidc_grade` WHERE `id`='
 }else{
   	$grade = $DB->query("SELECT * FROM `ytidc_grade` WHERE `id`='{$user['grade']}'")->fetch_assoc();
 }
+
 $price = json_decode($grade['price'], true);
-$price = $price[$product['id']];
+$pdis = json_decode(url_decode($product['time']),true);
+foreach($pdis as $k => $v){
+	if($v['name'] == $params['time']){
+		$dis = array(
+			'name' => $v['name'],
+			'discount' => $v['discount'],
+			'day' => $v['day'],
+			'remark' => $v['remark'],
+		);
+	}
+}
+if(empty($dis)){
+  	$retdata = array(
+      	'ret' => 'fail',
+      	'msg' => '周期配置错误，请确保周期名称填写正确',
+    );
+  	 exit(json_encode($retdata));
+}
+$price = $price[$product['id']] * $dis['discount'];
+if(!check_price($price, true)){
+  	$retdata = array(
+      	'ret' => 'fail',
+      	'msg' => '价格设置错误，请联系上级处理',
+    );
+  	 exit(json_encode($retdata));
+}
 $new_money = $user['money'] - $price;
 if($new_money >= 0){
   	$DB->query("UPDATE `ytidc_user` SET `money`='{$new_money}' WHERE `id`='{$user['id']}'");
@@ -66,7 +92,7 @@ if($new_money >= 0){
     );
   	 exit(json_encode($retdata));
 }
-$date = date('Y-m-d');
+$date = date('Y-m-d',strtotime("+{$dis[day]} days", time()));
 $DB->query("INSERT INTO `ytidc_service`(`userid`, `username`, `password`, `enddate`, `product`, `configoption`, `status`) VALUES ('{$user['id']}','{$params['username']}','{$params['password']}','{$date}','{$product['id']}','','1')");
 $serviceid = $DB->query("SELECT * FROM `ytidc_service` WHERE `username`='{$params['username']}' AND `password`='{$params['password']}'")->fetch_assoc();
 $serviceid = $serviceid['id'];
@@ -83,7 +109,7 @@ $postdata = array(
   	'service' => array(
       	'username' => $params['username'],
        	'password' => $params['password'],
-      	'time' => $params['time'],
+      	'time' => $dis,
     ),
   	'product' => $product,
   	'server' => $server,

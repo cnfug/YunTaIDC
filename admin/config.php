@@ -53,6 +53,10 @@ $row = $DB->query("SELECT * FROM `ytidc_fenzhan` WHERE `domain`='{$domain}'")->f
                                             <input name="subtitle" type="text" class="form-control" id="serverip" placeholder="网站副标题" value="<?=$row['subtitle']?>">
                                         </div>
                                         <div class="form-group">
+                                            <label for="exampleInputEmail1">网站关键词</label>
+                                            <input name="keywords" type="text" class="form-control" id="serverip" placeholder="网站关键词" value="<?=$row['keywords']?>">
+                                        </div>
+                                        <div class="form-group">
                                             <label for="exampleInputEmail1">网站介绍</label>
                                             <textarea name="description" class="form-control"><?=$row['description']?></textarea>
                                         </div>

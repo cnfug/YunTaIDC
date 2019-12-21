@@ -19,9 +19,9 @@ if(empty($_SESSION['ytidc_user']) && empty($_SESSION['ytidc_pass'])){
       	}
     }
 }
-if(!empty($_POST['domain']) && !empty($_POST['name']) && !empty($_POST['admin']) && !empty($_POST['password'])){
-  	$domain = daddslashes($_POST['domain']);
-  	$name = daddslashes($_POST['name']);
+if(!empty($_POST['domain']) && !empty($_POST['title']) && !empty($_POST['admin']) && !empty($_POST['password'])){
+  	$domain = daddslashes($_POST['domain']) . '.' . $conf['sitedomain'];
+  	$title = daddslashes($_POST['title']);
   	$admin = daddslashes($_POST['admin']);
   	$password = daddslashes($_POST['password']);
   	$description = daddslashes($_POST['description']);
@@ -31,11 +31,19 @@ if(!empty($_POST['domain']) && !empty($_POST['name']) && !empty($_POST['admin'])
       	exit;
     }
   	$DB->query("UPDATE `ytidc_user` SET `money`='{$new_money}' WHERE `username`='{$user['username']}'");
-  	$DB->query("INSERT INTO `ytidc_fenzhan`(`domain`, `name`, `description`, `notice`, `admin`, `password`, `user`, `status`) VALUES ('{$domain}.{$conf['sitedomain']}','{$name}','{$description}','{$conf['sitenotice']}','{$admin}','{$password}','{$user['id']}','1')");
+  	$DB->query("INSERT INTO `ytidc_fenzhan`(`domain`, `title`, `subtitle`, `description`, `keywords`, `notice`, `admin`, `password`, `user`, `status`) VALUES ('{$domain}','{$title}','企业级云服务器','{$description}','','{$conf['notice']}','{$admin}','{$password}','{$user['id']}','1')");
 	@header("Location: ./msg.php?msg=开通成功！");
   	exit;
 }
-$template = file_get_contents("../templates/".$conf['template']."/user_header.template").file_get_contents("../templates/".$conf['template']."/user_site.template").file_get_contents("../templates/".$conf['template']."/user_footer.template");
+$template = file_get_contents("../templates/".$conf['template']."/user_site.template");
+$include_file = find_include_file($template);
+foreach($include_file[1] as $k => $v){
+		if(file_exists("../templates/".$conf['template']."/".$v)){
+			$replace = file_get_contents("../templates/".$conf['template']."/".$v);
+			$template = str_replace("[include[{$v}]]", $replace, $template);
+		}
+		
+}
 $template_code = array(
 	'site' => $site,
 	'config' => $conf,

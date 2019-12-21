@@ -1,7 +1,7 @@
 
         <footer class="app-footer">
             <div class="wrapper">
-                <span class="pull-right">云塔内测 <a href="#"><i class="fa fa-long-arrow-up"></i></a></span>
+                <span class="pull-right">云塔IDC系统 2.0a <a href="#"><i class="fa fa-long-arrow-up"></i></a></span>
             </div>
         </footer>
         <div>

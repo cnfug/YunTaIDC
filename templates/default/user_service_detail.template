@@ -1,3 +1,4 @@
+[include[user_header.template]]
             <div class="container-fluid">
                 <div class="side-body">
                     <div class="page-title">
@@ -14,7 +15,16 @@
                                   产品名称：[product[name]]<br>
                                   <form action="renewservice.php" method="POST">
                                     	<input type="hidden" name="id" value="[service[id]]">
-                                    	续费：<input type="number" name="time" placeholder="续费月数" value="1" minvalue="1">月     <button type="submit" class="btn btn-danger">续费</button>
+                                    	<div class="form-group">
+                                          	<label for="exampleInputEmail1">续费周期</label>
+                                    <div>
+                                        <select name="time">
+                                            <optgroup label="请选择">
+                                              [time]
+                                            </optgroup>
+                                        </select>
+                                    </div>	
+                                      	</div>     <button type="submit" class="btn btn-danger">续费</button>
                                   </form>
                                 </div>
                             </div>
@@ -23,3 +33,4 @@
                 </div>
             </div>
         </div>
+[include[user_footer.template]]

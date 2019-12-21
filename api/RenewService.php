@@ -43,7 +43,32 @@ if($user['grade'] == "0" || $DB->query("SELECT * FROM `ytidc_grade` WHERE `id`='
   	$grade = $DB->query("SELECT * FROM `ytidc_grade` WHERE `id`='{$user['grade']}'")->fetch_assoc();
 }
 $price = json_decode($grade['price'], true);
-$price = $price[$product['id']];
+$pdis = json_decode(url_decode($product['time']),true);
+foreach($pdis as $k => $v){
+	if($v['name'] == $params['time']){
+		$dis = array(
+			'name' => $v['name'],
+			'discount' => $v['discount'],
+			'day' => $v['day'],
+			'remark' => $v['remark'],
+		);
+	}
+}
+if(empty($dis)){
+	$retdata = array(
+      	'ret' => 'fail',
+      	'msg' => '周期设置错误',
+    );
+  	 exit(json_encode($retdata));
+}
+$price = $price[$product['id']] * $dis['discount'];
+if(!check_price($price, true)){
+  	$retdata = array(
+      	'ret' => 'fail',
+      	'msg' => '价格错误，请联系上级处理！',
+    );
+  	 exit(json_encode($retdata));
+}
 $new_money = $user['money'] - $price;
 if($new_money >= 0){
   	$DB->query("UPDATE `ytidc_user` SET `money`='{$new_money}' WHERE `id`='{$user['id']}'");
@@ -65,7 +90,7 @@ if(!is_file($plugin) || !file_exists($plugin)){
 include($plugin);
 $postdata = array(
   	'data' => array(
-      	'time' => $params['time'],
+      	'time' => $dis,
       	'username' => $params['username'],
     ),
   	'service' => $service,

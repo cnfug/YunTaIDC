@@ -12,6 +12,7 @@ if(!empty($_POST['name']) && !empty($_POST['description']) && !empty($_POST['typ
   	$type = daddslashes($_POST['type']);
   	$server = daddslashes($_POST['server']);
   	$time = daddslashes($_POST['time']);
+  	$time = json_encode(url_encode($time));
   	$DB->query("INSERT INTO `ytidc_product` (`name`, `description`, `type`, `server`, `time`, `configoption`, `status`) VALUES ('{$name}', '{$description}', '{$type}', '{$server}', '{$time}', '', '1')");
   	@header("Location: ./msg.php?msg=添加产品成功！");
   	exit($DB->error);
@@ -21,7 +22,42 @@ include("./head.php");
 $type = $DB->query("SELECT * FROM `ytidc_type` WHERE `status`='1'");
 $server = $DB->query("SELECT * FROM `ytidc_server` WHERE `status`='1'");
 ?>
+<script>
+        var count = 0;
 
+        //用来判断是删除 还是增加按钮 以便count值进行计算
+        function checkCount(boolOK, coun) {
+            if (boolOK == true) {
+                return count++;
+            }
+            else {
+                count--;
+            }
+        }
+        function AddTimeInput() {
+            // checkCount(2, true);
+            countAA = checkCount(true, count);
+            // alert(countAA);
+            //count++;
+            var time = document.getElementById("timetable");
+
+            var tr = document.createElement('tr');
+    	    	var td = document.createElement('td');
+    	    	td.innerHTML='<input type="text" class="form-control" name="time[' + count + '][name]" value=""/>';
+    			tr.appendChild(td);
+    	    	var td = document.createElement('td');
+    	    	td.innerHTML='<input type="text" class="form-control" name="time[' + count + '][discount]" value=""/>';
+    			tr.appendChild(td);
+    	    	var td = document.createElement('td');
+    	    	td.innerHTML='<input type="text" class="form-control" name="time[' + count + '][day]" value=""/>';
+    			tr.appendChild(td);
+    	    	var td = document.createElement('td');
+    	    	td.innerHTML='<input type="text" class="form-control" name="time[' + count + '][remark]" value=""/>';
+    			tr.appendChild(td);
+    		time.appendChild(tr);
+
+        }
+        </script>
             <div class="container-fluid">
                 <div class="side-body">
                     <div class="page-title">
@@ -74,10 +110,29 @@ $server = $DB->query("SELECT * FROM `ytidc_server` WHERE `status`='1'");
                                         </select>
                                     </div>	
                                       	</div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">产品期限（天）</label>
-                                            <input name="time" type="number" class="form-control" id="time" placeholder="产品期限">
-                                        </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <div class="title">周期配置 <button class="btn btn-danger" onclick="AddTimeInput()" type="button"> 添加产品周期</button></div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>名称</th>
+                                                <th>费率</th>
+                                                <th>开通日数</th>
+                                              	<th>备注（根据插件提示填写）</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="timetable">
+                                        </tbody>
+                                    </table>
+                                    
                                         <button type="submit" class="btn btn-default">添加</button>
                                     </form>
                                 </div>
@@ -87,6 +142,7 @@ $server = $DB->query("SELECT * FROM `ytidc_server` WHERE `status`='1'");
                 </div>
             </div>
         </div>
+        
 <?php
 
 include("./foot.php");

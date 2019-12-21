@@ -90,8 +90,8 @@ include("./head.php");
                                     <div class="thumbnail no-margin-bottom">
                                         <img src="./img/thumbnails/picjumbo.com_IMG_3241.jpg" class="img-responsive">
                                         <div class="caption">
-                                            <h3 id="thumbnail-label">云塔1.0版本<a class="anchorjs-link" href="#thumbnail-label"><span class="anchorjs-icon"></span></a></h3>
-                                            <p>云塔1.0版管理后台</p>
+                                            <h3 id="thumbnail-label">云塔2.0版本<a class="anchorjs-link" href="#thumbnail-label"><span class="anchorjs-icon"></span></a></h3>
+                                            <p>云塔2.0版管理后台</p>
                                             <p><a href="./price.php" class="btn btn-success" role="button">价格组管理</a></p>
                                         </div>
                                     </div>

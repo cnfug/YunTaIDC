@@ -76,7 +76,16 @@ include("./head.php");
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">服务器插件</label>
-                                            <input name="plugin" type="text" class="form-control" id="plugin" placeholder="服务器插件">
+                                            <div>
+                                        		<select name="plugin">
+                                            		<optgroup label="请选择">
+                                            			<?php foreach($plugins as $k => $v){
+                                            				echo '<option value="'.$k.'" '.$selected.'>'.$v.'</option>';
+                                            			}
+                                             			?>
+                                            		</optgroup>
+                                    			</select>
+                                    		</div>
                                         </div>
                                         <button type="submit" class="btn btn-default">添加</button>
                                     </form>

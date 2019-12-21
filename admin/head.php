@@ -57,10 +57,21 @@
                                     <span class="icon fa fa-tachometer"></span><span class="title">管理后台</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="config.php">
-                                    <span class="icon fa fa-cube"></span><span class="title">编辑站点</span>
+                            <li class="panel panel-default dropdown">
+                                <a data-toggle="collapse" href="#dropdown-element">
+                                    <span class="icon fa fa-desktop"></span><span class="title">编辑网站</span>
                                 </a>
+                                <!-- Dropdown level 1 -->
+                                <div id="dropdown-element" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <ul class="nav navbar-nav">
+                                            <li><a href="config.php">网站资料</a>
+                                            </li>
+                                            <li><a href="notice.php">公告管理</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </li>
                             <li>
                                 <a href="../">

@@ -1,3 +1,4 @@
+[include[user_header.template]]
 
 
             <div class="container-fluid">
@@ -10,7 +11,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="card-title">
-                                        <div class="title">充值余额【充值费率：1元=[config[epay_fee]]余额】</div>
+                                        <div class="title">充值余额</div>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -25,19 +26,19 @@
                                           <div class="radio3 radio-check radio-inline">
                                             <input type="radio" id="radio1" name="type" value="alipay">
                                             <label for="radio1">
-                                              支付宝
+                                              支付宝([config[epay_fee_zfb]]%手续费)
                                             </label>
                                           </div>
                                           <div class="radio3 radio-check radio-inline">
                                             <input type="radio" id="radio2" name="type" value="wxpay">
                                             <label for="radio2">
-                                              微信钱包
+                                              微信钱包([config[epay_fee_wx]]%手续费)
                                             </label>
                                           </div>
                                           <div class="radio3 radio-check radio-inline">
                                             <input type="radio" id="radio3" name="type" value="qqpay">
                                             <label for="radio3">
-                                              QQ钱包/财付通
+                                              QQ钱包/财付通([config[epay_fee_qq]]%手续费)
                                             </label>
                                           </div>
                                         </div>
@@ -50,3 +51,4 @@
                 </div>
             </div>
         </div>
+[include[user_footer.template]]

@@ -6,15 +6,15 @@ if(empty($_SESSION['adminlogin']) || $_SESSION['adminlogin'] != $session){
   	@header("Location: ./login.php");
   	exit;
 }
-if(!empty($_POST['title']) && !empty($_POST['content'])){
-  	$title = daddslashes($_POST['title']);
-  	$content = daddslashes($_POST['content']);
-  	$date = date('Y-m-d');
-  	$DB->query("INSERT INTO `ytidc_notice` (`title`, `content`, `date`, `site`, `status`) VALUES ('{$title}', '{$content}', '$date', '0', '1')");
-  	@header("Location: ./msg.php?msg=添加公告成功！");
+if(!empty($_POST['code']) && !empty($_POST['price']) && !empty($_POST['product'])){
+  	$code = daddslashes($_POST['code']);
+  	$price = daddslashes($_POST['price']);
+  	$product = daddslashes($_POST['product']);
+  	$DB->query("INSERT INTO `ytidc_promo`(`code`, `price`, `product`, `status`) VALUES ('{$code}','{$price}','{$product}','1')");
+  	@header("Location: ./msg.php?msg=添加价格组成功！");
   	exit;
 }
-$title = "添加公告";
+$title = "添加优惠码";
 include("./head.php");
 
 ?>
@@ -22,7 +22,7 @@ include("./head.php");
             <div class="container-fluid">
                 <div class="side-body">
                     <div class="page-title">
-                        <span class="title">添加公告</span>
+                        <span class="title">添加优惠码</span>
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
@@ -33,14 +33,18 @@ include("./head.php");
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <form method="POST" action="addnotice.php">
+                                    <form method="POST" action="addcode.php">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">公告标题</label>
-                                            <input name="title" type="text" class="form-control" id="title" placeholder="公告标题">
+                                            <label for="exampleInputEmail1">优惠码</label>
+                                            <input name="code" type="text" class="form-control" id="code" placeholder="优惠码">
                                         </div>
                                         <div class="form-group">
-                                            <label for="exampleInputPassword1">公告内容</label><br>
-                                            <textarea name="content" row="6" class="form-control" id="content"></textarea>
+                                            <label for="exampleInputEmail1">抵扣金额</label>
+                                            <input name="price" type="text" class="form-control" id="name" placeholder="抵扣金额">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">优惠产品ID【仅支持单ID】</label>
+                                            <input name="product" type="text" class="form-control" id="name" placeholder="用户通过支付价格开通价格组（三选一）">
                                         </div>
                                         <button type="submit" class="btn btn-default">添加</button>
                                     </form>

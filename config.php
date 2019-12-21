@@ -1,11 +1,11 @@
 <?php
-
-$dbconfig = array(		//网站配置数据库，必须填写！
-	'host' => 'localhost',
-	'user' => 'yun_netech_cc',
-	'pass' => 'YYhaSkBTZrDhJMzB',
-	'name' => 'yun_netech_cc',
-	'port' => 3306,
+/*数据库配置*/
+$dbconfig=array(
+	'host' => 'localhost', //数据库服务器
+	'port' => 3306, //数据库端口
+	'user' => '', //数据库用户名
+	'pass' => '', //数据库密码
+	'name' => '', //数据库名
+	'dbqz' => 'shua' //数据表前缀
 );
-
 ?>

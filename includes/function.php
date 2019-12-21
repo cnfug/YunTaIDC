@@ -15,7 +15,7 @@ function daddslashes($string, $force = 0, $strip = FALSE) {
 }
 
 function encrypt($string){
-	$return = md5('dyidc_'.$string);
+	$return = md5('ytidc_'.$string);
 	return $return;
 }
 
@@ -56,5 +56,62 @@ function template_code_replace($template, $template_code){
 	return $template;
 }
 
+function check_price($price, $zero=false){
+	if($price == 0){
+		if($zero == true){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	if($price > 0){
+		return true;
+	}else{
+		return false;
+	}
+	return false;
+}
+
+function get_dir($dir){
+	if ($handle = opendir($dir)) {
+		$array = array();
+    	while (false !== ($entry = readdir($handle))) {
+    	   if ($entry != "." && $entry != "..") {
+        	    $array[$entry] = $entry;
+        	}
+    	}
+    	closedir($handle);
+	}
+	return $array;
+}
+
+function url_encode($str) {  
+    if(is_array($str)) {  
+        foreach($str as $key=>$value) {  
+            $str[urlencode($key)] = url_encode($value);  
+        }  
+    } else {  
+        $str = urlencode($str);  
+    }  
+
+    return $str;  
+}
+
+function url_decode($str) {  
+    if(is_array($str)) {  
+        foreach($str as $key=>$value) {  
+            $str[urldecode($key)] = urldecode($value);  
+        }  
+    } else {  
+        $str = urldecode($str);  
+    }  
+
+    return $str;  
+}
+
+function find_include_file($content){
+	preg_match_all("/\[include\[(.*)\]\]/U", $content, $return);
+	return $return;
+}
 
 ?>

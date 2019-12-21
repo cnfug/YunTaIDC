@@ -1,3 +1,4 @@
+[include[user_header.template]]
 
             <div class="container-fluid">
                 <div class="side-body">
@@ -33,3 +34,4 @@
                 </div>
             </div>
         </div>
+[include[user_footer.template]]

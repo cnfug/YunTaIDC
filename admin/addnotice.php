@@ -1,8 +1,16 @@
 <?php
 
 include("../includes/common.php");
-$session = md5($conf['admin'].$conf['password'].$conf['domain']);
-if(empty($_SESSION['adminlogin']) || $_SESSION['adminlogin'] != $session){
+$domain = $_SERVER['HTTP_HOST'];
+$row = $DB->query("SELECT * FROM `ytidc_fenzhan` WHERE `domain`='{$domain}'")->fetch_assoc();
+$user = $DB->query("SELECT * FROM `ytidc_user` WHERE `id`='{$row['user']}'")->fetch_assoc();
+if(empty($_SESSION['fzadmin']) || empty($_SESSION['fzkey'])){
+  	@header("Location: ./login.php");
+  	exit;
+}
+$fzadmin = daddslashes($_SESSION['fzadmin']);
+$fzkey = daddslashes($_SESSION['fzkey']);
+if($fzadmin != $row['admin'] && $fzkey != md5($_SERVER['HTTP_HOST'].$row['password']."fz")){
   	@header("Location: ./login.php");
   	exit;
 }
@@ -10,13 +18,12 @@ if(!empty($_POST['title']) && !empty($_POST['content'])){
   	$title = daddslashes($_POST['title']);
   	$content = daddslashes($_POST['content']);
   	$date = date('Y-m-d');
-  	$DB->query("INSERT INTO `ytidc_notice` (`title`, `content`, `date`, `site`, `status`) VALUES ('{$title}', '{$content}', '$date', '0', '1')");
+  	$DB->query("INSERT INTO `ytidc_notice` (`title`, `content`, `date`, `site`, `status`) VALUES ('{$title}', '{$content}', '$date', '{$site['id']}', '1')");
   	@header("Location: ./msg.php?msg=添加公告成功！");
   	exit;
 }
 $title = "添加公告";
 include("./head.php");
-
 ?>
 
             <div class="container-fluid">
