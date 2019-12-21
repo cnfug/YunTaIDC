@@ -22,7 +22,7 @@ if(empty($_SESSION['ytidc_user']) && empty($_SESSION['ytidc_pass'])){
 }
 if(!empty($_POST['password']) && !empty($_POST['email'])){
 	$password = daddslashes($_POST['password']);
-	$email = daddslashes($email);
+	$email = daddslashes($_POST['email']);
     $DB->query("UPDATE `ytidc_user` SET `password`='{$password}', `email`='{$email}' WHERE `username`='{$user['username']}'");
     @header("Location: ./msg.php?msg=修改成功");
     exit;
