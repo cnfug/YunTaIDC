@@ -259,8 +259,6 @@ if(!$dbconfig['user']||!$dbconfig['pass']||!$dbconfig['name']) {
 	}
 	date_default_timezone_set("PRC");
 	$date = date("Y-m-d");
-	$domain = $_SERVER['HTTP_HOST'];
-	$DB->query("INSERT INTO `ytidc_fenzhan`(`domain`, `title`, `subtitle`, `description`, `keywords`, `notice`, `admin`, `password`, `user`, `status`) VALUES ('{$domain}','默认站点','使用云塔IDC系统','这个是默认站点，删除后可能无法浏览后台，可修改信息但请勿删除！','','这个是默认站点，删除后可能无法浏览后台，可修改信息但请勿删除！','admin','123456','0','1')");
 }
 if($e==0) {
 	echo '<div class="alert alert-success">安装成功！<br/>SQL成功'.$t.'句/失败'.$e.'句</div><p align="right"><a class="btn btn-block btn-primary" href="index.php?do=5">下一步>></a></p>';
