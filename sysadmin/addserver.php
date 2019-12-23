@@ -16,7 +16,7 @@ if(!empty($_POST['name']) && !empty($_POST['plugin'])){
 }
 $title = "添加服务器";
 include("./head.php");
-
+$plugins = get_dir(ROOT."/plugins");
 ?>
 
             <div class="container-fluid">
