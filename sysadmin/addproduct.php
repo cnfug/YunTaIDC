@@ -21,6 +21,7 @@ $title = "添加产品";
 include("./head.php");
 $type = $DB->query("SELECT * FROM `ytidc_type` WHERE `status`='1'");
 $server = $DB->query("SELECT * FROM `ytidc_server` WHERE `status`='1'");
+$descriptionhtml = file_get_contents("../templates/".$conf['template']."/user_buy_product_modal.template");
 ?>
 <script>
         var count = 0;
@@ -80,6 +81,10 @@ $server = $DB->query("SELECT * FROM `ytidc_server` WHERE `status`='1'");
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">产品介绍</label>
                                             <textarea class="form-control" name="description" row="6"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">推荐产品介绍格式</label>
+                                            <textarea class="form-control" name="description" row="6" disabled=""><?=$descriptionhtml?></textarea>
                                         </div>
                                       	<div class="form-group">
                                           	<label for="exampleInputEmail1">产品分类</label>

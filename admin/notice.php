@@ -2,7 +2,6 @@
 
 include("../includes/common.php");
 $domain = $_SERVER['HTTP_HOST'];
-$row = $DB->query("SELECT * FROM `ytidc_fenzhan` WHERE `domain`='{$domain}'")->fetch_assoc();
 $user = $DB->query("SELECT * FROM `ytidc_user` WHERE `id`='{$row['user']}'")->fetch_assoc();
 if(empty($_SESSION['fzadmin']) || empty($_SESSION['fzkey'])){
   	@header("Location: ./login.php");
@@ -10,60 +9,36 @@ if(empty($_SESSION['fzadmin']) || empty($_SESSION['fzkey'])){
 }
 $fzadmin = daddslashes($_SESSION['fzadmin']);
 $fzkey = daddslashes($_SESSION['fzkey']);
-if($fzadmin != $row['admin'] && $fzkey != md5($_SERVER['HTTP_HOST'].$row['password']."fz")){
+if($fzadmin != $site['admin'] && $fzkey != md5($_SERVER['HTTP_HOST'].$site['password']."fz")){
   	@header("Location: ./login.php");
   	exit;
 }
 $title = "管理后台";
 $result = $DB->query("SELECT * FROM `ytidc_notice` WHERE `site`='{$site['id']}'");
-include("./head.php");
-?>
-
-
-            <div class="container-fluid">
-                <div class="side-body">
-                    <div class="page-title">
-                        <span class="title">公告管理</span>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="card">
-                                <div class="card-header">
-
-                                    <div class="card-title">
-                                    <div class="title">公告列表<a href="addnotice.php" class="btn btn-danger">添加新公告</a></div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>标题</th>
-                                              	<th>操作</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                          <?php
-                                          while($row = $result->fetch_assoc()){
-                                            echo '<tr>
-                                                <th scope="row">'.$row['id'].'</th>
-                                                <td>'.$row['title'].'</td>
-                                                <td><a href="./editnotice.php?id='.$row['id'].'" class="btn btn-primary">编辑</a><a href="./editnotice.php?act=del&id='.$row['id'].'" class="btn btn-primary">删除</a></td>
-                                            </tr>';
-                                          }
-                                          ?>
-                                                
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-<?php
-
-include("./foot.php");
-?>
+$notice_template = file_get_contents("../templates/".$conf['template']."/admin_notice_list.template");
+while($row = $result->fetch_assoc()){
+		$notice_template_code = array(
+			'title' => $row['title'],
+			'id' => $row['id'],
+			'date' => $row['date'],
+		);
+		$notice_template_new = $template_code_new . template_code_replace($notice_template, $notice_template_code);
+}
+$template_code = array(
+	'site' => $site,
+	'config' => $conf,
+	'user' => $user,
+	'notice' => $notice_template_new,
+	'template_file_path' => '../templates/'.$conf['template'],
+);
+$template = file_get_contents("../templates/".$conf['template']."/admin_notice.template");
+$include_file = find_include_file($template);
+foreach($include_file[1] as $k => $v){
+		if(file_exists("../templates/".$conf['template']."/".$v)){
+			$replace = file_get_contents("../templates/".$conf['template']."/".$v);
+			$template = str_replace("[include[{$v}]]", $replace, $template);
+		}
+		
+}
+$template = template_code_replace($template, $template_code);
+echo $template;

@@ -38,6 +38,7 @@ $timecount = count($time);
 $type = $DB->query("SELECT * FROM `ytidc_type` WHERE `status`='1'");
 $server = $DB->query("SELECT * FROM `ytidc_server` WHERE `status`='1'");
 $serverinfo = $DB->query("SELECT * FROM `ytidc_server` WHERE `id`='{$row['server']}'")->fetch_assoc();
+$descriptionhtml = file_get_contents("../templates/".$conf['template']."/user_buy_product_modal.template");
 $plugin = "../plugins/".$serverinfo['plugin']."/main.php";
 if(!file_exists($plugin) || !is_file($plugin)){
 	@header("Location: ./msg.php?msg=服务器插件不存在");
@@ -103,6 +104,10 @@ include($plugin);
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">产品介绍</label>
                                             <textarea class="form-control" name="description" row="6"><?=$row['description']?></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">推荐产品介绍格式</label>
+                                            <textarea class="form-control" name="description" row="6" disabled=""><?=$descriptionhtml?></textarea>
                                         </div>
                                       	<div class="form-group">
                                           	<label for="exampleInputEmail1">产品分类</label>

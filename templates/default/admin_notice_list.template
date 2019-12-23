@@ -1,0 +1,5 @@
+<tr>
+                                                <th scope="row">[id]</th>
+                                                <td>[title]</td>
+                                                <td><a href="./editnotice.php?id=[id]" class="btn btn-primary">编辑</a><a href="./editnotice.php?act=del&id=[id]" class="btn btn-primary">删除</a></td>
+                                            </tr>
