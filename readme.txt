@@ -1,4 +1,4 @@
-云塔IDC系统【Powered by YunTa】
+云塔IDC系统（完全支持PHP7.4版本！！）【Powered by YunTa】
 作者QQ：2031464675
 Author Telegram:@kitrosmc
 作者邮箱：2031464675@qq.com
