@@ -6,12 +6,12 @@ if(empty($_SESSION['adminlogin']) || $_SESSION['adminlogin'] != $session){
   	@header("Location: ./login.php");
   	exit;
 }
-if(!empty($_POST['name']) && !empty($_POST['domain']) && !empty($_POST['description']) && !empty($_POST['admin']) && !empty($_POST['password']) && !empty($_POST['user']) && !empty($_POST['notice'])){
+if(!empty($_POST['title']) && !empty($_POST['domain']) && !empty($_POST['description']) && !empty($_POST['admin']) && !empty($_POST['password']) && !empty($_POST['notice'])){
   	foreach($_POST as $k => $v){
       	$$k = daddslashes($v);
     }
   	$DB->query("INSERT INTO `ytidc_fenzhan` (`domain`, `title`, `description`, `keywords`, `notice`, `admin`, `password`, `user`, `status`) VALUES ('{$domain}', '{$title}', '{$description}', '', '{$notice}', '{$admin}', '{$password}', '{$user}', '1')");
-  	@header("Location: ./msg.php?msg=添加服务器成功！");
+  	@header("Location: ./msg.php?msg=添加分站成功！");
   	exit;
 }
 $title = "添加分站";

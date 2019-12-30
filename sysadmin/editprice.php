@@ -24,6 +24,7 @@ if($act == "edit"){
     $default = daddslashes($_POST['default']);
     if($default == '1'){
         $DB->query("UPDATE `ytidc_grade` SET `default`='0' WHERE `default`='1'");
+        $DB->query("UPDATE `ytidc_grade` SET `default`='1' WHERE `id`='{$id}'");
     }
   	$DB->query("UPDATE `ytidc_grade` SET `name`='{$name}', `price`='{$price}' WHERE `id`='{$id}'");
   	@header("Location: ./msg.php?msg=修改成功");
