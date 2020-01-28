@@ -56,7 +56,7 @@ if($verify_result) {//验证成功
           		$payfee = 100 - $conf['epay_fee_qq'];
           	}
           	if($type == "alipay"){
-          		$payfee = 200 - $conf['epay_fee_zfb'];
+          		$payfee = 100 - $conf['epay_fee_zfb'];
           	}
           	$add_money = $row['money'] * $payfee / 100;
           	$new_money = $user['money'] + $add_money;
