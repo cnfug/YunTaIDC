@@ -100,7 +100,7 @@ function url_encode($str) {
 function url_decode($str) {  
     if(is_array($str)) {  
         foreach($str as $key=>$value) {  
-            $str[urldecode($key)] = urldecode($value);  
+            $str[urldecode($key)] = url_decode($value);  
         }  
     } else {  
         $str = urldecode($str);  
