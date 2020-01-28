@@ -59,8 +59,16 @@ $price = json_decode($row['price'], true);
                                           	<label for="exampleInputEmail1">设为默认价格组：</label>
                                     <div>
                                         <select name="default">
-                                            <option value="0">否</option>
-                                            <option value="1">是</option>
+                                        <?php
+                                            if($row['default'] == 1){
+                                                echo '<option value="0">否</option>
+                                                      <option value="1" selected>是</option>';
+                                            }else{
+                                                echo '<option value="0" selected>否</option>
+                                                      <option value="1">是</option>';
+                                            }
+                                        ?>
+                                            
                                         </select>
                                     </div>	
                                       <?php

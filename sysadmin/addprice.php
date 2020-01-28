@@ -6,7 +6,7 @@ if(empty($_SESSION['adminlogin']) || $_SESSION['adminlogin'] != $session){
   	@header("Location: ./login.php");
   	exit;
 }
-if(!empty($_POST['name']) && !empty($_POST['weight']) && !empty($_POST['need_money']) && !empty($_POST['need_save']) && !empty($_POST['need_paid'])){
+if(!empty($_POST['name']) && !empty($_POST['weight'])){
   	$name = daddslashes($_POST['name']);
   	$weight = daddslashes($_POST['weight']);
   	$need_money = daddslashes($_POST['need_money']);

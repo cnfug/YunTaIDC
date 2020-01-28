@@ -44,17 +44,41 @@ if(!empty($id)){
 		$DB->query("UPDATE `ytidc_user` SET `grade`='{$grade['id']}' WHERE `id`='{$user['id']}'");
 		@header("Location: ./msg.php?msg=升级成功");
 		exit;
+	}else{
+		if($grade['need_money'] == 0){
+			@header("Location: ./msg.php?msg=该价格组不支持使用消费开通");
+			exit;
+		}else{
+			@header("Location: ./msg.php?msg=消费不足升级");
+			exit;
+		}
 	}
 	if($user['money'] >= $grade['need_save']&& $grade['need_paid'] != 0){
 		$DB->query("UPDATE `ytidc_user` SET `grade`='{$grade['id']}' WHERE `id`='{$user['id']}'");
 		@header("Location: ./msg.php?msg=升级成功");
 		exit;	
+	}else{
+		if($grade['need_money'] == 0){
+			@header("Location: ./msg.php?msg=该价格组不支持使用预存款开通");
+			exit;
+		}else{
+			@header("Location: ./msg.php?msg=余额不足预存款升级");
+			exit;
+		}
 	}
 	if($user['money'] >= $grade['need_money'] && $grade['need_money'] != 0){
 		$new_money = $user['money'] - $grade['need_money'];
 		$DB->query("UPDATE `ytidc_user` SET `grade`='{$grade['id']}', `money`='{$new_money}' WHERE `id`='{$user['id']}'");
 		@header("Location: ./msg.php?msg=升级成功");
 		exit;
+	}else{
+		if($grade['need_money'] == 0){
+			@header("Location: ./msg.php?msg=该价格组不支持使用支付开通");
+			exit;
+		}else{
+			@header("Location: ./msg.php?msg=余额不足支付升级");
+			exit;
+		}
 	}
 	@header("Location: ./msg.php?msg=开通失败，请联系管理员进行开通！");
 	exit;
