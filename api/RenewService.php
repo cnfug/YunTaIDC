@@ -14,7 +14,7 @@ if(empty($params['ytidc_user']) && empty($params['ytidc_pass'])){
   	 exit(json_encode($retdata));
 }else{
   	$ytuser = $params['ytidc_user'];
-  	$ytpass = $params['ytidc_pass'];
+  	$ytpass = base64_encode(daddslashes($params['ytidc_pass']));
   	$user = $DB->query("SELECT * FROM `ytidc_user` WHERE `username`='{$ytuser}' AND `password`='{$ytpass}'");
   	if($user->num_rows != 1){
       	$retdata = array(
@@ -79,7 +79,7 @@ if($new_money >= 0){
     );
   	 exit(json_encode($retdata));
 }
-$plugin = "../plugins/".$server['plugin']."/main.php";
+$plugin = "../plugins/server/".$server['plugin']."/main.php";
 if(!is_file($plugin) || !file_exists($plugin)){
   	$retdata = array(
       	'ret' => 'fail',

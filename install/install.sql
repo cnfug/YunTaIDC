@@ -2,7 +2,7 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
-SET time_zone = "+08:00";
+SET time_zone = "+00:00";
 
 CREATE TABLE `ytidc_config` (
   `k` varchar(256) NOT NULL,
@@ -19,14 +19,15 @@ INSERT INTO `ytidc_config` (`k`, `v`) VALUES
 ('invitepercent', '1'),
 ('siteprice', '10.00'),
 ('sitedomain', 'yunta.cc'),
-('template', 'default'),
+('template', 'template02'),
 ('http', 'http'),
-('epay_fee_wx', '2'),
-('epay_fee_qq', '2'),
-('epay_fee_zfb', '2'),
 ('contactqq1', '123456'),
-('contactqq2', '123456'),
-('contactemail', '123456@qq.com');
+('contactqq2', '12345678'),
+('contactemail', '123456@qq.com'),
+('template_mobile', 'default'),
+('crondate', '2020-01-31'),
+('cloud_get_news', '1'),
+('cloud_pay_vertify', '1');
 
 CREATE TABLE `ytidc_fenzhan` (
   `id` int(11) NOT NULL,
@@ -42,6 +43,9 @@ CREATE TABLE `ytidc_fenzhan` (
   `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+INSERT INTO `ytidc_fenzhan` (`id`, `domain`, `title`, `subtitle`, `description`, `keywords`, `notice`, `admin`, `password`, `user`, `status`) VALUES
+(6, 'yun.netech.cc', '默认站点', '使用云塔系统', '默认站点资料可以改，但请勿删除，否则可能无法浏览超级后台', '', '请不要删除', 'admin', '123456', 1000, 1);
+
 CREATE TABLE `ytidc_grade` (
   `id` int(11) NOT NULL,
   `name` varchar(256) NOT NULL,
@@ -55,7 +59,7 @@ CREATE TABLE `ytidc_grade` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `ytidc_grade` (`id`, `name`, `weight`, `need_paid`, `need_money`, `need_save`, `default`, `price`, `status`) VALUES
-(1, '默认价格组', 1, '0.00', '0.00', '0.00', 1, '', 1);
+(1, '默认价格组', 1, '0.00', '0.00', '0.00', 1, '{\"20\":\"10.00\",\"23\":\"900.00\",\"24\":\"1420.00\"}', 1);
 
 CREATE TABLE `ytidc_notice` (
   `id` int(11) NOT NULL,
@@ -75,6 +79,14 @@ CREATE TABLE `ytidc_order` (
   `status` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `ytidc_payplugin` (
+  `id` int(11) NOT NULL,
+  `displayname` varchar(256) NOT NULL,
+  `gateway` varchar(256) NOT NULL,
+  `fee` decimal(9,2) NOT NULL,
+  `configoption` text NOT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ytidc_product` (
   `id` int(11) NOT NULL,
@@ -162,6 +174,9 @@ ALTER TABLE `ytidc_notice`
 ALTER TABLE `ytidc_order`
   ADD PRIMARY KEY (`orderid`);
 
+ALTER TABLE `ytidc_payplugin`
+  ADD PRIMARY KEY (`id`);
+
 ALTER TABLE `ytidc_product`
   ADD PRIMARY KEY (`id`);
 
@@ -184,12 +199,15 @@ ALTER TABLE `ytidc_worder`
   ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `ytidc_fenzhan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 ALTER TABLE `ytidc_grade`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 ALTER TABLE `ytidc_notice`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+ALTER TABLE `ytidc_payplugin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 ALTER TABLE `ytidc_product`

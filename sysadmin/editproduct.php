@@ -8,13 +8,13 @@ if(empty($_SESSION['adminlogin']) || $_SESSION['adminlogin'] != $session){
 }
 $id = daddslashes($_GET['id']);
 if(empty($id)){
-  	@header("Location: ./type.php");
+  	@header("Location: ./product.php");
   	exit;
 }
 $act = daddslashes($_GET['act']);
 if($act == "del"){
   	$DB->query("DELETE FROM `ytidc_product` WHERE `id`='{$id}'");
-  	@header("Location: ./msg.php?msg=删除成功");
+  	@header("Location: ./product.php");
   	exit;
 }
 if($act == "edit"){
@@ -24,13 +24,17 @@ if($act == "edit"){
     }
   	$configoption = json_encode(daddslashes($_POST['configoption']));
   	$DB->query("UPDATE `ytidc_product` SET `configoption`='{$configoption}' WHERE `id`='{$id}'");
-  	$time = json_encode(url_encode(daddslashes($_POST['time'])));
+  	$time = daddslashes($_POST['time']);
+  	foreach($time as $k => $v){
+  		if(!empty($v['name'])){
+  			$timearray[$k] = $v;
+  		}
+  	}
+  	$time = json_encode(url_encode($timearray));
   	$DB->query("UPDATE `ytidc_product` SET `time`='{$time}' WHERE `id`='{$id}'");
-  	@header("Location: ./msg.php?msg=修改成功");
+  	@header("Location: ./editproduct.php?id={$id}");
   	exit;
 }
-$title = "编辑产品";
-include("./head.php");
 $row = $DB->query("SELECT * FROM `ytidc_product` WHERE `id`='{$id}'")->fetch_assoc();
 $row['configoption'] = json_decode($row['configoption'], 1);
 $time = json_decode(url_decode($row['time']),true);
@@ -39,12 +43,13 @@ $type = $DB->query("SELECT * FROM `ytidc_type` WHERE `status`='1'");
 $server = $DB->query("SELECT * FROM `ytidc_server` WHERE `status`='1'");
 $serverinfo = $DB->query("SELECT * FROM `ytidc_server` WHERE `id`='{$row['server']}'")->fetch_assoc();
 $descriptionhtml = file_get_contents("../templates/".$conf['template']."/user_buy_product_modal.template");
-$plugin = "../plugins/".$serverinfo['plugin']."/main.php";
+$plugin = "../plugins/server/".$serverinfo['plugin']."/main.php";
 if(!file_exists($plugin) || !is_file($plugin)){
 	@header("Location: ./msg.php?msg=服务器插件不存在");
 	exit;
 }
 include($plugin);
+include("./head.php");
 ?>
 
 <script>
@@ -82,91 +87,70 @@ include($plugin);
     		time.appendChild(tr);
         }
         </script>
-            <div class="container-fluid">
-                <div class="side-body">
-                    <div class="page-title">
-                        <span class="title">编辑产品</span>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <div class="title">编辑内容</div>
-                                    </div>
-                                </div>
-                                    <form method="POST" action="editproduct.php?act=edit&id=<?=$id?>">
-                                <div class="card-body">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">产品名称</label>
-                                            <input name="name" type="text" class="form-control" id="name" placeholder="产品名称" value="<?=$row['name']?>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">产品介绍</label>
-                                            <textarea class="form-control" name="description" row="6"><?=$row['description']?></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">推荐产品介绍格式</label>
-                                            <textarea class="form-control" name="description" row="6" disabled=""><?=$descriptionhtml?></textarea>
-                                        </div>
-                                      	<div class="form-group">
-                                          	<label for="exampleInputEmail1">产品分类</label>
-                                    <div>
-                                        <select name="type">
-                                            <optgroup label="请选择">
-                                              <?php while($row2 = $type->fetch_assoc()){
-                                              	if($row2['id'] == $row['type']){
-                                              		$selected = "selected";
-                                              	}else{
-                                              		$selected = "";
-                                              	}
-  														echo '
-                                                <option value="'.$row2['id'].'" '.$selected.'>'.$row2['name'].'</option>';
-													}
-                                             	?>
-                                            </optgroup>
-                                        </select>
-                                    </div>	
-                                      	</div>
-                                      	<div class="form-group">
-                                          	<label for="exampleInputEmail1">产品服务器</label>
-                                          	
-                                    <div>
-                                        <select name="server">
-                                            <optgroup label="请选择">
-                                              <?php while($row2 = $server->fetch_assoc()){
-                                              	if($row2['id'] == $row['server']){
-                                              		$selected = "selected";
-                                              	}else{
-                                              		$selected = "";
-                                              	}
-  														echo '
-                                                <option value="'.$row2['id'].'" '.$selected.'>'.$row2['name'].'</option>';
-													}
-                                             	?>
-                                            </optgroup>
-                                        </select>
-                                    </div>	
-                                      	</div>
-                                        
-                                </div>
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <div class="title">周期配置 <a class="btn btn-danger" href="javascript:AddTimeInput()" type="button"> 添加产品周期</a></div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>名称</th>
-                                                <th>费率</th>
-                                                <th>开通日数</th>
-                                              	<th>备注（根据插件提示填写）</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="timetable">
-                                        	<?php
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3">编辑产品</h1>
+</div>
+<div class="wrapper-md" ng-controller="FormDemoCtrl">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-heading font-bold">编辑产品</div>
+        <div class="panel-body">
+          <form role="form" action="./editproduct.php?act=edit&id=<?=$id?>" method="POST">
+            <div class="form-group">
+              <label>产品名称</label>
+              <input type="text" name="name" class="form-control" placeholder="产品名称" value="<?=$row['name']?>">
+            </div>
+            <div class="form-group">
+              <label>产品介绍</label>
+              <textarea class="form-control" name="description"><?=$row['description']?></textarea>
+            </div>
+            <div class="form-group">
+              <label>模板推荐产品介绍</label>
+              <textarea class="form-control" disabled=""><?=$descriptionhtml?></textarea>
+            </div>
+            <div class="form-group">
+              <label>产品分类</label>
+              <select name="type" class="form-control m-b">
+              	<?php
+              	while($row2 = $type->fetch_assoc()){
+              		if($row2['id'] == $row['tyoe']){
+              			echo '<option value="'.$row2['id'].'" selected>'.$row2['name'].'</option>';
+              		}else{
+              			echo '<option value="'.$row2['id'].'">'.$row2['name'].'</option>';
+              		}
+              	}
+              	?>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>产品服务器</label>
+              <select name="server" class="form-control m-b">
+              	<?php
+              	while($row2 = $server->fetch_assoc()){
+              		if($row2['id'] == $row['server']){
+              			echo '<option value="'.$row2['id'].'" selected>'.$row2['name'].'</option>';
+              		}else{
+              			echo '<option value="'.$row2['id'].'">'.$row2['name'].'</option>';
+              		}
+              	}
+              	?>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>产品周期【留空名称为删除】<button class="btn btn-small btn-xs btn-primary" onclick="AddTimeInput()" type="button">添加周期</button></label>
+	            <div class="table-responsive">
+	              <table class="table table-striped b-t b-light">
+	                <thead>
+	                  <tr>
+	                    <th>周期名称</th>
+	                    <th>周期费率</th>
+	                    <th>开通天数</th>
+	                    <th>周期备注</th>
+	                  </tr>
+	                </thead>
+	                <tbody id="timetable">
+                    <?php
                                         	foreach($time as $k => $v){
                                             	echo '<tr>
                                                 <td><input type="text" class="form-control" placeholder="周期名称" name="time['.$k.'][name]" value="'.$v['name'].'"></td>
@@ -176,38 +160,29 @@ include($plugin);
                                             </tr>';
                                             }
                                         	?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <div class="title">插件配置</div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                	
-                                	<?php
+	                </tbody>
+	              </table>
+	            </div>
+            </div>
+            <?php
                                         if(function_exists($serverinfo['plugin']."_ConfigOption")){
                                         	$function = $serverinfo['plugin']."_ConfigOption";
                                         	$configoption = $function();
                                         	foreach($configoption as $k => $v){
                                         		echo '<div class="form-group">
-                                            <label for="exampleInputEmail1">【插件配置】：'.$k.'</label>
+                                            <label>【插件配置】：'.$k.'</label>
                                             <input type="text" class="form-control" name="configoption['.$k.']" placeholder="'.$v.'" maxlength="256" value="'.$row['configoption'][$k].'">
                                         </div>';
                                         	}
                                         }
-                                        ?>
-                                        
-                                        <button type="submit" class="btn btn-default">修改</button>
-                                </div>
-                            </div>
-                                    </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            ?>
+            <button type="submit" class="btn btn-sm btn-primary">提交</button>
+          </form>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
 <?php
 
 include("./foot.php");

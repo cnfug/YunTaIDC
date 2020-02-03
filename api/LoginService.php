@@ -11,7 +11,7 @@ $service = $DB->query("SELECT * FROM `ytidc_service` WHERE `username`='{$params[
 $product = $DB->query("SELECT * FROM `ytidc_product` WHERE `id`='{$service['product']}'")->fetch_assoc();
 $server = $DB->query("SELECT * FROM `ytidc_server` WHERE `id`='{$product['server']}'")->fetch_assoc();
 
-$plugin = "../plugins/".$server['plugin']."/main.php";
+$plugin = "../plugins/server/".$server['plugin']."/main.php";
 if(!file_exists($plugin)){
 	exit('该产品不支持登陆');
 }

@@ -13,6 +13,7 @@ if(!empty($_GET['code'])){
 if(!empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['email'])){
     $username = daddslashes($_POST['username']);
     $password = daddslashes($_POST['password']);
+    $password = base64_encode($password);
   	$email = daddslashes($_POST['email']);
     $invite = $_SESSION['invite'];
   	$domain = $_SERVER['HTTP_HOST'];
@@ -26,13 +27,13 @@ if(!empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['em
 $template_code = array(
 	'site' => $site,
 	'config' => $conf,
-	'template_file_path' => '../templates/'.$conf['template'],
+	'template_file_path' => '../templates/'.$template_name,
 );
-$template = file_get_contents("../templates/".$conf['template']."/user_register.template");
+$template = file_get_contents("../templates/".$template_name."/user_register.template");
 $include_file = find_include_file($template);
 foreach($include_file[1] as $k => $v){
-		if(file_exists("../templates/".$conf['template']."/".$v)){
-			$replace = file_get_contents("../templates/".$conf['template']."/".$v);
+		if(file_exists("../templates/".$template_name."/".$v)){
+			$replace = file_get_contents("../templates/".$template_name."/".$v);
 			$template = str_replace("[include[{$v}]]", $replace, $template);
 		}
 		

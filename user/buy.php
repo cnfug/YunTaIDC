@@ -28,8 +28,8 @@ if($grade == 0){
     }
 }
 $type = $DB->query("SELECT * FROM `ytidc_type` WHERE `status`='1' ORDER BY `weight` DESC");
-$product_template = file_get_contents("../templates/".$conf['template']."/user_buy_product.template");
-$type_template = file_get_contents("../templates/".$conf['template']."/user_buy_type.template");
+$product_template = file_get_contents("../templates/".$template_name."/user_buy_product.template");
+$type_template = file_get_contents("../templates/".$template_name."/user_buy_type.template");
 while($row = $type->fetch_assoc()){
 	$type_template_code = array(
 		'name' => $row['name'],
@@ -51,16 +51,16 @@ while($row = $product->fetch_assoc()){
 $template_code = array(
 	'site' => $site,
 	'config' => $conf,
-	'template_file_path' => '../templates/'.$conf['template'],
+	'template_file_path' => '../templates/'.$template_name,
 	'user' => $user,
 	'product' => $product_template_new,
 	'type' => $type_template_new,
 );
-$template = file_get_contents("../templates/".$conf['template']."/user_buy.template");
+$template = file_get_contents("../templates/".$template_name."/user_buy.template");
 $include_file = find_include_file($template);
 foreach($include_file[1] as $k => $v){
-		if(file_exists("../templates/".$conf['template']."/".$v)){
-			$replace = file_get_contents("../templates/".$conf['template']."/".$v);
+		if(file_exists("../templates/".$template_name."/".$v)){
+			$replace = file_get_contents("../templates/".$template_name."/".$v);
 			$template = str_replace("[include[{$v}]]", $replace, $template);
 		}
 		

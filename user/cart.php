@@ -29,8 +29,8 @@ if($user['grade'] == "0" || $DB->query("SELECT * FROM `ytidc_grade` WHERE `id`='
   	$grade = $DB->query("SELECT * FROM `ytidc_grade` WHERE `id`='{$user['grade']}'")->fetch_assoc();
 }
 $price = json_decode($grade['price'], true);
-$template = file_get_contents("../templates/".$conf['template']."/user_cart.template");
-$time_template = file_get_contents("../templates/".$conf['template']."/user_cart_time.template");
+$template = file_get_contents("../templates/".$template_name."/user_cart.template");
+$time_template = file_get_contents("../templates/".$template_name."/user_cart_time.template");
 foreach($pdis as $k => $v){
 	$time_template_code = array(
 		'name' => $v['name'],
@@ -40,8 +40,8 @@ foreach($pdis as $k => $v){
 }
 $include_file = find_include_file($template);
 foreach($include_file[1] as $k => $v){
-		if(file_exists("../templates/".$conf['template']."/".$v)){
-			$replace = file_get_contents("../templates/".$conf['template']."/".$v);
+		if(file_exists("../templates/".$template_name."/".$v)){
+			$replace = file_get_contents("../templates/".$template_name."/".$v);
 			$template = str_replace("[include[{$v}]]", $replace, $template);
 		}
 		
@@ -49,7 +49,7 @@ foreach($include_file[1] as $k => $v){
 $template_code = array(
 	'site' => $site,
 	'config' => $conf,
-	'template_file_path' => '../templates/'.$conf['template'],
+	'template_file_path' => '../templates/'.$template_name,
 	'user' => $user,
 	'product' => array(
 		'id' => $row['id'],

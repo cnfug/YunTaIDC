@@ -1,146 +1,240 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title><?=$title?> - 云塔IDC系统</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300,400' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
-    <!-- CSS Libs -->
-    <link rel="stylesheet" type="text/css" href="./lib/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="./lib/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="./lib/css/animate.min.css">
-    <link rel="stylesheet" type="text/css" href="./lib/css/bootstrap-switch.min.css">
-    <link rel="stylesheet" type="text/css" href="./lib/css/checkbox3.min.css">
-    <link rel="stylesheet" type="text/css" href="./lib/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" type="text/css" href="./lib/css/dataTables.bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="./lib/css/select2.min.css">
-    <!-- CSS App -->
-    <link rel="stylesheet" type="text/css" href="./css/style.css">
-    <link rel="stylesheet" type="text/css" href="./css/themes/flat-blue.css">
+  <meta charset="utf-8" />
+  <title>仪表盘 | 云塔IDC系统v2.2</title>
+  <meta name="description" content="app, web app, responsive, responsive layout, admin, admin panel, admin dashboard, flat, flat ui, ui kit, AngularJS, ui route, charts, widgets, components" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+  <link rel="stylesheet" href="css/animate.css" type="text/css" />
+  <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" />
+  <link rel="stylesheet" href="css/simple-line-icons.css" type="text/css" />
+  <link rel="stylesheet" href="css/font.css" type="text/css" />
+  <link rel="stylesheet" href="css/app.css" type="text/css" />
 </head>
+<body>
+  <div class="app app-header-fixed" id="app">
+    <!-- navbar -->
+    <div class="app-header navbar">
+      <!-- navbar header -->
+      <div class="navbar-header bg-dark">
+        <button class="pull-right visible-xs dk" data-toggle="class:show" data-target=".navbar-collapse">
+          <i class="glyphicon glyphicon-cog"></i>
+        </button>
+        <button class="pull-right visible-xs" data-toggle="class:off-screen" data-target=".app-aside" ui-scroll="app">
+          <i class="glyphicon glyphicon-align-justify"></i>
+        </button>
+        <!-- brand -->
+        <a href="#/" class="navbar-brand text-lt">
+          <i class="fa fa-cloud"></i>
+          <img src="img/logo.png" alt="." class="hide">
+          <span class="hidden-folded m-l-xs">云塔v2.2</span>
+        </a>
+        <!-- / brand -->
+      </div>
+      <!-- / navbar header -->
 
-<body class="flat-blue">
-    <div class="app-container">
-        <div class="row content-container">
-            <nav class="navbar navbar-default navbar-fixed-top navbar-top">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-expand-toggle">
-                            <i class="fa fa-bars icon"></i>
-                        </button>
-                        <ol class="breadcrumb navbar-breadcrumb">
-                            <li class="active">管理后台</li>
-                        </ol>
-                        <button type="button" class="navbar-right-expand-toggle pull-right visible-xs">
-                            <i class="fa fa-th icon"></i>
-                        </button>
-                    </div>
-                </div>
-            </nav>
-            <div class="side-menu sidebar-inverse">
-                <nav class="navbar navbar-default" role="navigation">
-                    <div class="side-menu-container">
-                        <div class="navbar-header">
-                            <a class="navbar-brand" href="#">
-                                <div class="icon fa fa-paper-plane"></div>
-                                <div class="title">云塔IDC系统 V.2.0</div>
-                            </a>
-                            <button type="button" class="navbar-expand-toggle pull-right visible-xs">
-                                <i class="fa fa-times icon"></i>
-                            </button>
-                        </div>
-                        <ul class="nav navbar-nav">
-                            <li class="active">
-                                <a href="index.php">
-                                    <span class="icon fa fa-tachometer"></span><span class="title">管理后台</span>
-                                </a>
-                            </li>
-                            <li class="panel panel-default dropdown">
-                                <a data-toggle="collapse" href="#dropdown-element">
-                                    <span class="icon fa fa-desktop"></span><span class="title">产品服务</span>
-                                </a>
-                                <!-- Dropdown level 1 -->
-                                <div id="dropdown-element" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <ul class="nav navbar-nav">
-                                            <li><a href="type.php">产品组管理</a>
-                                            </li>
-                                            <li><a href="product.php">产品管理</a>
-                                            </li>
-                                            <li><a href="server.php">服务器管理</a>
-                                            </li>
-                                            <li><a href="service.php">在线服务管理</a>
-                                            </li>
-                                            <li><a href="worder.php">工单管理</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="panel panel-default dropdown">
-                                <a data-toggle="collapse" href="#dropdown-table">
-                                    <span class="icon fa fa-table"></span><span class="title">用户代理</span>
-                                </a>
-                                <!-- Dropdown level 1 -->
-                                <div id="dropdown-table" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <ul class="nav navbar-nav">
-                                            <li><a href="user.php">用户管理</a>
-                                            </li>
-                                            <li><a href="site.php">分站管理</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="panel panel-default dropdown">
-                                <a data-toggle="collapse" href="#dropdown-form">
-                                    <span class="icon fa fa-file-text-o"></span><span class="title">价格财务</span>
-                                </a>
-                                <!-- Dropdown level 1 -->
-                                <div id="dropdown-form" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <ul class="nav navbar-nav">
-                                            <li><a href="price.php">价格管理</a>
-                                            </li>
-                                            <li><a href="code.php">优惠码管理</a>
-                                            </li>
-                                            <li><a href="order.php">交易记录</a>
-                                            </li>
-                                            <li><a href="epay.php">易支付管理</a>
-                                            </li>
-                                            <li><a href="invite.php">用户邀请记录</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="panel panel-default dropdown">
-                                <a data-toggle="collapse" href="#dropdown-site">
-                                    <span class="icon fa fa-circle"></span><span class="title">网站管理</span>
-                                </a>
-                                <!-- Dropdown level 1 -->
-                                <div id="dropdown-site" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <ul class="nav navbar-nav">
-                                            <li><a href="notice.php">公告管理</a>
-                                            </li>
-                                            <li><a href="config.php">编辑资料</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <a href="http://www.yunta.cc/">
-                                    <span class="icon fa fa-thumbs-o-up"></span><span class="title">前往官网</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- /.navbar-collapse -->
-                </nav>
+      <!-- navbar collapse -->
+      <div class="collapse pos-rlt navbar-collapse box-shadow bg-white-only">
+        <!-- buttons -->
+        <div class="nav navbar-nav hidden-xs">
+          <a href="#" class="btn no-shadow navbar-btn" data-toggle="class:app-aside-folded" data-target=".app">
+            <i class="fa fa-dedent fa-fw text"></i>
+            <i class="fa fa-indent fa-fw text-active"></i>
+          </a>
+        </div>
+        <!-- / buttons -->
+
+        <!-- search form -->
+        <form class="navbar-form navbar-form-sm navbar-left shift" ui-shift="prependTo" data-target=".navbar-collapse" role="search" ng-controller="TypeaheadDemoCtrl">
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" ng-model="selected" typeahead="state for state in states | filter:$viewValue | limitTo:8" class="form-control input-sm bg-light no-border rounded padder" placeholder="快速搜索...">
+              <span class="input-group-btn">
+                <button type="submit" class="btn btn-sm bg-light rounded"><i class="fa fa-search"></i></button>
+              </span>
             </div>
-            <!-- Main Content -->
+          </div>
+        </form>
+        <!-- / search form -->
+
+      </div>
+      <!-- / navbar collapse -->
+    </div>
+    <!-- / navbar -->
+
+    <!-- menu -->
+    <div class="app-aside hidden-xs bg-dark">
+      <div class="aside-wrap">
+        <div class="navi-wrap">
+          <!-- nav -->
+          <nav ui-nav class="navi">
+            <ul class="nav">
+              <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+                <span translate="aside.nav.HEADER">导航</span>
+              </li>
+              <li ui-sref-active="active">
+                <a ui-sref="app.calendar" href="/sysadmin/index.php">
+                  <i class="glyphicon glyphicon-home icon text-primary-dker"></i>
+                  <span class="font-bold" translate="aside.nav.CALENDAR">仪表盘</span>
+                </a>
+              </li>
+              <li>
+                <a href class="auto">      
+                  <span class="pull-right text-muted">
+                    <i class="fa fa-fw fa-angle-right text"></i>
+                    <i class="fa fa-fw fa-angle-down text-active"></i>
+                  </span>
+                  <i class="glyphicon glyphicon-th"></i>
+                  <span>产品服务</span>
+                </a>
+                <ul class="nav nav-sub dk">
+                  <li ui-sref-active="active">
+                    <a ui-sref="layout.app" href="/sysadmin/type.php">
+                      <span>产品组管理</span>
+                    </a>
+                  </li>
+                  <li ui-sref-active="active">
+                    <a ui-sref="layout.app" href="/sysadmin/product.php">
+                      <span>产品管理</span>
+                    </a>
+                  </li>
+                  <li ui-sref-active="active">
+                    <a ui-sref="layout.app" href="/sysadmin/server.php">
+                      <span>服务器管理</span>
+                    </a>
+                  </li>
+                  <li ui-sref-active="active">
+                    <a ui-sref="layout.app" href="/sysadmin/service.php">
+                      <span>在线服务器管理</span>
+                    </a>
+                  </li><li ui-sref-active="active">
+                    <a ui-sref="layout.app" href="/sysadmin/worder.php">
+                      <span>服务工单管理</span>
+                    </a>
+                  </li>
+                </ul>
+              </li><li>
+                <a href class="auto">      
+                  <span class="pull-right text-muted">
+                    <i class="fa fa-fw fa-angle-right text"></i>
+                    <i class="fa fa-fw fa-angle-down text-active"></i>
+                  </span>
+                  <i class="glyphicon glyphicon-user"></i>
+                  <span>用户代理</span>
+                </a>
+                <ul class="nav nav-sub dk">
+                  <li ui-sref-active="active">
+                    <a ui-sref="layout.app" href="/sysadmin/user.php">
+                      <span>用户管理</span>
+                    </a>
+                  </li>
+                  <li ui-sref-active="active">
+                    <a ui-sref="layout.app" href="/sysadmin/site.php">
+                      <span>分站管理</span>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a href class="auto">      
+                  <span class="pull-right text-muted">
+                    <i class="fa fa-fw fa-angle-right text"></i>
+                    <i class="fa fa-fw fa-angle-down text-active"></i>
+                  </span>
+                  <i class="glyphicon glyphicon-list"></i>
+                  <span>价格财务</span>
+                </a>
+                <ul class="nav nav-sub dk">
+                  <li ui-sref-active="active">
+                    <a ui-sref="layout.app" href="/sysadmin/price.php">
+                      <span>价格组管理</span>
+                    </a>
+                  </li>
+                  <li ui-sref-active="active">
+                    <a ui-sref="layout.app" href="/sysadmin/code.php">
+                      <span>优惠码管理</span>
+                    </a>
+                  </li>
+                  <li ui-sref-active="active">
+                    <a ui-sref="layout.app" href="/sysadmin/order.php">
+                      <span>交易记录</span>
+                    </a>
+                  </li>
+                  <li ui-sref-active="active">
+                    <a ui-sref="layout.app" href="/sysadmin/invite.php">
+                      <span>邀请记录</span>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a href class="auto">      
+                  <span class="pull-right text-muted">
+                    <i class="fa fa-fw fa-angle-right text"></i>
+                    <i class="fa fa-fw fa-angle-down text-active"></i>
+                  </span>
+                  <i class="glyphicon glyphicon-briefcase"></i>
+                  <span>网站管理</span>
+                </a>
+                <ul class="nav nav-sub dk">
+                  <li ui-sref-active="active">
+                    <a ui-sref="layout.app" href="/sysadmin/notice.php">
+                      <span>公告管理</span>
+                    </a>
+                  </li>
+                  <li ui-sref-active="active">
+                    <a ui-sref="layout.app" href="/sysadmin/config.php">
+                      <span>资料管理</span>
+                    </a>
+                  </li>
+                  <li ui-sref-active="active">
+                    <a ui-sref="layout.app" href="/sysadmin/pay.php">
+                      <span>支付管理</span>
+                    </a>
+                  </li>
+                  <li ui-sref-active="active">
+                    <a ui-sref="layout.app" href="/sysadmin/template.php">
+                      <span>模板管理</span>
+                    </a>
+                  </li><li ui-sref-active="active">
+                    <a ui-sref="layout.app" href="/sysadmin/cloud.php">
+                      <span>云中心管理</span>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+          <!-- nav -->
+
+          <!-- aside footer -->
+          <div class="wrapper m-t">
+            <div class="text-center-folded">
+              <span class="pull-right pull-none-folded">90%</span>
+              <span class="hidden-folded" translate="aside.MILESTONE">Pro</span>
+            </div>
+            <div class="progress progress-xxs m-t-sm dk">
+              <div class="progress-bar progress-bar-info" style="width: 90%;">
+              </div>
+            </div>
+            <div class="text-center-folded">
+              <span class="pull-right pull-none-folded">100%</span>
+              <span class="hidden-folded" translate="aside.RELEASE">Useful</span>
+            </div>
+            <div class="progress progress-xxs m-t-sm dk">
+              <div class="progress-bar progress-bar-primary" style="width: 100%;">
+              </div>
+            </div>
+          </div>
+          <!-- / aside footer -->
+        </div>
+      </div>
+    </div>
+    <!-- / menu -->
+
+    <!-- content -->
+    <div class="app-content">
+      <div ui-butterbar></div>
+      <a href class="off-screen-toggle hide" data-toggle="class:off-screen" data-target=".app-aside" ></a>
+      <div class="app-content-body fade-in-up">

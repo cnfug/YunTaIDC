@@ -21,7 +21,7 @@ if(empty($_SESSION['ytidc_user']) && empty($_SESSION['ytidc_pass'])){
     }
 }
 if(!empty($_POST['password']) && !empty($_POST['email'])){
-	$password = daddslashes($_POST['password']);
+	$password = base64_encode(daddslashes($_POST['password']));
 	$email = daddslashes($_POST['email']);
     $DB->query("UPDATE `ytidc_user` SET `password`='{$password}', `email`='{$email}' WHERE `username`='{$user['username']}'");
     @header("Location: ./msg.php?msg=修改成功");
@@ -31,13 +31,13 @@ $template_code = array(
 	'site' => $site,
 	'config' => $conf,
 	'user' => $user,
-	'template_file_path' => '../templates/'.$conf['template'],
+	'template_file_path' => '../templates/'.$template_name,
 );
-$template = file_get_contents("../templates/".$conf['template']."/user_info.template");
+$template = file_get_contents("../templates/".$template_name."/user_info.template");
 $include_file = find_include_file($template);
 foreach($include_file[1] as $k => $v){
-		if(file_exists("../templates/".$conf['template']."/".$v)){
-			$replace = file_get_contents("../templates/".$conf['template']."/".$v);
+		if(file_exists("../templates/".$template_name."/".$v)){
+			$replace = file_get_contents("../templates/".$template_name."/".$v);
 			$template = str_replace("[include[{$v}]]", $replace, $template);
 		}
 		

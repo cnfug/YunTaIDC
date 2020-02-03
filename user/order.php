@@ -20,7 +20,7 @@ if(empty($_SESSION['ytidc_user']) && empty($_SESSION['ytidc_pass'])){
     }
 }
 $result = $DB->query("SELECT * FROM `ytidc_order` WHERE `user`='{$user['id']}'");
-$order_template = file_get_contents("../templates/".$conf['template']."/user_order_list.template");
+$order_template = file_get_contents("../templates/".$template_name."/user_order_list.template");
 while($row = $result->fetch_assoc()){
 	$order_template_code = array(
 		'orderid' => $row['orderid'],
@@ -31,11 +31,11 @@ while($row = $result->fetch_assoc()){
 	);
 	$order_template_new = $order_template_new . template_code_replace($order_template, $order_template_code);
 }
-$template = file_get_contents("../templates/".$conf['template']."/user_order.template");
+$template = file_get_contents("../templates/".$template_name."/user_order.template");
 $include_file = find_include_file($template);
 foreach($include_file[1] as $k => $v){
-		if(file_exists("../templates/".$conf['template']."/".$v)){
-			$replace = file_get_contents("../templates/".$conf['template']."/".$v);
+		if(file_exists("../templates/".$template_name."/".$v)){
+			$replace = file_get_contents("../templates/".$template_name."/".$v);
 			$template = str_replace("[include[{$v}]]", $replace, $template);
 		}
 		
@@ -43,7 +43,7 @@ foreach($include_file[1] as $k => $v){
 $template_code = array(
 	'site' => $site,
 	'config' => $conf,
-	'template_file_path' => '../templates/'.$conf['template'],
+	'template_file_path' => '../templates/'.$template_name,
 	'user' => $user,
 	'order' => $order_template_new,
 );

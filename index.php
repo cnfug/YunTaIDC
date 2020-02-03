@@ -13,7 +13,7 @@ foreach($include_file[1] as $k => $v){
 $template_code = array(
 	'site' => $site,
 	'config' => $conf,
-	'template_file_path' => './templates/'.$conf['template'],
+	'template_file_path' => './templates/'.$template_name,
 );
 $template = template_code_replace($template, $template_code);
 echo $template;

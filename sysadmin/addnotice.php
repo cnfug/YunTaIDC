@@ -11,46 +11,38 @@ if(!empty($_POST['title']) && !empty($_POST['content'])){
   	$content = daddslashes($_POST['content']);
   	$date = date('Y-m-d');
   	$DB->query("INSERT INTO `ytidc_notice` (`title`, `content`, `date`, `site`, `status`) VALUES ('{$title}', '{$content}', '$date', '0', '1')");
-  	@header("Location: ./msg.php?msg=添加公告成功！");
+  	@header("Location: ./notice.php");
   	exit;
 }
 $title = "添加公告";
 include("./head.php");
 
 ?>
-
-            <div class="container-fluid">
-                <div class="side-body">
-                    <div class="page-title">
-                        <span class="title">添加公告</span>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <div class="title">添加内容</div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <form method="POST" action="addnotice.php">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">公告标题</label>
-                                            <input name="title" type="text" class="form-control" id="title" placeholder="公告标题">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputPassword1">公告内容</label><br>
-                                            <textarea name="content" row="6" class="form-control" id="content"></textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-default">添加</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3">添加公告</h1>
+</div>
+<div class="wrapper-md" ng-controller="FormDemoCtrl">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-heading font-bold">添加公告</div>
+        <div class="panel-body">
+          <form role="form" action="./addnotice.php" method="POST">
+            <div class="form-group">
+              <label>公告标题：</label>
+              <input type="text" name="title" class="form-control" placeholder="公告标题">
             </div>
+            <div class="form-group">
+              <label>公告内容</label>
+              <textarea name="content" class="form-control"></textarea>
+            </div>
+            <button type="submit" class="btn btn-sm btn-primary">提交</button>
+          </form>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
 <?php
 
 include("./foot.php");

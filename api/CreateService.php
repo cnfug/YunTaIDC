@@ -19,7 +19,7 @@ if(empty($params['ytidc_user']) && empty($params['ytidc_pass'])){
     }
 }else{
   	$ytuser = daddslashes($params['ytidc_user']);
-  	$ytpass = daddslashes($params['ytidc_pass']);
+  	$ytpass = base64_encode(daddslashes($params['ytidc_pass']));
   	$user = $DB->query("SELECT * FROM `ytidc_user` WHERE `username`='{$ytuser}' AND `password`='{$ytpass}'");
   	if($user->num_rows != 1){
       	$retdata = array(
@@ -96,7 +96,7 @@ $date = date('Y-m-d',strtotime("+{$dis[day]} days", time()));
 $DB->query("INSERT INTO `ytidc_service`(`userid`, `username`, `password`, `enddate`, `product`, `configoption`, `status`) VALUES ('{$user['id']}','{$params['username']}','{$params['password']}','{$date}','{$product['id']}','','1')");
 $serviceid = $DB->query("SELECT * FROM `ytidc_service` WHERE `username`='{$params['username']}' AND `password`='{$params['password']}'")->fetch_assoc();
 $serviceid = $serviceid['id'];
-$plugin = "../plugins/".$server['plugin']."/main.php";
+$plugin = "../plugins/server/".$server['plugin']."/main.php";
 if(!is_file($plugin) || !file_exists($plugin)){
   	$retdata = array(
       	'ret' => 'fail',

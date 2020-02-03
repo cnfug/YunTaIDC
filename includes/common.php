@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+//error_reporting(0);
 define("CACHE_FILE", 0);
 define("IN_CRONLITE", true);
 define("SYSTEM_ROOT", dirname(__FILE__) . "/");
@@ -36,6 +36,12 @@ while($crow = $config->fetch_assoc()){
   	$conf[$crow['k']] = $crow['v'];
 }
 include SYSTEM_ROOT."function.php";
+include SYSTEM_ROOT."template.php";
+if(ismobile()){
+	$template_name = $conf['template_mobile'];
+}else{
+	$template_name = $conf['template'];
+}
 if($DB->query("SELECT * FROM `ytidc_fenzhan`")->num_rows == 0){
 	$domain = $_SERVER['HTTP_HOST'];
 	$DB->query("INSERT INTO `ytidc_fenzhan`(`domain`, `title`, `subtitle`, `description`, `keywords`, `notice`, `admin`, `password`, `user`, `status`) VALUES ('{$domain}','默认站点','使用云塔系统','默认站点资料可以改，但请勿删除，否则可能无法浏览超级后台','','请不要删除','admin','123456','0','1')");

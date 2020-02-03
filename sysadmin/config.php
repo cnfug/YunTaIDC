@@ -12,95 +12,61 @@ if($act == "edit"){
       	$value = daddslashes($v);
       	$DB->query("UPDATE `ytidc_config` SET `v`='{$value}' WHERE `k`='{$k}'");
     }
-  	@header("Location: ./msg.php?msg=修改成功");
+  	@header("Location: ./config.php");
   	exit;
 }
-$title = "编辑服务器";
 include("./head.php");
 $row = $DB->query("SELECT * FROM `ytidc_server` WHERE `id`='{$id}'")->fetch_assoc();
-$templates = get_dir(ROOT."/templates/");
 ?>
-
-
-            <div class="container-fluid">
-                <div class="side-body">
-                    <div class="page-title">
-                        <span class="title">编辑网站</span>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <div class="title">管理内容</div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <form method="POST" action="config.php?act=edit">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">超级管理账号</label>
-                                            <input name="admin" type="text" class="form-control" id="name" placeholder="超级管理账号" value="<?=$conf['admin']?>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">超级管理密码</label>
-                                            <input name="password" type="text" class="form-control" id="serverip" placeholder="超级管理密码" value="<?=$conf['password']?>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">网站模板</label>
-                                            <div>
-                                        		<select name="template">
-                                            		<optgroup label="请选择">
-                                            			<?php foreach($templates as $k => $v){
-                                            				if($row['plugin'] == $conf['template']){
-                                            					$selected = "selected";
-                                            				}else{
-                                            					$selected = "";
-                                            				}
-                                            				echo '<option value="'.$k.'" '.$selected.'>'.$v.'</option>';
-                                            			}
-                                             			?>
-                                            		</optgroup>
-                                    			</select>
-                                    		</div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">分站公告</label>
-                                            <textarea name="sitenotice" class="form-control"><?=$conf['sitenotice']?></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">分站可选用二级域名（目前只能填写一个）</label>
-                                            <input name="sitedomain" type="text" class="form-control" id="sererdns1" placeholder="分站可选用二级域名" value="<?=$conf['sitedomain']?>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">分站价格</label>
-                                            <input name="siteprice" type="text" class="form-control" id="serverdns2" placeholder="分站价格" value="<?=$conf['siteprice']?>" oninput="value=value.replace(/[^\d.]/g,'')">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">邀请用户花费奖励（百分比，1%填1）</label>
-                                            <input name="invitepercent" type="text" class="form-control" id="serverusername" placeholder="邀请用户花费奖励" value="<?=$conf['invitepercent']?>" oninput="value=value.replace(/[^\d.]/g,'')">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">客服1QQ：</label>
-                                            <input name="contactqq1" type="text" class="form-control" id="serverdns2" placeholder="客服1QQ" value="<?=$conf['contactqq1']?>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">客服2QQ：</label>
-                                            <input name="contactqq2" type="text" class="form-control" id="serverdns2" placeholder="客服2QQ" value="<?=$conf['contactqq2']?>">
-                                        </div>
-                                        
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">联系邮箱：</label>
-                                            <input name="contactemail" type="email" class="form-control" id="serverdns2" placeholder="联系邮箱" value="<?=$conf['contactemail']?>">
-                                        </div>
-                                        <button type="submit" class="btn btn-default">修改</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3">站点资料</h1>
+</div>
+<div class="wrapper-md" ng-controller="FormDemoCtrl">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-heading font-bold">编辑资料</div>
+        <div class="panel-body">
+          <form role="form" action="./config.php?act=edit" method="POST">
+            <div class="form-group">
+              <label>客服1QQ</label>
+              <input type="text" name="contactqq1" class="form-control" placeholder="客服1QQ" value="<?=$conf['contactqq1']?>">
             </div>
+            <div class="form-group">
+              <label>客服2QQ</label>
+              <input type="text" name="contactqq2" class="form-control" placeholder="客服2QQ" value="<?=$conf['contactqq2']?>">
+            </div>
+            <div class="form-group">
+              <label>邀请用户花费奖励（百分比，1%填1）</label>
+              <input name="invitepercent" type="text" class="form-control" id="serverusername" placeholder="邀请用户花费奖励" value="<?=$conf['invitepercent']?>" oninput="value=value.replace(/[^\d.]/g,'')">
+            </div>
+            <div class="form-group">
+              <label>分站公告</label>
+              <textarea name="sitenotice" class="form-control"><?=$conf['sitenotice']?></textarea>
+            </div>
+            <div class="form-group">
+              <label>分站可选用二级域名后缀</label>
+              <input name="sitedomain" type="text" class="form-control" id="sererdns1" placeholder="分站可选用二级域名" value="<?=$conf['sitedomain']?>">
+            </div>
+            <div class="form-group">
+              <label>分站价格</label>
+              <input name="siteprice" type="text" class="form-control" id="serverdns2" placeholder="分站价格" value="<?=$conf['siteprice']?>" oninput="value=value.replace(/[^\d.]/g,'')">
+            </div>
+            <div class="form-group">
+              <label>超级管理员账号</label>
+              <input type="text" name="admin" class="form-control" placeholder="超级管理员账号" value="<?=$conf['admin']?>">
+            </div>
+            <div class="form-group">
+              <label>超级管理员密码</label>
+              <input type="password" name="password" class="form-control" placeholder="超级管理员密码" value="<?=$conf['password']?>">
+            </div>
+            <button type="submit" class="btn btn-sm btn-primary">提交</button>
+          </form>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
 <?php
 
 include("./foot.php");

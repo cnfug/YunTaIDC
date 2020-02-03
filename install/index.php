@@ -1,5 +1,5 @@
 <?php
-//error_reporting(0);
+error_reporting(0);
 session_start();
 @header('Content-Type: text/html; charset=UTF-8');
 $do=isset($_GET['do'])?$_GET['do']:'0';
@@ -83,7 +83,7 @@ $_SESSION['checksession']=1;
 		<h3 class="panel-title" align="center">云塔IDC财务管理系统</h3>
 	</div>
 	<div class="panel-body">
-		<p><iframe src="../readme.txt?r=<?php echo time()?>" style="width:100%;height:465px;"></iframe></p>
+		<p><iframe src="./readme.txt?r=<?php echo time()?>" style="width:100%;height:465px;"></iframe></p>
 		<?php if($installed){ ?>
 		<div class="alert alert-warning">您已经安装过，如需重新安装请删除<font color=red> install/install.lock </font>文件后再安装！</div>
 		<?php }else{?>

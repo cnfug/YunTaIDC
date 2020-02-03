@@ -59,7 +59,7 @@ if(!empty($id)){
 	@header("Location: ./msg.php?msg=开通失败，请联系管理员进行开通！");
 	exit;
 }
-$price_template = file_get_contents("../templates/".$conf['template']."/user_price_list.template");
+$price_template = file_get_contents("../templates/".$template_name."/user_price_list.template");
 $result = $DB->query("SELECT * FROM `ytidc_grade` WHERE `status`='1'");
 while($row2 = $result->fetch_assoc()){
 	$price_template_code = array(
@@ -72,11 +72,11 @@ while($row2 = $result->fetch_assoc()){
 	);
 	$price_template_new = $price_template_new . template_code_replace($price_template,$price_template_code);
 }
-$template = file_get_contents("../templates/".$conf['template']."/user_price.template");
+$template = file_get_contents("../templates/".$template_name."/user_price.template");
 $include_file = find_include_file($template);
 foreach($include_file[1] as $k => $v){
-		if(file_exists("../templates/".$conf['template']."/".$v)){
-			$replace = file_get_contents("../templates/".$conf['template']."/".$v);
+		if(file_exists("../templates/".$template_name."/".$v)){
+			$replace = file_get_contents("../templates/".$template_name."/".$v);
 			$template = str_replace("[include[{$v}]]", $replace, $template);
 		}
 		
@@ -84,7 +84,7 @@ foreach($include_file[1] as $k => $v){
 $template_code = array(
 	'site' => $site,
 	'config' => $conf,
-	'template_file_path' => '../templates/'.$conf['template'],
+	'template_file_path' => '../templates/'.$template_name,
 	'price' => $price_template_new,
 	'user' => $user,
 );

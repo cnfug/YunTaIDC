@@ -3,9 +3,9 @@
 $dbconfig=array(
 	'host' => 'localhost', //数据库服务器
 	'port' => 3306, //数据库端口
-	'user' => '', //数据库用户名
-	'pass' => '', //数据库密码
-	'name' => '', //数据库名
+	'user' => 'yun_netech_cc', //数据库用户名
+	'pass' => 'YYhaSkBTZrDhJMzB', //数据库密码
+	'name' => 'yun_netech_cc', //数据库名
 	'dbqz' => 'shua' //数据表前缀
 );
 ?>

@@ -20,7 +20,7 @@ if(empty($_SESSION['ytidc_user']) && empty($_SESSION['ytidc_pass'])){
     }
 }
 $result = $DB->query("SELECT * FROM `ytidc_notice` WHERE `site`='0'");
-$notice_template = file_get_contents("../templates/".$conf['template']."/user_notice_list.template");
+$notice_template = file_get_contents("../templates/".$template_name."/user_notice_list.template");
 while($row = $result->fetch_assoc()){
 	$notice_template_code = array(
 		'id' => $row['id'],
@@ -36,11 +36,11 @@ while($row = $result->fetch_assoc()){
 	);
 	$notice_template_new = $notice_template_new . template_code_replace($notice_template, $notice_template_code);
 }
-$template = file_get_contents("../templates/".$conf['template']."/user_notice.template");
+$template = file_get_contents("../templates/".$template_name."/user_notice.template");
 $include_file = find_include_file($template);
 foreach($include_file[1] as $k => $v){
-		if(file_exists("../templates/".$conf['template']."/".$v)){
-			$replace = file_get_contents("../templates/".$conf['template']."/".$v);
+		if(file_exists("../templates/".$template_name."/".$v)){
+			$replace = file_get_contents("../templates/".$template_name."/".$v);
 			$template = str_replace("[include[{$v}]]", $replace, $template);
 		}
 		
@@ -48,7 +48,7 @@ foreach($include_file[1] as $k => $v){
 $template_code = array(
 	'site' => $site,
 	'config' => $conf,
-	'template_file_path' => '../templates/'.$conf['template'],
+	'template_file_path' => '../templates/'.$template_name,
 	'user' => $user,
 	'notice' => $notice_template_new,
 );

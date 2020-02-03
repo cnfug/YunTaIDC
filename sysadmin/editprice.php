@@ -14,79 +14,89 @@ if(empty($id)){
 $row = $DB->query("SELECT * FROM `ytidc_grade` WHERE `id`='{$id}'")->fetch_assoc();
 $act = daddslashes($_GET['act']);
 if($act == "del"){
-  	$DB->query("DELETE FROM `ytidc_type` WHERE `id`='{$id}'");
-  	@header("Location: ./msg.php?msg=删除成功");
+  	$DB->query("DELETE FROM `ytidc_grade` WHERE `id`='{$id}'");
+  	@header("Location: ./price.php");
   	exit;
 }
 if($act == "edit"){
   	$price = json_encode($_POST['price']);
   	$name = daddslashes($_POST['name']);
     $default = daddslashes($_POST['default']);
+    $need_paid = daddslashes($_POST['need_paid']);
+    $need_save = daddslashes($_POST['need_save']);
+    $need_money = daddslashes($_POST['need_money']);
     if($default == '1'){
         $DB->query("UPDATE `ytidc_grade` SET `default`='0' WHERE `default`='1'");
         $DB->query("UPDATE `ytidc_grade` SET `default`='1' WHERE `id`='{$id}'");
     }
-  	$DB->query("UPDATE `ytidc_grade` SET `name`='{$name}', `price`='{$price}' WHERE `id`='{$id}'");
-  	@header("Location: ./msg.php?msg=修改成功");
+  	$DB->query("UPDATE `ytidc_grade` SET `name`='{$name}', `price`='{$price}', `need_save`='{$need_save}', `need_money`='{$need_money}', `need_paid`='{$need_paid}' WHERE `id`='{$id}'");
+  	if($DB->error){
+      	$error_log = file_get_contents(ROOT."logs/system_error.log");
+      	$error_log = $error_log .  $return['status'] .":" . $return['msg'] . "\r\n";
+      	file_put_contents(ROOT."/logs/system_error.log", $error_log);
+  	}
+  	@header("Location: ./editprice.php?id={$id}");
   	exit;
 }
-$title = "编辑价格组";
 include("./head.php");
 $product = $DB->query("SELECT * FROM `ytidc_product`");
 $price = json_decode($row['price'], true);
 ?>
-
-            <div class="container-fluid">
-                <div class="side-body">
-                    <div class="page-title">
-                        <span class="title">编辑价格组</span>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <div class="title">编辑内容</div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <form method="POST" action="editprice.php?act=edit&id=<?=$id?>">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">产品组名称</label>
-                                            <input name="name" type="text" class="form-control" id="title" placeholder="产品组名称" value="<?=$row['name']?>">
-                                        </div>
-                                      <div class="form-group">
-                                          	<label for="exampleInputEmail1">设为默认价格组：</label>
-                                    <div>
-                                        <select name="default">
-                                        <?php
-                                            if($row['default'] == 1){
-                                                echo '<option value="0">否</option>
-                                                      <option value="1" selected>是</option>';
-                                            }else{
-                                                echo '<option value="0" selected>否</option>
-                                                      <option value="1">是</option>';
-                                            }
-                                        ?>
-                                            
-                                        </select>
-                                    </div>	
-                                      <?php
-                                      	while($row2 = $product->fetch_assoc()){
-                                      		echo '<div class="form-group">
-                                            <label for="exampleInputEmail1">产品【'.$row2['name'].'】的价格</label>
-                                            <input name="price['.$row2['id'].']" type="text" class="form-control" id="price" placeholder="产品【'.$row2['name'].'】的价格" value="'.$price[$row2['id']].'"  oninput="value=value.replace(/[^\d.]/g,\'\')">
-                                        </div>';
-                                      	}?>
-                                        <button type="submit" class="btn btn-default">修改</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3">编辑价格组</h1>
+</div>
+<div class="wrapper-md" ng-controller="FormDemoCtrl">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-heading font-bold">编辑价格组</div>
+        <div class="panel-body">
+          <form role="form" action="./editprice.php?act=edit&id=<?=$id?>" method="POST">
+            <div class="form-group">
+              <label>价格组名称：</label>
+              <input type="text" name="name" class="form-control" placeholder="价格组名称" value="<?=$row['name']?>">
             </div>
+            <div class="form-group">
+              <label>是否设置为默认</label>
+              <select name="default">
+              	<?php if($row['default'] == '1'){
+              		echo '<option value="1" selected>是</option><option value="0">否</option>';
+              	}else{
+              		echo '<option value="1">是</option><option value="0" selected>否</option>';
+              	}
+              	?>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>价格组等级（越大越高）</label>
+              <input type="number" name="weight" class="form-control" placeholder="价格组等级" value="<?=$row['weight']?>">
+            </div>
+            <div class="form-group">
+              <label>开通消费要求（优先使用，0为不启用）</label>
+              <input type="number" name="need_paid" class="form-control" placeholder="开通消费要求" value="<?=$row['need_paid']?>">
+            </div>
+            <div class="form-group">
+              <label>开通预存要求（第二使用，0为不启用）</label>
+              <input type="number" name="need_save" class="form-control" placeholder="开通预存要求" value="<?=$row['need_save']?>">
+            </div>
+            <div class="form-group">
+              <label>开通价格（最后使用，0为不启用）</label>
+              <input type="number" name="need_money" class="form-control" placeholder="开通价格" value="<?=$row['need_money']?>">
+            </div>
+            <?php
+                while($row2 = $product->fetch_assoc()){
+                    echo '<div class="form-group">
+                          <label>产品【'.$row2['name'].'】的价格</label>
+                          <input name="price['.$row2['id'].']" type="text" class="form-control" id="price" placeholder="产品【'.$row2['name'].'】的价格" value="'.$price[$row2['id']].'"  oninput="value=value.replace(/[^\d.]/g,\'\')">
+                          </div>';
+                }?>
+            <button type="submit" class="btn btn-sm btn-primary">提交</button>
+          </form>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
 <?php
 
 include("./foot.php");

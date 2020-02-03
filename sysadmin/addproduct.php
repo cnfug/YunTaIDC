@@ -12,10 +12,17 @@ if(!empty($_POST['name']) && !empty($_POST['description']) && !empty($_POST['typ
   	$type = daddslashes($_POST['type']);
   	$server = daddslashes($_POST['server']);
   	$time = daddslashes($_POST['time']);
-  	$time = json_encode(url_encode($time));
+  	foreach($time as $k => $v){
+  		if(!empty($v['name'])){
+  			$timearray[$k] = $v;
+  		}
+  	}
+  	$time = json_encode(url_encode($timearray));
   	$DB->query("INSERT INTO `ytidc_product` (`name`, `description`, `type`, `server`, `time`, `configoption`, `status`) VALUES ('{$name}', '{$description}', '{$type}', '{$server}', '{$time}', '', '1')");
-  	@header("Location: ./msg.php?msg=添加产品成功！");
-  	exit($DB->error);
+  	$newid = $DB->query("select MAX(id) from `ytidc_product`")->fetch_assoc();
+  	$newid = $newid['MAX(id)'];
+	@header("Location: ./editproduct.php?id={$newid}");
+  	exit();
 }
 $title = "添加产品";
 include("./head.php");
@@ -59,91 +66,72 @@ $descriptionhtml = file_get_contents("../templates/".$conf['template']."/user_bu
 
         }
         </script>
-            <div class="container-fluid">
-                <div class="side-body">
-                    <div class="page-title">
-                        <span class="title">添加产品</span>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <div class="title">添加内容</div>
-                                    </div>
-                                </div>
-                                <form method="POST" action="addproduct.php">
-                                <div class="card-body">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">产品名称</label>
-                                            <input name="name" type="text" class="form-control" id="name" placeholder="产品名称">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">产品介绍</label>
-                                            <textarea class="form-control" name="description" row="6"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">推荐产品介绍格式</label>
-                                            <textarea class="form-control" name="description" row="6" disabled=""><?=$descriptionhtml?></textarea>
-                                        </div>
-                                      	<div class="form-group">
-                                          	<label for="exampleInputEmail1">产品分类</label>
-                                    <div>
-                                        <select name="type">
-                                            <optgroup label="请选择">
-                                              <?php while($row2 = $type->fetch_assoc()){
-  														echo '
-                                                <option value="'.$row2['id'].'">'.$row2['name'].'</option>';
-													}
-                                             	?>
-                                            </optgroup>
-                                        </select>
-                                    </div>	
-                                      	</div>
-                                      	<div class="form-group">
-                                          	<label for="exampleInputEmail1">产品服务器</label>
-                                          	
-                                    <div>
-                                        <select name="server">
-                                            <optgroup label="请选择">
-                                              <?php while($row2 = $server->fetch_assoc()){
-  														echo '
-                                                <option value="'.$row2['id'].'">'.$row2['name'].'</option>';
-													}
-                                             	?>
-                                            </optgroup>
-                                        </select>
-                                    </div>	
-                                      	</div>
-                                </div>
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <div class="title">周期配置 <button class="btn btn-danger" onclick="AddTimeInput()" type="button"> 添加产品周期</button></div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>名称</th>
-                                                <th>费率</th>
-                                                <th>开通日数</th>
-                                              	<th>备注（根据插件提示填写）</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="timetable">
-                                        </tbody>
-                                    </table>
-                                    <button type="submit" class="btn btn-default">添加</button>
-                                </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3">添加产品</h1>
+</div>
+<div class="wrapper-md" ng-controller="FormDemoCtrl">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-heading font-bold">添加产品</div>
+        <div class="panel-body">
+          <form role="form" action="./addproduct.php" method="POST">
+            <div class="form-group">
+              <label>产品名称</label>
+              <input type="text" name="name" class="form-control" placeholder="产品名称">
             </div>
+            <div class="form-group">
+              <label>产品介绍</label>
+              <textarea class="form-control" name="description"></textarea>
+            </div>
+            <div class="form-group">
+              <label>模板推荐产品介绍</label>
+              <textarea class="form-control" disabled=""><?=$descriptionhtml?></textarea>
+            </div>
+            <div class="form-group">
+              <label>产品分类</label>
+              <select name="type" class="form-control m-b">
+              	<?php
+              	while($row2 = $type->fetch_assoc()){
+              		echo '<option value="'.$row2['id'].'">'.$row2['name'].'</option>';
+              	}
+              	?>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>产品服务器</label>
+              <select name="server" class="form-control m-b">
+              	<?php
+              	while($row2 = $server->fetch_assoc()){
+              		echo '<option value="'.$row2['id'].'">'.$row2['name'].'</option>';
+              	}
+              	?>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>产品周期【留空名称为删除】<button class="btn btn-small btn-xs btn-primary" onclick="AddTimeInput()" type="button">添加周期</button></label>
+	            <div class="table-responsive">
+	              <table class="table table-striped b-t b-light">
+	                <thead>
+	                  <tr>
+	                    <th>周期名称</th>
+	                    <th>周期费率</th>
+	                    <th>开通天数</th>
+	                    <th>周期备注</th>
+	                  </tr>
+	                </thead>
+	                <tbody id="timetable">
+	                </tbody>
+	              </table>
+	            </div>
+            </div>
+            <button type="submit" class="btn btn-sm btn-primary">提交</button>
+          </form>
         </div>
-        
+      </div>
+    </div>
+  </div>
+</div>
 <?php
 
 include("./foot.php");

@@ -35,11 +35,11 @@ if(!empty($_POST['domain']) && !empty($_POST['title']) && !empty($_POST['admin']
 	@header("Location: ./msg.php?msg=开通成功！");
   	exit;
 }
-$template = file_get_contents("../templates/".$conf['template']."/user_site.template");
+$template = file_get_contents("../templates/".$template_name."/user_site.template");
 $include_file = find_include_file($template);
 foreach($include_file[1] as $k => $v){
-		if(file_exists("../templates/".$conf['template']."/".$v)){
-			$replace = file_get_contents("../templates/".$conf['template']."/".$v);
+		if(file_exists("../templates/".$template_name."/".$v)){
+			$replace = file_get_contents("../templates/".$template_name."/".$v);
 			$template = str_replace("[include[{$v}]]", $replace, $template);
 		}
 		
@@ -47,7 +47,7 @@ foreach($include_file[1] as $k => $v){
 $template_code = array(
 	'site' => $site,
 	'config' => $conf,
-	'template_file_path' => '../templates/'.$conf['template'],
+	'template_file_path' => '../templates/'.$template_name,
 	'user' => $user,
 );
 $template = template_code_replace($template, $template_code);

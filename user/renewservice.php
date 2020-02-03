@@ -65,7 +65,7 @@ if($new_money >= 0){
   	@header("Location: ./msg.php?msg=用户余额不足");
   	exit;
 }
-$plugin = "../plugins/".$server['plugin']."/main.php";
+$plugin = "../plugins/server/".$server['plugin']."/main.php";
 if(!is_file($plugin) || !file_exists($plugin)){
   	@header("Location: ./msg.php?msg=服务器插件不存在");
   	exit;

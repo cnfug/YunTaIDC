@@ -33,52 +33,43 @@ if($act == "edit"){
 	}
 }
 if($act == "del"){
-	$DB->query("DELETE * FROM `ytidc_promo` WHERE `id`='{$id}'");
+	$DB->query("DELETE FROM `ytidc_promo` WHERE `id`='{$id}'");
 	@header("Location: ./msg.php?msg=删除成功！");
 	exit;
 }
 
-$title = "编辑优惠码";
 include("./head.php");
 
 ?>
-
-            <div class="container-fluid">
-                <div class="side-body">
-                    <div class="page-title">
-                        <span class="title">编辑优惠码</span>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <div class="title">编辑内容</div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <form method="POST" action="editcode.php?id=<?=$id?>&act=edit">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">优惠码</label>
-                                            <input name="code" type="text" class="form-control" id="code" placeholder="优惠码" value="<?=$row['code']?>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">抵扣金额</label>
-                                            <input name="price" type="text" class="form-control" id="name" placeholder="抵扣金额" value="<?=$row['price']?>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">优惠产品ID【仅支持单ID】</label>
-                                            <input name="product" type="text" class="form-control" id="name" placeholder="优惠产品ID" value="<?=$row['product']?>">
-                                        </div>
-                                        <button type="submit" class="btn btn-default">编辑</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3">编辑优惠码</h1>
+</div>
+<div class="wrapper-md" ng-controller="FormDemoCtrl">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-heading font-bold">编辑优惠码</div>
+        <div class="panel-body">
+          <form role="form" action="./editcode.php?act=edit&id=<?=$id?>" method="POST">
+            <div class="form-group">
+              <label>优惠码：</label>
+              <input type="text" name="code" class="form-control" placeholder="优惠码" value="<?=$row['code']?>">
             </div>
+            <div class="form-group">
+              <label>抵扣金额</label>
+              <input type="text" name="price" class="form-control" placeholder="抵扣金额" value="<?=$row['price']?>">
+            </div>
+            <div class="form-group">
+              <label>优惠产品ID【多个使用,分开】</label>
+              <input type="text" name="product" class="form-control" placeholder="优惠产品ID" value="<?=$row['product']?>">
+            </div>
+            <button type="submit" class="btn btn-sm btn-primary">提交</button>
+          </form>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
 <?php
 
 include("./foot.php");
