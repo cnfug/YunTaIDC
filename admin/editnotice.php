@@ -39,13 +39,13 @@ $template_code = array(
 	'config' => $conf,
 	'user' => $user,
 	'notice' => $row,
-	'template_file_path' => '../templates/'.$conf['template'],
+	'template_file_path' => '../templates/'.$template_name,
 );
-$template = file_get_contents("../templates/".$conf['template']."/admin_editnotice.template");
+$template = file_get_contents("../templates/".$template_name."/admin_editnotice.template");
 $include_file = find_include_file($template);
 foreach($include_file[1] as $k => $v){
-		if(file_exists("../templates/".$conf['template']."/".$v)){
-			$replace = file_get_contents("../templates/".$conf['template']."/".$v);
+		if(file_exists("../templates/".$template_name."/".$v)){
+			$replace = file_get_contents("../templates/".$template_name."/".$v);
 			$template = str_replace("[include[{$v}]]", $replace, $template);
 		}
 		

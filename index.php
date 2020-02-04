@@ -1,11 +1,11 @@
 <?php
 
 include("./includes/common.php");
-$template = file_get_contents("./templates/".$conf['template']."/index.template");
+$template = file_get_contents("./templates/".$template_name."/index.template");
 $include_file = find_include_file($template);
 foreach($include_file[1] as $k => $v){
 		if(file_exists("./templates/".$conf['template']."/".$v)){
-			$replace = file_get_contents("./templates/".$conf['template']."/".$v);
+			$replace = file_get_contents("./templates/".$template_name."/".$v);
 			$template = str_replace("[include[{$v}]]", $replace, $template);
 		}
 		
