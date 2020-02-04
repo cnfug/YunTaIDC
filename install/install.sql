@@ -43,9 +43,6 @@ CREATE TABLE `ytidc_fenzhan` (
   `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `ytidc_fenzhan` (`id`, `domain`, `title`, `subtitle`, `description`, `keywords`, `notice`, `admin`, `password`, `user`, `status`) VALUES
-(6, 'yun.netech.cc', '默认站点', '使用云塔系统', '默认站点资料可以改，但请勿删除，否则可能无法浏览超级后台', '', '请不要删除', 'admin', '123456', 1000, 1);
-
 CREATE TABLE `ytidc_grade` (
   `id` int(11) NOT NULL,
   `name` varchar(256) NOT NULL,
