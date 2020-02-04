@@ -3,7 +3,7 @@
 ![GPL3.0](https://badgen.net/badge/License/Apache-License-2.0/blue)![PHP](https://badgen.net/badge/PHP/7.0.0+/orange)![Verison](https://badgen.net/badge/Verison/V0.2.2/cyan)![PHP](https://badgen.net/badge/版本/Alpha/red)  
 作者QQ：2119566807  
 作者TG：@kitrosmc  
-交流QQ群：954152892
+交流QQ群：954152892  
 ![1BUqOg.png](https://s2.ax1x.com/2020/02/04/1BUqOg.png)
 ## 安装使用
 ### 环境要求：
