@@ -19,7 +19,7 @@ INSERT INTO `ytidc_config` (`k`, `v`) VALUES
 ('invitepercent', '1'),
 ('siteprice', '10.00'),
 ('sitedomain', 'yunta.cc'),
-('template', 'template02'),
+('template', 'default'),
 ('http', 'http'),
 ('contactqq1', '123456'),
 ('contactqq2', '12345678'),
