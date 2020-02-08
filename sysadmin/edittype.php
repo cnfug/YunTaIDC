@@ -37,7 +37,7 @@ $row = $DB->query("SELECT * FROM `ytidc_type` WHERE `id`='{$id}'")->fetch_assoc(
       <div class="panel panel-default">
         <div class="panel-heading font-bold">编辑分类</div>
         <div class="panel-body">
-          <form role="form" action="./editprice.php?act=edit&id=<?=$id?>" method="POST">
+          <form role="form" action="./edittype.php?act=edit&id=<?=$id?>" method="POST">
             <div class="form-group">
               <label>分类名称：</label>
               <input type="text" name="name" class="form-control" placeholder="分类名称" value="<?=$row['name']?>">
