@@ -26,7 +26,7 @@ include("./head.php");
       <div class="panel panel-default">
         <div class="panel-heading font-bold">添加分类</div>
         <div class="panel-body">
-          <form role="form" action="./addprice.php" method="POST">
+          <form role="form" action="./addtype.php" method="POST">
             <div class="form-group">
               <label>分类名称：</label>
               <input type="text" name="name" class="form-control" placeholder="分类名称">
