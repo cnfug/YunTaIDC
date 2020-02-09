@@ -19,7 +19,7 @@ if(empty($_SESSION['ytidc_user']) && empty($_SESSION['ytidc_pass'])){
       	}
     }
 }
-$result = $DB->query("SELECT * FROM `ytidc_order` WHERE `user`='{$user['id']}'");
+$result = $DB->query("SELECT * FROM `ytidc_order` WHERE `user`='{$user['id']}' ORDER BY `orderid` DESC");
 $order_template = file_get_contents("../templates/".$template_name."/user_order_list.template");
 while($row = $result->fetch_assoc()){
 	$order_template_code = array(

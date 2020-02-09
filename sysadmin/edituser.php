@@ -19,7 +19,10 @@ if($act == "del"){
 }
 if($act == "edit"){
   	foreach($_POST as $k => $v){
-      	$value = daddslashes($v);
+        $value = daddslashes($v);
+        if($k == "password"){
+            $value = base64_encode($value);
+        }
       	$DB->query("UPDATE `ytidc_user` SET `{$k}`='{$value}' WHERE `id`='{$id}'");
     }
   	@header("Location: ./edituser.php?id={$id}");
@@ -28,6 +31,7 @@ if($act == "edit"){
 include("./head.php");
 $row = $DB->query("SELECT * FROM `ytidc_user` WHERE `id`='{$id}'")->fetch_assoc();
 $grade = $DB->query("SELECT * FROM `ytidc_grade` WHERE `status`='1'");
+$password = base64_decode($row['password']);
 ?>
 <div class="bg-light lter b-b wrapper-md">
   <h1 class="m-n font-thin h3">编辑用户</h1>
@@ -45,7 +49,7 @@ $grade = $DB->query("SELECT * FROM `ytidc_grade` WHERE `status`='1'");
             </div>
             <div class="form-group">
               <label>用户密码</label>
-              <input name="password" type="password" class="form-control" placeholder="用户密码" value="<?=$row['password']?>">
+              <input name="password" type="password" class="form-control" placeholder="用户密码" value="<?=$password?>">
             </div>
             <div class="form-group">
               <label>用户余额</label>
