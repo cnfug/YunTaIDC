@@ -45,7 +45,7 @@ $template_code = array(
 	'template_file_path' => '../templates/'.$template_name,
 	'user' => $user,
 	'invite' => $invite_template_new,
-	'invite_link' => $conf['http']."://".$_SERVER['HTTP_HOST']."/user/reg.php?code=".$user['id'],
+	'invite_link' => $conf['http']."://".$_SERVER['HTTP_HOST']."/user/register.php?code=".$user['id'],
 );
 $template = template_code_replace($template, $template_code);
 echo $template;
