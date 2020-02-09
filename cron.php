@@ -8,9 +8,9 @@ $DB->query("UPDATE `ytidc_config` SET `v`='{$date}' WHERE `k`='crondate'");
 while($row = $result->fetch_assoc()){
   	$product = $DB->query("SELECT * FROM `ytidc_product` WHERE `id`='{$row['product']}'")->fetch_assoc();
   	$server = $DB->query("SELECT * FROM `ytidc_server` WHERE `id`='{$product['server']}'")->fetch_assoc();
-  	$plugin = "./plugins/".$server['plugin']."/main.php";
+  	$plugin = "./plugins/server/".$server['plugin']."/main.php";
   	if(!is_file($plugin) || !file_exists($plugin)){
-      	$DB->query("DELETE * FROM `ytidc_service` WHERE `id`='{$row['id']}'");
+      	$DB->query("DELETE FROM `ytidc_service` WHERE `id`='{$row['id']}'");
     }else{
       	include($plugin);
       	$function = $server['plugin']."_DeleteService";
