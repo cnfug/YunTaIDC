@@ -15,7 +15,7 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <form method="POST" action="../epay/submit.php">
+                                    <form method="POST" action="../payment/submit.php">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">充值金额</label>
                                             <input name="money" type="text" class="form-control" id="title" placeholder="充值金额">
