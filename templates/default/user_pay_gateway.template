@@ -1,6 +1,6 @@
 
                                           <div class="radio3 radio-check radio-inline">
-                                            <input type="radio" id="radio2" name="type" value="[gateway]">
+                                            <input type="radio" id="radio2" name="gateway" value="[gateway]">
                                             <label for="radio2">
                                               [displayname]
                                             </label>
