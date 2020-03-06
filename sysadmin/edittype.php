@@ -55,7 +55,7 @@ $row = $DB->query("SELECT * FROM `ytidc_type` WHERE `id`='{$id}'")->fetch_assoc(
               <label>隐藏分类</label>
               <select class="form-control" name="status">
               <?php
-              if($row['hidden'] == "0"){
+              if($row['status'] == "0"){
             	echo '
             	<option value="1">否</option>
             	<option value="0" selected="">是</option>';

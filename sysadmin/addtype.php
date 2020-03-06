@@ -9,8 +9,8 @@ if(empty($_SESSION['adminlogin']) || $_SESSION['adminlogin'] != $session){
 if(!empty($_POST['name'])){
   	$name = daddslashes($_POST['name']);
   	$weight = daddslashes($_POST['weight']);
-  	$hidden = daddslashes($_POST['hidden']);
-  	$DB->query("INSERT INTO `ytidc_type` (`name`, `weight` ,`status`) VALUES ('{$name}', '{$weight}', '{$hidden}')");
+  	$status = daddslashes($_POST['status']);
+  	$DB->query("INSERT INTO `ytidc_type` (`name`, `weight` ,`status`) VALUES ('{$name}', '{$weight}', '{$status}')");
   	@header("Location: ./type.php");
   	exit;
 }
