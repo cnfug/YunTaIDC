@@ -13,9 +13,14 @@ if(empty($id)){
 }
 $act = daddslashes($_GET['act']);
 if($act == "del"){
-  	$DB->query("DELETE FROM `ytidc_type` WHERE `id`='{$id}'");
-  	@header("Location: ./type.php");
-  	exit;
+	if($DB->query("SELECT * FROM `ytidc_product` WHERE `type`='{$id}'")->num_rows >= 1){
+		@header("Location: ./msg.php?msg=改产品组尚有产品使用，暂时无法删除。");
+		exit;
+	}else{
+	  	$DB->query("DELETE FROM `ytidc_type` WHERE `id`='{$id}'");
+	  	@header("Location: ./type.php");
+	  	exit;
+	}
 }
 if($act == "edit"){
   	foreach($_POST as $k => $v){
@@ -45,7 +50,23 @@ $row = $DB->query("SELECT * FROM `ytidc_type` WHERE `id`='{$id}'")->fetch_assoc(
             <div class="form-group">
               <label>分类权重（越大越前）</label>
               <input type="number" name="weight" class="form-control" placeholder="分类权重" value="<?=$row['weight']?>">
-            </div>=
+            </div>
+            <div class="form-group">
+              <label>隐藏分类</label>
+              <select class="form-control" name="status">
+              <?php
+              if($row['hidden'] == "0"){
+            	echo '
+            	<option value="1">否</option>
+            	<option value="0" selected="">是</option>';
+              }else{
+            	echo '
+            	<option value="1" selected="">否</option>
+            	<option value="0">是</option>';
+              }
+              ?>
+              </select>
+            </div>
             <button type="submit" class="btn btn-sm btn-primary">提交</button>
           </form>
         </div>

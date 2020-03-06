@@ -8,7 +8,7 @@ if(empty($_SESSION['adminlogin']) || $_SESSION['adminlogin'] != $session){
 }
 $id = daddslashes($_GET['id']);
 if(empty($id)){
-  	@header("Location: ./type.php");
+  	@header("Location: ./site.php");
   	exit;
 }
 $act = daddslashes($_GET['act']);
@@ -52,7 +52,7 @@ $row = $DB->query("SELECT * FROM `ytidc_fenzhan` WHERE `id`='{$id}'")->fetch_ass
             </div>
             <div class="form-group">
               <label>分站后台公告</label>
-              <textarea class="form-control" name="notice"> value="<?=$row['notice']?>"</textarea>
+              <textarea class="form-control" name="notice"><?=$row['notice']?></textarea>
             </div>
             <div class="form-group">
               <label>分站介绍</label>
@@ -63,12 +63,8 @@ $row = $DB->query("SELECT * FROM `ytidc_fenzhan` WHERE `id`='{$id}'")->fetch_ass
               <input type="text" name="keywords" class="form-control" placeholder="分站SEO关键词" value="<?=$row['keywords']?>">
             </div>
             <div class="form-group">
-              <label>分站管理账号</label>
-              <input type="text" name="admin" class="form-control" placeholder="分站管理账号" value="<?=$row['admin']?>">
-            </div>
-            <div class="form-group">
-              <label>分站管理密码</label>
-              <input type="password" name="password" class="form-control" placeholder="分站管理密码" value="<?=$row['password']?>">
+              <label>分站邀请返现百分比</label>
+              <input type="text" name="invitepercent" class="form-control" placeholder="分站邀请返现百分比" value="<?=$row['invitepercent']?>">
             </div>
             <div class="form-group">
               <label>所属用户ID</label>

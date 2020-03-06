@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>仪表盘 | 云塔IDC系统v2.2</title>
+  <title>仪表盘 | 云塔IDC系统v2.3</title>
   <meta name="description" content="app, web app, responsive, responsive layout, admin, admin panel, admin dashboard, flat, flat ui, ui kit, AngularJS, ui route, charts, widgets, components" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
@@ -28,7 +28,7 @@
         <a href="#/" class="navbar-brand text-lt">
           <i class="fa fa-cloud"></i>
           <img src="img/logo.png" alt="." class="hide">
-          <span class="hidden-folded m-l-xs">云塔v2.2</span>
+          <span class="hidden-folded m-l-xs">云塔v2.3</span>
         </a>
         <!-- / brand -->
       </div>
@@ -130,6 +130,11 @@
                     </a>
                   </li>
                   <li ui-sref-active="active">
+                    <a ui-sref="layout.app" href="/sysadmin/price.php">
+                      <span>价格组管理</span>
+                    </a>
+                  </li>
+                  <li ui-sref-active="active">
                     <a ui-sref="layout.app" href="/sysadmin/site.php">
                       <span>分站管理</span>
                     </a>
@@ -142,13 +147,13 @@
                     <i class="fa fa-fw fa-angle-right text"></i>
                     <i class="fa fa-fw fa-angle-down text-active"></i>
                   </span>
-                  <i class="glyphicon glyphicon-list"></i>
-                  <span>价格财务</span>
+                  <i class="fa fa-cny"></i>
+                  <span>支付交易</span>
                 </a>
                 <ul class="nav nav-sub dk">
                   <li ui-sref-active="active">
-                    <a ui-sref="layout.app" href="/sysadmin/price.php">
-                      <span>价格组管理</span>
+                    <a ui-sref="layout.app" href="/sysadmin/pay.php">
+                      <span>支付管理</span>
                     </a>
                   </li>
                   <li ui-sref-active="active">
@@ -169,6 +174,17 @@
                 </ul>
               </li>
               <li>
+                <a ui-sref="app.calendar" href="/sysadmin/notice.php">
+                  <i class="glyphicon glyphicon-list icon text-primary-dker"></i>
+                  <span class="font-bold" translate="aside.nav.CALENDAR">公告管理</span>
+                  
+                  <span class="pull-right text-muted">
+                    <i class="fa fa-fw fa-angle-right text"></i>
+                    <i class="fa fa-fw fa-angle-down text-active"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
                 <a href class="auto">      
                   <span class="pull-right text-muted">
                     <i class="fa fa-fw fa-angle-right text"></i>
@@ -179,18 +195,13 @@
                 </a>
                 <ul class="nav nav-sub dk">
                   <li ui-sref-active="active">
-                    <a ui-sref="layout.app" href="/sysadmin/notice.php">
-                      <span>公告管理</span>
-                    </a>
-                  </li>
-                  <li ui-sref-active="active">
                     <a ui-sref="layout.app" href="/sysadmin/config.php">
                       <span>资料管理</span>
                     </a>
                   </li>
                   <li ui-sref-active="active">
-                    <a ui-sref="layout.app" href="/sysadmin/pay.php">
-                      <span>支付管理</span>
+                    <a ui-sref="layout.app" href="/sysadmin/smtp.php">
+                      <span>SMTP邮件管理</span>
                     </a>
                   </li>
                   <li ui-sref-active="active">

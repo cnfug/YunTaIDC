@@ -9,7 +9,8 @@ if(empty($_SESSION['adminlogin']) || $_SESSION['adminlogin'] != $session){
 if(!empty($_POST['name'])){
   	$name = daddslashes($_POST['name']);
   	$weight = daddslashes($_POST['weight']);
-  	$DB->query("INSERT INTO `ytidc_type` (`name`, `weight`, `status`) VALUES ('{$name}', '{$weight}', '1')");
+  	$hidden = daddslashes($_POST['hidden']);
+  	$DB->query("INSERT INTO `ytidc_type` (`name`, `weight` ,`status`) VALUES ('{$name}', '{$weight}', '{$hidden}')");
   	@header("Location: ./type.php");
   	exit;
 }
@@ -34,7 +35,14 @@ include("./head.php");
             <div class="form-group">
               <label>分类权重（越大越前）</label>
               <input type="number" name="weight" class="form-control" placeholder="分类权重">
-            </div>=
+            </div>
+            <div class="form-group">
+              <label>隐藏分类</label>
+              <select class="form-control" name="status">
+            	<option value="1">否</option>
+            	<option value="0">是</option>
+              </select>
+            </div>
             <button type="submit" class="btn btn-sm btn-primary">提交</button>
           </form>
         </div>

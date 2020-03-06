@@ -16,7 +16,6 @@ if($act == "edit"){
   	exit;
 }
 include("./head.php");
-$row = $DB->query("SELECT * FROM `ytidc_server` WHERE `id`='{$id}'")->fetch_assoc();
 ?>
 <div class="bg-light lter b-b wrapper-md">
   <h1 class="m-n font-thin h3">站点资料</h1>
@@ -28,6 +27,22 @@ $row = $DB->query("SELECT * FROM `ytidc_server` WHERE `id`='{$id}'")->fetch_asso
         <div class="panel-heading font-bold">编辑资料</div>
         <div class="panel-body">
           <form role="form" action="./config.php?act=edit" method="POST">
+            <div class="form-group">
+              <label>主站标题</label>
+              <input type="text" name="mainsite_title" class="form-control" placeholder="主站标题" value="<?=$conf['mainsite_title']?>">
+            </div>
+            <div class="form-group">
+              <label>主站副标题</label>
+              <input type="text" name="mainsite_subtitle" class="form-control" placeholder="主站副标题" value="<?=$conf['mainsite_subtitle']?>">
+            </div>
+            <div class="form-group">
+              <label>主站SEO介绍</label>
+              <input type="text" name="mainsite_description" class="form-control" placeholder="主站SEO介绍" value="<?=$conf['mainsite_description']?>">
+            </div>
+            <div class="form-group">
+              <label>主站SEO关键词</label>
+              <input type="text" name="mainsite_keywords" class="form-control" placeholder="主站SEO关键词" value="<?=$conf['mainsite_keywords']?>">
+            </div>
             <div class="form-group">
               <label>客服1QQ</label>
               <input type="text" name="contactqq1" class="form-control" placeholder="客服1QQ" value="<?=$conf['contactqq1']?>">

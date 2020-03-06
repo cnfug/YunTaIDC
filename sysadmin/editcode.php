@@ -21,12 +21,15 @@ if($promo->num_rows != 1){
 $act = daddslashes($_GET['act']);
 if($act == "edit"){
 	if(!empty($_POST['code']) && !empty($_POST['price']) && !empty($_POST['product'])){
-	  	$code = daddslashes($_POST['code']);
-	  	$price = daddslashes($_POST['price']);
-	  	$product = daddslashes($_POST['product']);
-	  	$DB->query("UPDATE `ytidc_promo` SET `code`='{$code}', `price`='{$price}', `product`='{$product}' WHERE `id`='{$id}'");
-	  	@header("Location: ./msg.php?msg=添加价格组成功！");
+	  	$params = daddslashes($_POST);
+	  	$DB->query("UPDATE `ytidc_promo` SET `code`='{$params['code']}', `price`='{$params['price']}', `product`='{$params['product']}', `renew`='{$params['renew']}', `daili`='{$params['daili']}', `status`='{$params['status']}' WHERE `id`='{$id}'");
+	  	if(!$DB->error){
+	  	@header("Location: ./editcode.php?id={$id}");
 	  	exit;
+	  	}else{
+	  	@header("Location: ./msg.php?msg=数据库错误：".$DB->error);
+	  	exit;
+	  	}
 	}else{
 	  	@header("Location: ./msg.php?msg=参数不能为空！");
 	  	exit;
@@ -62,6 +65,57 @@ include("./head.php");
             <div class="form-group">
               <label>优惠产品ID【多个使用,分开】</label>
               <input type="text" name="product" class="form-control" placeholder="优惠产品ID" value="<?=$row['product']?>">
+            </div>
+            <div class="form-group">
+              <label>是否适用于续费</label>
+              <select class="form-control" name="renew">
+              	<?php
+              	if($row['renew'] == 1){
+              		echo '
+              	<option value="0">否</option>
+              	<option value="1" selected>是</option>';
+              	}else{
+              		echo '
+              	<option value="0" selected>否</option>
+              	<option value="1">是</option>';
+              		
+              	}
+              	?>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>是否适用于非默认价格组开通</label>
+              <select class="form-control" name="daili">
+              	<?php
+              	if($row['daili'] == 1){
+              		echo '
+              	<option value="0">否</option>
+              	<option value="1" selected>是</option>';
+              	}else{
+              		echo '
+              	<option value="0" selected>否</option>
+              	<option value="1">是</option>';
+              		
+              	}
+              	?>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>停止使用该优惠码</label>
+              <select class="form-control" name="status">
+              	<?php
+              	if($row['status'] == 1){
+              		echo '
+              	<option value="0">是</option>
+              	<option value="1" selected>否</option>';
+              	}else{
+              		echo '
+              	<option value="0" selected>是</option>
+              	<option value="1">否</option>';
+              		
+              	}
+              	?>
+              </select>
             </div>
             <button type="submit" class="btn btn-sm btn-primary">提交</button>
           </form>

@@ -32,15 +32,16 @@ $templates = get_dir(ROOT."/templates/");
             <div class="form-group">
               <label>接收云中心信息</label>
               <select name="cloud_get_news" class="form-control">
-              	<option value="1">开启</option>
-              	<option value="0">关闭</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>开启云中心支付地址验证</label>
-              <select name="cloud_pay_vertify" class="form-control">
-              	<option value="1">开启</option>
-              	<option value="0">关闭</option>
+              	<?php
+              	if($conf['cloud_get_news'] == 0){
+              		echo '<option value="1">开启</option>
+              	<option value="0" selected>关闭</option>';
+              	}else{
+              		echo '<option value="1" selected>开启</option>
+              	<option value="0">关闭</option>';
+              	}
+              	?>
+              	
               </select>
             </div>
             <button type="submit" class="btn btn-sm btn-primary">提交</button>

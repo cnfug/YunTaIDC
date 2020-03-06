@@ -1,18 +1,26 @@
 # YunTaIDC
 云塔IDC系统【中文】【Chinese】  
-![GPL3.0](https://badgen.net/badge/License/Apache-License-2.0/blue)![PHP](https://badgen.net/badge/PHP/7.0.0+/orange)![Verison](https://badgen.net/badge/Verison/V0.2.2/cyan)![PHP](https://badgen.net/badge/版本/Alpha/red)  
+![Apache-License-2.0](https://badgen.net/badge/License/Apache-License-2.0/blue)![PHP](https://badgen.net/badge/PHP/7.0.0+/orange)![Verison](https://badgen.net/badge/Verison/V0.2.3/cyan)![Status](https://badgen.net/badge/状态/正常/green)  
 作者QQ：2119566807  
 作者TG：@kitrosmc  
 交流QQ群：954152892  
-![1BUqOg.png](https://s2.ax1x.com/2020/02/04/1BUqOg.png)
+![logo.png](https://s2.ax1x.com/2020/03/04/3o6PHS.png)
 ## 安装使用
 ### 环境要求：
+- .htaccess 支持
 - PHP版本 >= 7.0
 ### 安装步骤：
 1. 上传源码到根目录并绑定域名
 2. 浏览域名/install，例如：`http://www.example.com/install/`
 3. 填写相关数据库信息点击完成安装
-4. 安装完成
+4. 删除安装包
+5. 安装完成
+### 更新系统：
+1. 下载更新包并且上传至网站根目录
+2. 解压压缩包并且导入SQL文件
+3. 访问域名/install/update.php，例如：`http://www.example.com/install/update.php`
+4. 删除更新包
+5. 更新完成
 ## 特色功能
 - 代理系统功能
 - 分站系统功能
@@ -20,19 +28,24 @@
 - 支付/服务器插件系统
 - 模板系统
 - 用户价格等级功能
-## 最新更新(v.2.2)：
-- 新增手机端模板分隔  
-- 新增支付插件功能  
-- 新增云中心测试对接控制功能  
-- 新增自定义页面功能  
-- 新增价格组一键设置价格功能  
-- 初步测试升级功能  
-- 更换管理后台模板  
-- 修复添加分站资料不全问题  
-- 修复无法删除周期造成系统错误问题  
-- 修复价格组无法后期修改开通条件问题  
-- 修复无法删除优惠码问题  
-- 修复2.1多个小bugs  
+- 开放API系统
+## 最新更新(v.2.3)：
+- 加入PHPMailer发送邮件
+- 新增数据分页功能
+- 新增产品组，产品隐藏功能
+- 新增优惠码续费续费,代理限制功能
+- 新增找回密码功能
+- 新增续费邮件提醒
+- 新增仿星外API接口
+- 更新主站与分站分隔
+- 更新服务器插件系统
+- 更新分站消费计费模式
+- 更新邀请链接计费模式
+- 更新模板系统
+- 更新系统对接API
+- 更新超级后台防呆机制
+- 取消分站自定义模板功能
+- 修复2.2版本多个bugs
 ## 常见问题：
 1. 默认站点有什么用？  
 默认站点所使用域名为安装时使用的域名，若修改默认站点域名，超级后台域名亦会随之更变。

@@ -1,11 +1,11 @@
 <?php
 include("../includes/common.php");
-if(empty($_SESSION['ytidc_user']) && empty($_SESSION['ytidc_pass'])){
+if(empty($_SESSION['ytidc_user']) || empty($_SESSION['ytidc_token'])){
   	@header("Location: ./login.php");
      exit;
 }else{
   	$username = daddslashes($_SESSION['ytidc_user']);
-  	$userkey = daddslashes($_SESSION['ytidc_adminkey']);
+  	$userkey = daddslashes($_SESSION['ytidc_token']);
   	$user = $DB->query("SELECT * FROM `ytidc_user` WHERE `username`='{$username}'");
   	if($user->num_rows != 1){
       	@header("Location: ./login.php");
@@ -20,32 +20,23 @@ if(empty($_SESSION['ytidc_user']) && empty($_SESSION['ytidc_pass'])){
     }
 }
 $template = file_get_contents("../templates/".$template_name."/user_pay.template");
-$gateway_template = file_get_contents("../templates/".$template_name."/user_pay_gateway.template");
 $gateway = $DB->query("SELECT * FROM `ytidc_payplugin` WHERE `status`='1'");
-while($gateway_info = $gateway->fetch_assoc()){
+$gateway_template = find_list_html("支付通道列表", $template);
+while($row = $gateway->fetch_assoc()){
 	$gateway_template_code = array(
-		'gateway' => $gateway_info['gateway'],
-		'displayname' => $gateway_info['displayname'],
-		'fee' => $gateway_info['fee'],
+		'gateway' => $row['gateway'],
+		'displayname' => $row['displayname'],
+		'fee' => $row['fee'],
 	);
-	$gateway_template_new = $gateway_template_new . template_code_replace($gateway_template, $gateway_template_code);
+	$gateway_template_new = $gateway_template_new . template_code_replace($gateway_template[1][0], $gateway_template_code);
 }
-$include_file = find_include_file($template);
-foreach($include_file[1] as $k => $v){
-		if(file_exists("../templates/".$template_name."/".$v)){
-			$replace = file_get_contents("../templates/".$template_name."/".$v);
-			$template = str_replace("[include[{$v}]]", $replace, $template);
-		}
-		
-}
+$template = str_replace($gateway_template[0][0], $gateway_template_new, $template);
 $template_code = array(
 	'site' => $site,
 	'config' => $conf,
 	'template_file_path' => '../templates/'.$template_name,
 	'user' => $user,
-	'gateway' => $gateway_template_new,
 );
-$template = template_code_replace($template, $template_code);
-echo $template;
+echo set_template($template, $template_name, $template_code);
 
 ?>

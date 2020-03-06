@@ -20,12 +20,21 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>服务账户</th>
+                                                <th>服务产品</th>
                                                 <th>到期日期</th>
                                                 <th>操作</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                          [service]
+                                          [在线服务列表]
+	                                        	<tr>
+												    <th scope="row">[id]</th>
+												    <td>[username]</td>
+												    <td>[product]</td>
+												    <td>[enddate]</td>
+												    <td><a href="./servicedetail.php?id=[id]">前往管理服务>>></a></td>
+												</tr>
+                                          [/在线服务列表]
                                         </tbody>
                                     </table>
                                 </div>

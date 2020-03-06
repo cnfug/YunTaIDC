@@ -22,8 +22,11 @@
                                             <input name="user" type="hidden" class="form-control" id="title" value="[user[id]]">
                                         </div>
                                         <div class="form-group">
+                                            <label for="exampleInputEmail1">支付渠道</label>
                                             <select name="gateway" class="form-control">
-                                            [gateway]
+                                            [支付通道列表]
+                                            <option value="[gateway]">[displayname]</option>
+                                            [/支付通道列表]
                                             </select>
                                         </div>
                                         <button type="submit" class="btn btn-default">充值</button>

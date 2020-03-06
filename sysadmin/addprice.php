@@ -13,7 +13,12 @@ if(!empty($_POST['name']) && !empty($_POST['weight'])){
   	$need_save = daddslashes($_POST['need_save']);
   	$need_paid = daddslashes($_POST['need_paid']);
   	$date = date('Y-m-d');
-  	$DB->query("INSERT INTO `ytidc_grade`(`name`, `weight`, `need_paid`, `need_money`, `need_save`, `default`, `price`, `status`) VALUES ('{$name}','{$weight}','{$need_paid}','{$need_money}','{$need_save}','0','','1')");
+  	if($DB->query("SELECT * FROM `ytidc_grade` WHERE `default`='1'")->num_rows <= 0){
+  		$default = 1;
+  	}else{
+  		$default = 0;
+  	}
+  	$DB->query("INSERT INTO `ytidc_grade`(`name`, `weight`, `need_paid`, `need_money`, `need_save`, `default`, `price`, `status`) VALUES ('{$name}','{$weight}','{$need_paid}','{$need_money}','{$need_save}','{$default}','','1')");
   	@header("Location: ./price.php");
   	exit;
 }

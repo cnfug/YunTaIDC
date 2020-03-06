@@ -17,9 +17,12 @@ $siteurl = ($_SERVER['SERVER_PORT']==443 ? 'https://' : 'http://') . $_SERVER['H
 if(!file_exists(ROOT."install/install.lock")){
 	exit('目前检测系统还没安装，如果已经安装请手动建立install.lock到install目录！如未安装请访问 '.$_SERVER['HTTP_HOST'].'/install 进行安装！');
 }
-if(file_exists(ROOT."install/index.php") || file_exists(ROOT."install/index.php")){
+if(file_exists(ROOT."install/index.php") || file_exists(ROOT."install/install.sql")){
 	exit('检测到您还没有删除安装的页面，可能会造成无法估计的损失，请前往install目录删除index.php以及install.sql');
-}
+}/*
+if(file_exists(ROOT."install/update.sql") || file_exists(ROOT."install/update.php")){
+	exit('检测到您还没有删除更新的页面，可能会造成无法估计的损失，请前往install目录删除update.php以及update.sql');
+}*/
 if(is_file(SYSTEM_ROOT.'360safe/360webscan.php')){//360网站卫士
     require_once(SYSTEM_ROOT.'360safe/360webscan.php');
 }
@@ -42,16 +45,19 @@ if(ismobile()){
 }else{
 	$template_name = $conf['template'];
 }
-if($DB->query("SELECT * FROM `ytidc_fenzhan`")->num_rows == 0){
-	$domain = $_SERVER['HTTP_HOST'];
-	$DB->query("INSERT INTO `ytidc_fenzhan`(`domain`, `title`, `subtitle`, `description`, `keywords`, `notice`, `admin`, `password`, `user`, `status`) VALUES ('{$domain}','默认站点','使用云塔系统','默认站点资料可以改，但请勿删除，否则可能无法浏览超级后台','','请不要删除','admin','123456','0','1')");
+$siteconf = $DB->query("SELECT * FROM `ytidc_fenzhan` WHERE `domain`='{$domain}'");
+if($siteconf->num_rows == 0){
+  	$site = array(
+  		'id' => '0',
+  		'title' => $conf['mainsite_title'],
+  		'subtitle' => $conf['mainsite_subtitle'],
+  		'description' => $conf['mainsite_description'],
+  		'keywords' => $conf['mainsite_keywords'],
+  		'status' => 1,
+  		'user' => 0,
+  	);
 }else{
-	$siteconf = $DB->query("SELECT * FROM `ytidc_fenzhan` WHERE `domain`='{$domain}'");
-	if($siteconf->num_rows == 0){
-	  	exit("本站尚未开通！请前往用户后台开通！");
-	}else{
-	  	$site = $siteconf->fetch_assoc();
-	}	
-}
+  	$site = $siteconf->fetch_assoc();
+}	
 
 ?>

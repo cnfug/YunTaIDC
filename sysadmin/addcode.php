@@ -7,14 +7,12 @@ if(empty($_SESSION['adminlogin']) || $_SESSION['adminlogin'] != $session){
   	exit;
 }
 if(!empty($_POST['code']) && !empty($_POST['price']) && !empty($_POST['product'])){
-  	$code = daddslashes($_POST['code']);
-  	$price = daddslashes($_POST['price']);
-  	$product = daddslashes($_POST['product']);
-  	if($DB->query("SELECT * FROM `ytidc_promo` WHERE `code`='{$code}'")->num_rows >= 1){
+	$params = daddslashes($_POST);
+  	if($DB->query("SELECT * FROM `ytidc_promo` WHERE `code`='{$params['code']}'")->num_rows >= 1){
   		@header("Location: ./msg.php?msg=优惠码已存在！");
   		exit;
   	}
-  	$DB->query("INSERT INTO `ytidc_promo`(`code`, `price`, `product`, `status`) VALUES ('{$code}','{$price}','{$product}','1')");
+  	$DB->query("INSERT INTO `ytidc_promo`(`code`, `price`, `product`, `renew`, `daili`, `status`) VALUES ('{$params['code']}','{$params['price']}','{$params['product']}','{$params['renew']}','{$params['daili']}','1')");
   	$newid = $DB->query("SELECT * FROM `ytidc_promo` WHERE `code`='{$code}'")->fetch_assoc();
   	$newid = $newid['id'];
   	@header("Location: ./editcode.php?id={$newid}");
@@ -43,8 +41,22 @@ include("./head.php");
               <input type="text" name="price" class="form-control" placeholder="抵扣金额">
             </div>
             <div class="form-group">
-              <label>优惠产品ID【多个使用,分开】</label>
+              <label>优惠产品ID（暂时只支持一个产品）</label>
               <input type="text" name="product" class="form-control" placeholder="优惠产品ID">
+            </div>
+            <div class="form-group">
+              <label>是否适用于续费</label>
+              <select class="form-control" name="renew">
+              	<option value="0">否</option>
+              	<option value="1">是</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>是否适用于非默认价格组开通</label>
+              <select class="form-control" name="daili">
+              	<option value="0">否</option>
+              	<option value="1">是</option>
+              </select>
             </div>
             <button type="submit" class="btn btn-sm btn-primary">提交</button>
           </form>

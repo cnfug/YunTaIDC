@@ -25,7 +25,14 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                          [order]
+                                          [订单列表]
+                                        	<tr>
+											    <th scope="row">[orderid]</th>
+											    <td>[description]</td>
+											    <td>[money]</td>
+											    <td>[status]</td>
+											</tr>
+                                          [/订单列表]
                                         </tbody>
                                     </table>
                                 </div>

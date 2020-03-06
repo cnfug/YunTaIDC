@@ -6,11 +6,11 @@ if(empty($_SESSION['adminlogin']) || $_SESSION['adminlogin'] != $session){
   	@header("Location: ./login.php");
   	exit;
 }
-if(!empty($_POST['title']) && !empty($_POST['domain']) && !empty($_POST['description']) && !empty($_POST['admin']) && !empty($_POST['password'])&& !empty($_POST['notice'])){
+if(!empty($_POST['title']) && !empty($_POST['domain']) && !empty($_POST['description']) && !empty($_POST['notice']) && !empty($_POST['user'])){
   	foreach($_POST as $k => $v){
       	$$k = daddslashes($v);
     }
-  	$DB->query("INSERT INTO `ytidc_fenzhan`(`domain`, `title`, `subtitle`, `description`, `keywords`, `notice`, `admin`, `password`, `user`, `status`) VALUES ('{$domain}','{$title}','{$subtitle}','{$description}','{$keywords}','{$notice}','{$admin}','{$password}','{$user}',1)");
+  	$DB->query("INSERT INTO `ytidc_fenzhan`(`domain`, `title`, `subtitle`, `description`, `keywords`, `notice`, `invitepercent`, `user`, `status`) VALUES ('{$domain}','{$title}','{$subtitle}','{$description}','{$keywords}','{$notice}',0,'{$user}','1')");
   	@header("Location: ./site.php");
   	exit;
 }
@@ -51,14 +51,6 @@ include("./head.php");
             <div class="form-group">
               <label>分站SEO关键词</label>
               <input type="text" name="keywords" class="form-control" placeholder="分站SEO关键词">
-            </div>
-            <div class="form-group">
-              <label>分站管理账号</label>
-              <input type="text" name="admin" class="form-control" placeholder="分站管理账号">
-            </div>
-            <div class="form-group">
-              <label>分站管理密码</label>
-              <input type="password" name="password" class="form-control" placeholder="分站管理密码">
             </div>
             <div class="form-group">
               <label>所属用户ID</label>

@@ -31,7 +31,7 @@ $row = $DB->query("SELECT * FROM `ytidc_payplugin` WHERE `id`='{$id}'")->fetch_a
 $row['configoption'] = json_decode($row['configoption'], 1);
 $plugin = "../plugins/payment/".$row['gateway']."/main.php";
 if(!file_exists($plugin) || !is_file($plugin)){
-	@header("Location: ./pay.php");
+	@header("Location: ./msg.php?msg=插件文件不存在，请删除后重新添加！");
 	exit;
 }
 include($plugin);
@@ -93,10 +93,31 @@ $plugins_file = get_dir(ROOT."/plugins/payment/");
                                         	$function = $row['gateway']."_ConfigOption";
                                         	$configoption = $function();
                                         	foreach($configoption as $k => $v){
-                                        		echo '<div class="form-group">
-                                            <label>【支付配置】：'.$k.'</label>
-                                            <input type="text" class="form-control" name="configoption['.$k.']" placeholder="'.$v.'" maxlength="256" value="'.$row['configoption'][$k].'">
+                                        		if($v['type'] == "text"){
+                                        			echo '<div class="form-group">
+                                            <label>【插件配置】：'.$v['label'].'</label>
+                                            <input type="text" class="form-control" name="configoption['.$k.']" placeholder="'.$v['placeholder'].'" maxlength="256" value="'.$row['configoption'][$k].'">
                                         </div>';
+                                        		}
+                                        		if($v['type'] == "number"){
+                                        			echo '<div class="form-group">
+                                            <label>【插件配置】：'.$v['label'].'</label>
+                                            <input type="number" class="form-control" name="configoption['.$k.']" placeholder="'.$v['placeholder'].'" maxlength="256" value="'.$row['configoption'][$k].'">
+                                        </div>';
+                                        		}
+                                        		if($v['type'] == "select"){
+                                        			echo '<div class="form-group">
+                                            		<label>【插件配置】：'.$v['label'].'</label>
+                                        			<select name="configoption['.$k.']" class="form-control">';
+                                        			foreach($v['option'] as $k1 => $v1){
+                                        				if($row['configoption'][$k] == $v1){
+                                        					echo '<option value="'.$v1.'" selected>'.$k1.'</option>';
+                                        				}else{
+                                        					echo '<option value="'.$v1.'">'.$k1.'</option>';
+                                        				}
+                                        			}
+                                        			echo '</select></div>';
+                                        		}
                                         	}
                                         }
             ?>

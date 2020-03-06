@@ -6,19 +6,15 @@ if(empty($_SESSION['adminlogin']) || $_SESSION['adminlogin'] != $session){
   	@header("Location: ./login.php");
   	exit;
 }
-if(!empty($_POST['name']) && !empty($_POST['description']) && !empty($_POST['type']) && !empty($_POST['server']) && !empty($_POST['time'])){
-  	$name = daddslashes($_POST['name']);
-  	$description = daddslashes($_POST['description']);
-  	$type = daddslashes($_POST['type']);
-  	$server = daddslashes($_POST['server']);
-  	$time = daddslashes($_POST['time']);
-  	foreach($time as $k => $v){
+if(!empty($_POST['name']) && !empty($_POST['type']) && !empty($_POST['server']) && !empty($_POST['time'])){
+  	$postdata = daddslashes($_POST);
+  	foreach($postdata['time'] as $k => $v){
   		if(!empty($v['name'])){
   			$timearray[$k] = $v;
   		}
   	}
   	$time = json_encode(url_encode($timearray));
-  	$DB->query("INSERT INTO `ytidc_product` (`name`, `description`, `type`, `server`, `time`, `configoption`, `status`) VALUES ('{$name}', '{$description}', '{$type}', '{$server}', '{$time}', '', '1')");
+  	$DB->query("INSERT INTO `ytidc_product` (`name`, `description`, `type`, `server`, `time`, `configoption`, `weight`, `hidden` ,`status`) VALUES ('{$postdata['name']}', '{$postdata['description']}', '{$postdata['type']}', '{$postdata['server']}', '{$time}', '', '{$postdata['weight']}', '{$postdata['hidden']}', '1')");
   	$newid = $DB->query("select MAX(id) from `ytidc_product`")->fetch_assoc();
   	$newid = $newid['MAX(id)'];
 	@header("Location: ./editproduct.php?id={$newid}");
@@ -51,16 +47,19 @@ $descriptionhtml = file_get_contents("../templates/".$conf['template']."/user_bu
 
             var tr = document.createElement('tr');
     	    	var td = document.createElement('td');
-    	    	td.innerHTML='<input type="text" class="form-control" name="time[' + count + '][name]" value=""/>';
+    	    	td.innerHTML='<input type="text" class="form-control" name="time[' + count + '][name]" value="" style="min-width: 100px;"/>';
     			tr.appendChild(td);
     	    	var td = document.createElement('td');
-    	    	td.innerHTML='<input type="text" class="form-control" name="time[' + count + '][discount]" value=""/>';
+    	    	td.innerHTML='<input type="text" class="form-control" name="time[' + count + '][discount]" value="" style="min-width: 100px;"/>';
     			tr.appendChild(td);
     	    	var td = document.createElement('td');
-    	    	td.innerHTML='<input type="text" class="form-control" name="time[' + count + '][day]" value=""/>';
+    	    	td.innerHTML='<input type="text" class="form-control" name="time[' + count + '][day]" value="" style="min-width: 100px;"/>';
     			tr.appendChild(td);
     	    	var td = document.createElement('td');
-    	    	td.innerHTML='<input type="text" class="form-control" name="time[' + count + '][remark]" value=""/>';
+    	    	td.innerHTML='<input type="text" class="form-control" name="time[' + count + '][remark]" value="" style="min-width: 100px;"/>';
+    			tr.appendChild(td);
+    	    	var td = document.createElement('td');
+    	    	td.innerHTML='<select type="select" class="form-control" name="time[' + count + '][renew]" style="min-width: 100px;"><option value="1">允许</option><option value="0">不允许</option></select>';
     			tr.appendChild(td);
     		time.appendChild(tr);
 
@@ -109,21 +108,38 @@ $descriptionhtml = file_get_contents("../templates/".$conf['template']."/user_bu
               </select>
             </div>
             <div class="form-group">
+              <label>产品权重（越大越前）</label>
+              <input type="number" name="weight" class="form-control" placeholder="产品权重">
+            </div>
+            <div class="form-group">
+              <label>隐藏产品</label>
+              <select name="hidden" class="form-control m-b">
+              	<option value="0">否</option>
+              	<option value="1">是</option>
+              </select>
+            </div>
+            <div class="form-group">
               <label>产品周期【留空名称为删除】<button class="btn btn-small btn-xs btn-primary" onclick="AddTimeInput()" type="button">添加周期</button></label>
 	            <div class="table-responsive">
 	              <table class="table table-striped b-t b-light">
 	                <thead>
 	                  <tr>
-	                    <th>周期名称</th>
-	                    <th>周期费率</th>
-	                    <th>开通天数</th>
-	                    <th>周期备注</th>
+	                    <th style="min-width: 100px;">周期名称</th>
+	                    <th style="min-width: 100px;">周期费率</th>
+	                    <th style="min-width: 100px;">开通天数</th>
+	                    <th style="min-width: 100px;">周期备注</th>
+	                    <th style="min-width: 100px;">允许续费</th>
 	                  </tr>
 	                </thead>
 	                <tbody id="timetable">
 	                </tbody>
 	              </table>
 	            </div>
+            </div>
+            <div class="form-group">
+              <label>产品配置：</label>
+              <label>请先添加产品！</label>
+              </select>
             </div>
             <button type="submit" class="btn btn-sm btn-primary">提交</button>
           </form>

@@ -13,9 +13,14 @@ if(empty($id)){
 }
 $act = daddslashes($_GET['act']);
 if($act == "del"){
-  	$DB->query("DELETE FROM `ytidc_product` WHERE `id`='{$id}'");
-  	@header("Location: ./product.php");
-  	exit;
+	if($DB->query("SELECT * FROM `ytidc_service` WHERE `product`='{$id}'")->num_rows >= 1){
+		@header("Location: ./msg.php?msg=该产品尚有在线服务，暂时不允许删除");
+		exit;
+	}else{
+  		$DB->query("DELETE FROM `ytidc_product` WHERE `id`='{$id}'");
+  		@header("Location: ./product.php");
+  		exit;
+	}
 }
 if($act == "edit"){
   	foreach($_POST as $k => $v){
@@ -73,16 +78,19 @@ include("./head.php");
 
             var tr = document.createElement('tr');
     	    	var td = document.createElement('td');
-    	    	td.innerHTML='<input type="text" class="form-control" name="time[' + count + '][name]" value=""/>';
+    	    	td.innerHTML='<input type="text" class="form-control" name="time[' + count + '][name]" value="" style="min-width: 100px;"/>';
     			tr.appendChild(td);
     	    	var td = document.createElement('td');
-    	    	td.innerHTML='<input type="text" class="form-control" name="time[' + count + '][discount]" value=""/>';
+    	    	td.innerHTML='<input type="text" class="form-control" name="time[' + count + '][discount]" value="" style="min-width: 100px;"/>';
     			tr.appendChild(td);
     	    	var td = document.createElement('td');
-    	    	td.innerHTML='<input type="text" class="form-control" name="time[' + count + '][day]" value=""/>';
+    	    	td.innerHTML='<input type="text" class="form-control" name="time[' + count + '][day]" value="" style="min-width: 100px;"/>';
     			tr.appendChild(td);
     	    	var td = document.createElement('td');
-    	    	td.innerHTML='<input type="text" class="form-control" name="time[' + count + '][remark]" value=""/>';
+    	    	td.innerHTML='<input type="text" class="form-control" name="time[' + count + '][remark]" value="" style="min-width: 100px;"/>';
+    			tr.appendChild(td);
+    	    	var td = document.createElement('td');
+    	    	td.innerHTML='<select type="select" class="form-control" name="time[' + count + '][renew]" style="min-width: 100px;"><option value="1">允许</option><option value="0">不允许</option></select>';
     			tr.appendChild(td);
     		time.appendChild(tr);
         }
@@ -114,7 +122,7 @@ include("./head.php");
               <select name="type" class="form-control m-b">
               	<?php
               	while($row2 = $type->fetch_assoc()){
-              		if($row2['id'] == $row['tyoe']){
+              		if($row2['id'] == $row['type']){
               			echo '<option value="'.$row2['id'].'" selected>'.$row2['name'].'</option>';
               		}else{
               			echo '<option value="'.$row2['id'].'">'.$row2['name'].'</option>';
@@ -138,26 +146,48 @@ include("./head.php");
               </select>
             </div>
             <div class="form-group">
+              <label>产品权重（越大越前）</label>
+              <input type="number" name="weight" class="form-control" placeholder="产品权重" value="<?=$row['weight']?>">
+            </div>
+            <div class="form-group">
+              <label>隐藏产品</label>
+              <select name="hidden" class="form-control m-b">
+            	<?php
+            		if($row['hidden'] == 1){
+            			echo '<option value="0">否</option><option value="1" selected>是</option>';
+            		}else{
+            			echo '<option value="0" selected>否</option><option value="1">是</option>';
+            		}
+            	?>
+              </select>
+            </div>
+            <div class="form-group">
               <label>产品周期【留空名称为删除】<button class="btn btn-small btn-xs btn-primary" onclick="AddTimeInput()" type="button">添加周期</button></label>
 	            <div class="table-responsive">
 	              <table class="table table-striped b-t b-light">
 	                <thead>
 	                  <tr>
-	                    <th>周期名称</th>
-	                    <th>周期费率</th>
-	                    <th>开通天数</th>
-	                    <th>周期备注</th>
+	                    <th style="min-width: 100px;">周期名称</th>
+	                    <th style="min-width: 100px;">周期费率</th>
+	                    <th style="min-width: 100px;">开通天数</th>
+	                    <th style="min-width: 100px;">周期备注</th>
+	                    <th style="min-width: 100px;">允许续费</th>
 	                  </tr>
 	                </thead>
 	                <tbody id="timetable">
                     <?php
                                         	foreach($time as $k => $v){
                                             	echo '<tr>
-                                                <td><input type="text" class="form-control" placeholder="周期名称" name="time['.$k.'][name]" value="'.$v['name'].'"></td>
-                                                <td><input type="text" class="form-control" placeholder="周期费率" name="time['.$k.'][discount]" value="'.$v['discount'].'"></td>
-                                                <td><input type="text" class="form-control" placeholder="开通日数" name="time['.$k.'][day]" value="'.$v['day'].'"></td>
-                                                <td><input type="text" class="form-control" placeholder="周期介绍" name="time['.$k.'][remark]" value="'.$v['remark'].'"></td>
-                                            </tr>';
+                                                <td><input type="text" class="form-control" placeholder="周期名称" name="time['.$k.'][name]" value="'.$v['name'].'" style="min-width: 100px;"></td>
+                                                <td><input type="text" class="form-control" placeholder="周期费率" name="time['.$k.'][discount]" value="'.$v['discount'].'" style="min-width: 100px;"></td>
+                                                <td><input type="text" class="form-control" placeholder="开通日数" name="time['.$k.'][day]" value="'.$v['day'].'" style="min-width: 100px;"></td>
+                                                <td><input type="text" class="form-control" placeholder="周期介绍" name="time['.$k.'][remark]" value="'.$v['remark'].'" style="min-width: 100px;"></td>';
+                                                if($v['renew'] == 1){
+                                                	echo '<td><select type="select" class="form-control" name="time['.$k.'][renew]" style="min-width: 100px;"><option value="1" selected>允许</option><option value="0">不允许</option></select></td>';
+                                                }else{
+                                                	echo '<td><select type="select" class="form-control" name="time['.$k.'][renew]" style="min-width: 100px;"><option value="1" >允许</option><option value="0" selected>不允许</option></select></td>';
+                                                }
+                                            	echo '</tr>';
                                             }
                                         	?>
 	                </tbody>
@@ -167,12 +197,33 @@ include("./head.php");
             <?php
                                         if(function_exists($serverinfo['plugin']."_ConfigOption")){
                                         	$function = $serverinfo['plugin']."_ConfigOption";
-                                        	$configoption = $function();
+                                        	$configoption = $function($serverinfo);
                                         	foreach($configoption as $k => $v){
-                                        		echo '<div class="form-group">
-                                            <label>【插件配置】：'.$k.'</label>
-                                            <input type="text" class="form-control" name="configoption['.$k.']" placeholder="'.$v.'" maxlength="256" value="'.$row['configoption'][$k].'">
+                                        		if($v['type'] == "text"){
+                                        			echo '<div class="form-group">
+                                            <label>【插件配置】：'.$v['label'].'</label>
+                                            <input type="text" class="form-control" name="configoption['.$k.']" placeholder="'.$v['placeholder'].'" maxlength="256" value="'.$row['configoption'][$k].'">
                                         </div>';
+                                        		}
+                                        		if($v['type'] == "number"){
+                                        			echo '<div class="form-group">
+                                            <label>【插件配置】：'.$v['label'].'</label>
+                                            <input type="number" class="form-control" name="configoption['.$k.']" placeholder="'.$v['placeholder'].'" maxlength="256" value="'.$row['configoption'][$k].'">
+                                        </div>';
+                                        		}
+                                        		if($v['type'] == "select"){
+                                        			echo '<div class="form-group">
+                                            		<label>【插件配置】：'.$v['label'].'</label>
+                                        			<select name="configoption['.$k.']" class="form-control">';
+                                        			foreach($v['option'] as $k1 => $v1){
+                                        				if($row['configoption'][$k] == $v1){
+                                        					echo '<option value="'.$v1.'" selected>'.$k1.'</option>';
+                                        				}else{
+                                        					echo '<option value="'.$v1.'">'.$k1.'</option>';
+                                        				}
+                                        			}
+                                        			echo '</select></div>';
+                                        		}
                                         	}
                                         }
             ?>

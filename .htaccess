@@ -1,1 +1,4 @@
- 
+RewriteEngine On
+RewriteBase /
+RewriteRule "^api/cloudapi.asp" "api/StarOutService/api.php" [NC]
+RewriteRule "^vpsadm/login.asp" "api/StarOutService/login.php" [NC]

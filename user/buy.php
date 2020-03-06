@@ -3,10 +3,10 @@
 include("../includes/common.php");
 if(!empty($_GET['type'])){
   	$type = daddslashes($_GET['type']);
-  	$product = $DB->query("SELECT * FROM `ytidc_product` WHERE `type`='{$type}'");
+  	$product = $DB->query("SELECT * FROM `ytidc_product` WHERE `type`='{$type}' AND `hidden`='0' ORDER BY `weight` DESC");
 }else{
-  	$type = $DB->query("SELECT * FROM `ytidc_type`")->fetch_assoc();
-  	$product = $DB->query("SELECT * FROM `ytidc_product` WHERE `type`='{$type['id']}'");
+  	$type = $DB->query("SELECT * FROM `ytidc_type` ORDER BY `weight` DESC")->fetch_assoc();
+  	$product = $DB->query("SELECT * FROM `ytidc_product` WHERE `type`='{$type['id']}' AND `hidden`='0' ORDER BY `weight` DESC");
 }
 if(!empty($_SESSION['ytidc_user']) && !empty($_SESSION['ytidc_adminkey'])){
   	$username = daddslashes($_SESSION['ytidc_user']);
@@ -15,7 +15,7 @@ if(!empty($_SESSION['ytidc_user']) && !empty($_SESSION['ytidc_adminkey'])){
 }
 $grade = $user['grade'];
 if($grade == 0){
-  	$grade = $DB->query("SELECT * FROM `ytidc_grade` WHERE `default`='1'")->fetch_assoc();
+  	$grade = $DB->query("SELECT * FROM `ytidc_grade` ORDER BY `weight`")->fetch_assoc();
   	$price = json_decode($grade['price'], true);
 }else{
   	$grade = $DB->query("SELECT * FROM `ytidc_grade` WHERE `id`='{$user['grade']}'");
@@ -27,45 +27,34 @@ if($grade == 0){
       	$price = json_decode($grade['price'], true);
     }
 }
+$template = file_get_contents("../templates/".$template_name."/user_buy.template");
 $type = $DB->query("SELECT * FROM `ytidc_type` WHERE `status`='1' ORDER BY `weight` DESC");
-$product_template = file_get_contents("../templates/".$template_name."/user_buy_product.template");
-$type_template = file_get_contents("../templates/".$template_name."/user_buy_type.template");
+$type_template = find_list_html("分类列表", $template);
 while($row = $type->fetch_assoc()){
 	$type_template_code = array(
 		'name' => $row['name'],
 		'id' => $row['id'],
 	);
-	$type_template_new = $type_template_new . template_code_replace($type_template, $type_template_code);
+	$type_template_new = $type_template_new . template_code_replace($type_template[1][0], $type_template_code);
 }
+$template = str_replace($type_template[0][0], $type_template_new, $template);
+$product_template = find_list_html("产品列表", $template);
 while($row = $product->fetch_assoc()){
-	$pdis = json_decode(url_decode($row['time']), true);
 	$product_template_code = array(
 		'name' => $row['name'],
 		'id' => $row['id'],
+		'price' => $price[$row['id']],
 		'description' => $row['description'],
-		'price' => $price[$row['id']] * $pdis[1][discount],
-		'time' => $row['time'],
 	);
-	$product_template_new = $product_template_new . template_code_replace($product_template, $product_template_code);
+	$product_template_new = $product_template_new . template_code_replace($product_template[1][0], $product_template_code);
 }
+$template = str_replace($product_template[0][0], $product_template_new, $template);
 $template_code = array(
 	'site' => $site,
 	'config' => $conf,
 	'template_file_path' => '../templates/'.$template_name,
 	'user' => $user,
-	'product' => $product_template_new,
-	'type' => $type_template_new,
 );
-$template = file_get_contents("../templates/".$template_name."/user_buy.template");
-$include_file = find_include_file($template);
-foreach($include_file[1] as $k => $v){
-		if(file_exists("../templates/".$template_name."/".$v)){
-			$replace = file_get_contents("../templates/".$template_name."/".$v);
-			$template = str_replace("[include[{$v}]]", $replace, $template);
-		}
-		
-}
-$template = template_code_replace($template, $template_code);
-echo $template;
+echo set_template($template, $template_name, $template_code);
 
 ?>

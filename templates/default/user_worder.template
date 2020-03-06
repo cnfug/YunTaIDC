@@ -25,7 +25,14 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                          [worder]
+                                          [服务单列表]
+                                        	<tr>
+											    <th scope="row">[id]</th>
+											    <td>[title]</td>
+											    <td>[status]</td>
+											    <td><a href="./worderdetail.php?id=[id]">[点击查看工单>>>]</a></td>
+											</tr>
+                                          [/服务单列表]
                                         </tbody>
                                     </table>
                                 </div>

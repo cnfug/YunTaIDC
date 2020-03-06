@@ -23,7 +23,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                          [invite]
+                                          [邀请列表]
+                                          <tr>
+											    <th scope="row">[id]</th>
+											    <td>[username]</td>
+											</tr>
+                                          [/邀请列表]
                                         </tbody>
                                     </table>
                                 </div>

@@ -7,9 +7,10 @@ if(empty($_SESSION['adminlogin']) || $_SESSION['adminlogin'] != $session){
   	exit;
 }
 $user = $DB->query("SELECT * FROM `ytidc_user`")->num_rows;
-$service = $DB->query("SELECT * FROM `ytidc_service`")->num_rows;
+$service = $DB->query("SELECT * FROM `ytidc_service`");
+$service_number = $service->num_rows;
 $site = $DB->query("SELECT * FROM `ytidc_fenzhan`")->num_rows;
-$worder = $DB->query("SELECT * FROM `ytidc_worder`")->num_rows;
+$worder = $DB->query("SELECT * FROM `ytidc_worder` WHERE `status`='待回复'")->num_rows;
 $title = "管理后台";
 if($conf['crondate'] == date('Y-m-d')){
 	$cronstatus = "正常";
@@ -30,7 +31,7 @@ include("./head.php");
       <div class="row">
         <div class="col-sm-6 col-xs-12">
           <h1 class="m-n font-thin h3 text-black">仪表盘</h1>
-          <small class="text-muted">欢迎使用云塔v2.2</small>
+          <small class="text-muted">欢迎使用云塔v2.3</small>
         </div>
       </div>
     </div>
@@ -51,7 +52,7 @@ include("./head.php");
             </div>
             <div class="col-xs-6">
               <a href class="block panel padder-v bg-primary item">
-                <span class="text-white font-thin h1 block"><?=$service?></span>
+                <span class="text-white font-thin h1 block"><?=$service_number?></span>
                 <span class="text-muted text-xs">在线服务</span>
                 <span class="bottom text-right w-full">
                   <i class="fa fa-cloud-upload text-muted m-r-sm"></i>
@@ -78,9 +79,6 @@ include("./head.php");
             </div>
             <div class="col-xs-12 m-b-md">
               <div class="r bg-light dker item hbox no-border">
-                <div class="col w-xs v-middle hidden-md">
-                  <div ng-init="data1=[60,40]" ui-jq="sparkline" ui-options="{{data1}}, {type:'pie', height:40, sliceColors:['{{app.color.warning}}','#fff']}" class="sparkline inline"></div>
-                </div>
                 <div class="col dk padder-v r-r">
                   <div class="text-primary-dk font-thin h1"><span><?=$cronstatus?></span></div>
                   <span class="text-muted text-xs">Cron工作</span>
@@ -95,7 +93,7 @@ include("./head.php");
               <input type="checkbox" ng-model="showSpline">
               <i></i>
             </label>
-            <h4 class="font-thin m-t-none m-b text-muted">最近销售情况</h4>
+            <h4 class="font-thin m-t-none m-b text-muted">在线服务</h4>
             <div ui-jq="plot" ui-refresh="showSpline"style="height:246px" >
             </div>
           </div>

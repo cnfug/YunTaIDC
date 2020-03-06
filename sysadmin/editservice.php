@@ -20,6 +20,9 @@ if($act == "del"){
 if($act == "edit"){
   	foreach($_POST as $k => $v){
       	$value = daddslashes($v);
+      	if($k == 'password'){
+      		$v = base64_encode($v);
+      	}
       	$DB->query("UPDATE `ytidc_service` SET `{$k}`='{$value}' WHERE `id`='{$id}'");
     }
   	@header("Location: ./editservice.php?id={$id}");
@@ -49,11 +52,23 @@ $product = $DB->query("SELECT * FROM `ytidc_product` WHERE `id`='{$row['product'
             </div>
             <div class="form-group">
               <label>服务密码</label>
-              <input type="text" name="password" class="form-control" placeholder="服务密码" value="<?=$row['password']?>">
+              <input type="text" name="password" class="form-control" placeholder="服务密码" value="<?php echo base64_decode($row['password']); ?>">
             </div>
             <div class="form-group">
               <label>服务到期时间</label>
               <input type="date" name="enddate" class="form-control" placeholder="服务到期时间" value="<?=$row['enddate']?>">
+            </div>
+            <div class="form-group">
+              <label>服务状态</label>
+              <select class="form-control" name="status">
+              	<?php
+              	if($row['status'] == '等待审核'){
+              		echo '<option value="激活">激活</option><option value="等待审核" selected>等待审核</option>';
+              	}else{
+              		echo '<option value="激活" selected>激活</option><option value="等待审核">等待审核</option>';
+              	}
+              	?>
+              </select>
             </div>
             <button type="submit" class="btn btn-sm btn-primary">提交</button>
           </form>

@@ -15,18 +15,10 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <form method="POST" action="./opensite.php">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">分站账号</label>
-                                            <input name="admin" type="text" class="form-control" id="title" placeholder="分站账号">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">分站密码</label>
-                                            <input name="password" type="text" class="form-control" id="title" placeholder="分站密码">
-                                        </div>
+                                    <form method="POST" action="./site.php">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">分站名字</label>
-                                            <input name="name" type="text" class="form-control" id="title" placeholder="分站名字">
+                                            <input name="title" type="text" class="form-control" id="title" placeholder="分站名字">
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">域名前缀(后缀[config[sitedomain]])</label>

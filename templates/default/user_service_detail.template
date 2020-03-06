@@ -20,7 +20,9 @@
                                     <div>
                                         <select name="time">
                                             <optgroup label="请选择">
-                                              [time]
+                                              [周期列表]
+                                              <option value="[name]">[name]：[price]元</option>
+                                              [/周期列表]
                                             </optgroup>
                                         </select>
                                     </div>	

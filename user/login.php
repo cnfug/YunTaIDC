@@ -1,7 +1,19 @@
 <?php
 
 include("../includes/common.php");
-
+if(!empty($_SESSION['ytidc_user']) && !empty($_SESSION['ytidc_token'])){
+	$username = daddslashes($_SESSION['ytidc_user']);
+  	$userkey = daddslashes($_SESSION['ytidc_token']);
+  	$user = $DB->query("SELECT * FROM `ytidc_user` WHERE `username`='{$username}'");
+  	if($user->num_rows == 1){
+    	$user = $user->fetch_assoc();
+      	$userkey1 = md5($_SERVER['HTTP_HOST'].$user['password']);
+      	if($userkey == $userkey1){
+      		@header("Location: ./index.php");
+      		exit;
+      	}
+    }
+}
 if(!empty($_POST['username']) && !empty($_POST['password'])){
     $username = daddslashes($_POST['username']);
     $password = base64_encode(daddslashes($_POST['password']));
@@ -10,7 +22,7 @@ if(!empty($_POST['username']) && !empty($_POST['password'])){
         exit('账号密码错误！<a href="./login.php">点我重新登陆</a>');
     }else{
         $_SESSION['ytidc_user'] = $username;
-        $_SESSION['ytidc_adminkey'] = md5($_SERVER['HTTP_HOST'].$password);
+        $_SESSION['ytidc_token'] = md5($_SERVER['HTTP_HOST'].$password);
         @header("Location: ./index.php");
         exit;
     }
@@ -22,15 +34,6 @@ $template_code = array(
 	'template_file_path' => '../templates/'.$template_name,
 );
 $template = file_get_contents("../templates/".$template_name."/user_login.template");
-$include_file = find_include_file($template);
-foreach($include_file[1] as $k => $v){
-		if(file_exists("../templates/".$template_name."/".$v)){
-			$replace = file_get_contents("../templates/".$template_name."/".$v);
-			$template = str_replace("[include[{$v}]]", $replace, $template);
-		}
-		
-}
-$template = template_code_replace($template, $template_code);
-echo $template;
+echo set_template($template, $template_name, $template_code);
 
 ?>

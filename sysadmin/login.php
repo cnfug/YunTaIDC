@@ -18,7 +18,7 @@ if(!empty($_POST['username']) && !empty($_POST['password'])){
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>仪表盘 | 云塔云中心v1.0</title>
+  <title>仪表盘 | 云塔IDC财务管理系统v2.3</title>
   <meta name="description" content="app, web app, responsive, responsive layout, admin, admin panel, admin dashboard, flat, flat ui, ui kit, AngularJS, ui route, charts, widgets, components" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
@@ -33,7 +33,7 @@ if(!empty($_POST['username']) && !empty($_POST['password'])){
 
 
     <div class="container w-xxl w-auto-xs" ng-controller="SigninFormController" ng-init="app.settings.container = false;">
-      <span class="navbar-brand block m-t">云塔IDC财务管理系统v2.2</span>
+      <span class="navbar-brand block m-t">云塔IDC财务管理系统v2.3</span>
       <div class="m-b-lg">
         <div class="wrapper text-center">
           <strong>您将在这里登陆,请输入超级管理员的帐号信息!</strong>

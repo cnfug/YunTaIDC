@@ -14,9 +14,14 @@ if(empty($id)){
 $row = $DB->query("SELECT * FROM `ytidc_grade` WHERE `id`='{$id}'")->fetch_assoc();
 $act = daddslashes($_GET['act']);
 if($act == "del"){
-  	$DB->query("DELETE FROM `ytidc_grade` WHERE `id`='{$id}'");
-  	@header("Location: ./price.php");
-  	exit;
+	if($DB->query("SELECT * FROM `ytidc_user` WHERE `grade`='{$id}'")->num_rows >= 1){
+		@header("location: ./msg.php?msg=该价格组尚有用户使用，暂时无法删除。");
+		exit;
+	}else{
+	  	$DB->query("DELETE FROM `ytidc_grade` WHERE `id`='{$id}'");
+	  	@header("Location: ./price.php");
+	  	exit;
+	}
 }
 if($act == "edit"){
   	$price = json_encode($_POST['price']);
@@ -58,7 +63,7 @@ $price = json_decode($row['price'], true);
             </div>
             <div class="form-group">
               <label>是否设置为默认</label>
-              <select name="default">
+              <select name="default" class="form-control">
               	<?php if($row['default'] == '1'){
               		echo '<option value="1" selected>是</option><option value="0">否</option>';
               	}else{

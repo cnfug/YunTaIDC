@@ -13,16 +13,21 @@ if(empty($id)){
 }
 $act = daddslashes($_GET['act']);
 if($act == "del"){
-  	$DB->query("DELETE FROM `ytidc_user` WHERE `id`='{$id}'");
-  	@header("Location: ./user.php");
-  	exit;
+	if($DB->query("SELECT * FROM `ytidc_service` WHERE `user`='{$id}'")->num_rows >= 1){
+		@header("Location: ./msg.php?msg=该用户尚有在线服务！");
+		exit;
+	}else{
+  		$DB->query("DELETE FROM `ytidc_user` WHERE `id`='{$id}'");
+  		@header("Location: ./user.php");
+  		exit;
+	}
 }
 if($act == "edit"){
   	foreach($_POST as $k => $v){
-        $value = daddslashes($v);
-        if($k == "password"){
-            $value = base64_encode($value);
-        }
+      	$value = daddslashes($v);
+      	if($k == "password"){
+      		$value = base64_encode($value);
+      	}
       	$DB->query("UPDATE `ytidc_user` SET `{$k}`='{$value}' WHERE `id`='{$id}'");
     }
   	@header("Location: ./edituser.php?id={$id}");
@@ -61,6 +66,8 @@ $password = base64_decode($row['password']);
               	<?php while($row2 = $grade->fetch_assoc()){
               			if($row2['id'] == $row['grade']){
               				$selected = "selected";
+              			}else{
+              				$selected = '';
               			}
   						echo '
                         <option value="'.$row2['id'].'" '.$selected.'>'.$row2['name'].'</option>';

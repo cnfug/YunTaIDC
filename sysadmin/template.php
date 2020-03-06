@@ -17,7 +17,6 @@ if($act == "edit"){
 }
 $title = "编辑服务器";
 include("./head.php");
-$row = $DB->query("SELECT * FROM `ytidc_server` WHERE `id`='{$id}'")->fetch_assoc();
 $templates = get_dir(ROOT."/templates/");
 ?>
 <div class="bg-light lter b-b wrapper-md">

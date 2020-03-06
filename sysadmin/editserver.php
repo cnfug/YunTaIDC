@@ -13,9 +13,14 @@ if(empty($id)){
 }
 $act = daddslashes($_GET['act']);
 if($act == "del"){
-  	$DB->query("DELETE FROM `ytidc_server` WHERE `id`='{$id}'");
-  	@header("Location: ./server.php");
-  	exit;
+	if($DB->query("SELECT * FROM `ytidc_product` WHERE `server`='{$id}'")->num_rows >= 1){
+		@header("Location: ./msg.php?msg=该服务器尚有产品使用，暂时无法删除。");
+		exit;
+	}else{
+	  	$DB->query("DELETE FROM `ytidc_server` WHERE `id`='{$id}'");
+	  	@header("Location: ./server.php");
+	  	exit;
+	}
 }
 if($act == "edit"){
   	foreach($_POST as $k => $v){

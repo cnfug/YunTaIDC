@@ -11,13 +11,35 @@
                                 <div class="card-header">
                                     <div class="card-title">
                                         <div class="title">
-                                        	[type]
+                                        	[分类列表]
+                                        	<a href="./buy.php?type=[id]" class="btn btn-default">[name]</a>
+                                        	[/分类列表]
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-body">
                                     <div class="row no-margin no-gap">
-                                    [product]
+                                    [产品列表]
+                                    
+                                        <div class="col-sm-3">
+                                            <div class="pricing-table green">
+                                                <div class="pt-header">
+                                                    <div class="plan-pricing">
+                                                        <div class="pricing">[name]</div>
+                                                        <div class="pricing-type">￥[price]</div>
+                                                    </div>
+                                                </div>
+                                                <div class="pt-body">
+                                                    <ul class="plan-detail">
+                                                        [description]
+                                                    </ul>
+                                                </div>
+                                                <div class="pt-footer">
+                                                    <a href="./cart.php?id=[id]" class="btn btn-success">点击购买</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    [/产品列表]
                                     </div>
                                 </div>
                             </div>
